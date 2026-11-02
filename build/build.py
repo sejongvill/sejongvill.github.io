@@ -154,7 +154,7 @@ def fmt(d): return d.replace('-', '. ') + '.' if d else ''
 def ext(f): return os.path.splitext(f)[1][1:].upper() or 'FILE'
 
 # ---------- 메인 ----------
-stories = P['stories'][:3]
+stories = P['stories'][:9]
 def first_img(p):
     for x in p['images']: return x
     for x in p['previews']: return x
@@ -170,7 +170,7 @@ def now_card(key, label, more):
     return ''
 nowcards = now_card('schedule', '이번 달 일정', '일정표 크게 보기') + now_card('menu', '이번 주 식단', '식단표 크게 보기')
 ncards = ''.join(f'''<a class="card" href="/board/neighbors/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
-<div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in P['neighbors'][:3])
+<div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in P['neighbors'][:9])
 cards = ''.join(f'''<a class="card" href="/board/stories/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
 <div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in stories)
 def cat(t):
@@ -204,10 +204,10 @@ home = f'''
 <div class="stats"><div><b>2003</b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026</b><span>새 단장 완료</span></div></div></div>
 <img src="/assets/img/poolgroup.jpg" alt="2026 여름캠프 단체사진" loading="lazy"></div></section>
 <section class="blk bg-cream"><div class="wrap">
-<div class="sec-head"><div><div class="eyebrow">OUR DAYS</div><h2 class="t">세종빌의 일상 이야기</h2></div><a class="more" href="/board/stories/">이야기 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
-<div class="cards row3">{cards}</div>
-<div class="sec-head" style="margin-top:72px"><div><div class="eyebrow">WITH NEIGHBORS</div><h2 class="t">아름다운 이웃</h2></div><a class="more" href="/board/neighbors/">이웃 소식 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
-<div class="cards row3">{ncards}</div></div></section>
+<div class="sec-head"><div><div class="eyebrow">OUR DAYS</div><h2 class="t">세종빌의 일상 이야기</h2></div><div class="headr"><div class="cnav"><button class="cprev" type="button" aria-label="일상 이야기 이전">‹</button><button class="cnext" type="button" aria-label="일상 이야기 다음">›</button></div><a class="more" href="/board/stories/">이야기 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
+<div class="carousel"><div class="cards row3">{cards}</div></div>
+<div class="sec-head" style="margin-top:72px"><div><div class="eyebrow">WITH NEIGHBORS</div><h2 class="t">아름다운 이웃</h2></div><div class="headr"><div class="cnav"><button class="cprev" type="button" aria-label="아름다운 이웃 이전">‹</button><button class="cnext" type="button" aria-label="아름다운 이웃 다음">›</button></div><a class="more" href="/board/neighbors/">이웃 소식 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
+<div class="carousel"><div class="cards row3">{ncards}</div></div></div></section>
 <section class="blk"><div class="wrap cols2">
 <div class="panel"><h3>공지사항 <a class="more" href="/board/notice/">전체</a></h3><ul class="list">{notices}</ul></div>
 <div class="panel"><h3>정보공개 <a class="more" href="/disclosure.html">전체</a></h3><p class="note" style="margin-bottom:16px">예산·결산과 회의록을 한곳에서 투명하게 공개합니다.</p><div class="docs">{docs}</div></div>

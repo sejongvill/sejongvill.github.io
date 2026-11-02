@@ -69,3 +69,25 @@
   b.addEventListener('click',function(){t(m.hidden)});m.querySelector('.allmenu-close').addEventListener('click',function(){t(false);b.focus()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden){t(false);b.focus()}});
 })();
+(function(){ /* 카드 넘기기 */
+  document.querySelectorAll('.carousel').forEach(function(c){
+    var row=c.querySelector('.cards'),head=c.previousElementSibling,pv=head&&head.querySelector('.cprev'),nx=head&&head.querySelector('.cnext');
+    if(!row||!pv)return;
+    function step(){var a=row.children[0];return a?a.getBoundingClientRect().width+22:300}
+    function upd(){pv.disabled=row.scrollLeft<5;nx.disabled=row.scrollLeft+row.clientWidth>=row.scrollWidth-5}
+    pv.onclick=function(){row.scrollBy({left:-step()*3,behavior:'smooth'})};nx.onclick=function(){row.scrollBy({left:step()*3,behavior:'smooth'})};
+    row.addEventListener('scroll',function(){clearTimeout(row._t);row._t=setTimeout(upd,80)});window.addEventListener('resize',upd);upd();
+  });
+})();
+(function(){ /* 스크롤하면 떠오르기 */
+  if(!('IntersectionObserver' in window))return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  document.documentElement.classList.add('js');
+  var sel='.blk .sec-head,.blk .card,.panel,.nowcard,.about>div,.about>img,.support,.band .wrap,.box,.yr,.board-list li,.quick a';
+  var els=[].slice.call(document.querySelectorAll(sel)).filter(function(e){return !e.closest('.hero2')});
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
+  els.forEach(function(e){
+    var sib=e.parentElement?[].indexOf.call(e.parentElement.children,e):0;
+    e.style.transitionDelay=Math.min(sib,5)*90+'ms';e.classList.add('rv');io.observe(e);
+  });
+})();
