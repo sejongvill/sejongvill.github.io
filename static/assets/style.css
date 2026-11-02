@@ -281,3 +281,16 @@ table.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;
 .joinform input,.joinform textarea,.joinform select{max-width:100%;width:100%}
 .joinform .ck input,.joinform input[type=checkbox]{width:auto}
 .post-admin{display:flex;justify-content:flex-end;margin-bottom:12px}
+/* 메인 사진 넘기기 */
+.slides{position:relative;aspect-ratio:4/3;border-radius:200px 24px 24px 24px;overflow:hidden;background:var(--cream)}
+.slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0;opacity:0;transition:opacity 1.2s ease;aspect-ratio:auto}
+.slides img.on{opacity:1}
+.slides .dots{position:absolute;right:18px;bottom:16px;display:flex;gap:8px;z-index:2}
+.slides .dots button{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.slides .dots button[aria-selected=true]{background:#fff;width:26px;border-radius:6px}
+@media (max-width:900px){.slides{border-radius:0}}
+@media (max-width:900px){
+  .cards.row3{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}
+  .cards.row3::-webkit-scrollbar{display:none}
+  .cards.row3>*{scroll-snap-align:start}
+}

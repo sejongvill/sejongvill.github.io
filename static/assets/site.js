@@ -44,3 +44,12 @@
   var on=false;try{var a=JSON.parse(localStorage.getItem('sv-auth'));var g=JSON.parse(localStorage.getItem('gotrue.user'));on=!!((a&&a.access_token)||(g&&g.token))}catch(e){}
   if(on)document.querySelectorAll('.post-admin').forEach(function(x){x.hidden=false});
 })();
+(function(){ /* 메인 사진 10초마다 넘기기 */
+  var box=document.querySelector('.slides');if(!box)return;
+  var imgs=box.querySelectorAll('img'),dots=box.querySelector('.dots'),i=0,t;
+  imgs.forEach(function(im,k){var b=document.createElement('button');b.setAttribute('role','tab');b.setAttribute('aria-label',(k+1)+'번째 사진');b.onclick=function(){go(k);start()};dots.appendChild(b)});
+  function go(k){imgs[i].classList.remove('on');i=(k+imgs.length)%imgs.length;imgs[i].classList.add('on');imgs[i].loading='eager';
+    dots.querySelectorAll('button').forEach(function(b,n){b.setAttribute('aria-selected',n===i)})}
+  function start(){clearInterval(t);if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;t=setInterval(function(){go(i+1)},10000)}
+  go(0);start();
+})();

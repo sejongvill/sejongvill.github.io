@@ -151,7 +151,9 @@ def fmt(d): return d.replace('-', '. ') + '.' if d else ''
 def ext(f): return os.path.splitext(f)[1][1:].upper() or 'FILE'
 
 # ---------- 메인 ----------
-stories = P['stories'][:6]
+stories = P['stories'][:3]
+ncards = ''.join(f'''<a class="card" href="/board/neighbors/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
+<div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in P['neighbors'][:3])
 cards = ''.join(f'''<a class="card" href="/board/stories/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
 <div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in stories)
 def cat(t):
@@ -172,7 +174,12 @@ home = f'''
 <h1>서로를 존중하고<br>품어주고 사랑하는<br><em>행복한 보금자리</em></h1>
 <p class="lead">세종빌은 이용자 한 분 한 분이 저마다의 속도로<br>배우고, 쉬고, 웃으며 함께 살아가는 곳입니다.</p>
 <div class="cta"><a class="btn red" href="/about/greeting.html">세종빌 둘러보기 <svg class="ico"><use href="#i-arrow"/></svg></a><a class="btn line" href="/together/support.html">후원으로 함께하기</a></div></div>
-<div class="photo"><img src="/assets/img/group.jpg" alt="세종빌 가족들이 전주 전동성당 앞에서 찍은 단체사진" style="object-position:center 60%" fetchpriority="high"><div class="tag"><b>2025 가을나들이</b>전주 한옥마을에서 다 함께 · 11월 6일</div></div>
+<div class="photo slides" aria-roledescription="carousel" aria-label="세종빌 사진">
+<img class="on" src="/assets/img/group.jpg" alt="세종빌 가족 단체사진" style="object-position:center 60%" fetchpriority="high">
+<img src="/assets/img/poolgroup.jpg" alt="여름캠프 단체사진" loading="lazy">
+<img src="/assets/img/hero_pool.jpg" alt="여름캠프 물놀이" loading="lazy">
+<img src="/assets/img/bubble.jpg" alt="버블쇼를 보는 세종빌 가족들" loading="lazy">
+<div class="dots" role="tablist"></div></div>
 </div></section>
 <nav class="quick" aria-label="바로가기"><div class="wrap">
 <a href="/admission.html"><div class="qi"><svg class="ico"><use href="#i-home"/></svg></div><div><b>입주 상담</b><small>조건 · 절차 · 서류</small></div></a>
@@ -187,7 +194,9 @@ home = f'''
 <img src="/assets/img/poolgroup.jpg" alt="2026 여름캠프 단체사진" loading="lazy"></div></section>
 <section class="blk bg-cream"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">OUR DAYS</div><h2 class="t">세종빌의 일상 이야기</h2></div><a class="more" href="/board/stories/">이야기 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
-<div class="cards">{cards}</div></div></section>
+<div class="cards row3">{cards}</div>
+<div class="sec-head" style="margin-top:72px"><div><div class="eyebrow">WITH NEIGHBORS</div><h2 class="t">아름다운 이웃</h2></div><a class="more" href="/board/neighbors/">이웃 소식 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
+<div class="cards row3">{ncards}</div></div></section>
 <section class="blk"><div class="wrap cols2">
 <div class="panel"><h3>공지사항 <a class="more" href="/board/notice/">전체</a></h3><ul class="list">{notices}</ul></div>
 <div class="panel"><h3>정보공개 <a class="more" href="/disclosure.html">전체</a></h3><p class="note" style="margin-bottom:16px">예산·결산과 회의록을 한곳에서 투명하게 공개합니다.</p><div class="docs">{docs}</div></div>
