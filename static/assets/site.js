@@ -104,3 +104,19 @@
     })});
   });
 })();
+// 알림판
+(function(){
+  var b=document.querySelector('.board');if(!b)return;
+  var s=[].slice.call(b.querySelectorAll('.bs'));if(s.length<2){var c=b.querySelector('.bctl');if(c)c.hidden=true;return}
+  var i=0,n=b.querySelector('.bcount b'),pz=b.querySelector('.bpause'),t=null,
+      still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,paused=still;
+  function go(k){s[i].hidden=true;s[i].classList.remove('on');i=(k+s.length)%s.length;s[i].hidden=false;s[i].classList.add('on');n.textContent=i+1}
+  function run(){clearInterval(t);if(!paused)t=setInterval(function(){go(i+1)},6000)}
+  function setP(v){paused=v;pz.textContent=v?'▶':'❚❚';pz.setAttribute('aria-label',v?'알림 넘기기 시작':'알림 넘기기 멈춤');run()}
+  b.querySelector('.bprev').addEventListener('click',function(){go(i-1);run()});
+  b.querySelector('.bnext').addEventListener('click',function(){go(i+1);run()});
+  pz.addEventListener('click',function(){setP(!paused)});
+  b.addEventListener('mouseenter',function(){clearInterval(t)});b.addEventListener('mouseleave',run);
+  b.addEventListener('focusin',function(){clearInterval(t)});
+  setP(paused);
+})();

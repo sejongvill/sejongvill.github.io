@@ -161,14 +161,20 @@ def first_img(p):
     for f in p['files']:
         if os.path.splitext(f['file'])[1].lower() in ('.jpg', '.jpeg', '.png', '.webp'): return f['file']
     return None
-def now_card(key, label, more):
+def board_slides(key, label, n=2):
+    out = []
     for p in P[key]:
         im = first_img(p)
-        if im:
-            return f'''<a class="nowcard" href="/board/{key}/{p["id"]}.html"><div class="nc-img"><img src="{im}" alt="{E(p["title"])}" loading="lazy"></div>
-<div class="nc-cap"><small>{label}</small><b>{E(p["title"])}</b><span class="more">{more} <svg class="ico"><use href="#i-arrow"/></svg></span></div></a>'''
-    return ''
-nowcards = now_card('schedule', '이번 달 일정', '일정표 크게 보기') + now_card('menu', '이번 주 식단', '식단표 크게 보기')
+        if im: out.append((label, key, p, im))
+        if len(out) >= n: break
+    return out
+bslides = board_slides('schedule', '주요일정', 1) + board_slides('menu', '금주의 식단', 1) + board_slides('schedule', '주요일정', 2)[1:] + board_slides('menu', '금주의 식단', 2)[1:]
+board_html = ''.join(f'''<a class="bs{" on" if i == 0 else ""}" href="/board/{k}/{p["id"]}.html"{" hidden" if i else ""}><div class="bs-img"><img src="{im}" alt="{E(p["title"])}" loading="lazy"></div>
+<div class="bs-cap"><span class="chip{" g" if k == "menu" else ""}">{lab}</span><b>{E(p["title"])}</b><time>{p["date"].replace("-", ". ")}.</time></div></a>''' for i, (lab, k, p, im) in enumerate(bslides))
+board_panel = f'''<aside class="board" aria-label="알림판" aria-roledescription="carousel">
+<div class="board-head"><h3>알림판</h3><div class="bctl"><span class="bcount"><b>1</b> / {len(bslides)}</span><button class="bprev" type="button" aria-label="이전 알림">‹</button><button class="bpause" type="button" aria-label="알림 넘기기 멈춤">❚❚</button><button class="bnext" type="button" aria-label="다음 알림">›</button></div></div>
+<div class="board-body">{board_html}</div>
+<div class="board-links"><a href="/board/schedule/">일정 전체</a><a href="/board/menu/">식단 전체</a></div></aside>'''
 ncards = ''.join(f'''<a class="card" href="/board/neighbors/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
 <div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in P['neighbors'][:9])
 cards = ''.join(f'''<a class="card" href="/board/stories/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
@@ -203,7 +209,7 @@ def tabset(name, tabs, panes):
     return bar + ''.join(f'<div class="tp" role="tabpanel"{" hidden" if n else ""}>{pane}</div>' for n, pane in enumerate(panes))
 news_panes = []
 for label, kind, more in NEWS_TABS:
-    items = [x for x in allnews if kind is None or x[0] == kind][:6]
+    items = [x for x in allnews if (x[0] != '금주의 식단' if kind is None else x[0] == kind)][:6]
     news_panes.append('<div class="ngrid">' + (''.join(ncard(*x) for x in items) or '<p class="note">아직 글이 없어요.</p>') + '</div>')
 news_tabs = tabset('소식 분류', NEWS_TABS, news_panes)
 PHOTO_TABS = [('전체', None, '/board/stories/'), ('일상 이야기', 'stories', '/board/stories/'), ('아름다운 이웃', 'neighbors', '/board/neighbors/')]
@@ -234,12 +240,11 @@ home = f'''
 <img src="/assets/img/poolgroup.jpg" alt="2026 여름캠프 단체사진" loading="lazy"></div></section>
 <section class="blk"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
-{news_tabs}</div></section>
+<div class="newsrow"><div class="newsmain">{news_tabs}</div>{board_panel}</div></div></section>
 <section class="blk bg-cream photonews"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">PHOTO</div><h2 class="t">사진으로 보는 세종빌</h2></div>
 <div class="headr"><div class="cnav"><button class="cprev" type="button" aria-label="이전 사진">‹</button><button class="cnext" type="button" aria-label="다음 사진">›</button></div><a class="more tabmore" href="/board/stories/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
 {photo_tabs}</div></section>
-<section class="nowbar after"><div class="wrap"><div class="nowgrid">{nowcards}</div></div></section>
 <section class="band"><img src="/assets/img/campgroup.jpg" alt="" loading="lazy" style="object-position:center 45%">
 <div class="wrap"><div class="eyebrow" style="color:#ffd9d9">TOGETHER</div><p class="big">같은 숲, 같은 햇볕 아래<br>저마다의 빛깔로</p>
 <p style="margin-top:14px;opacity:.9">세종빌 가족들의 꿈과 희망이 가득한 이야기를 만나보세요.</p></div></section>
