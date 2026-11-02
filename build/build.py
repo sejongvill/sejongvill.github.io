@@ -289,18 +289,7 @@ corp = '''<div class="split"><div class="side"><img src="/assets/img/chairman.jp
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">층별 안내</h3>
 <div class="floors"><div class="floor"><div class="fl">1F</div><div><h4>생활 공간 <small>390㎡</small></h4><p class="rooms"><span class="rm main">생활실 6실 · 요한 · 요나 · 모세 · 요셉 · 야곱 · 이삭</span><span class="rm">거실</span><span class="rm">식당</span><span class="rm">휴게실</span><span class="rm">세탁실</span><span class="rm">샤워장</span><span class="rm">사무실</span><span class="rm">사무국장실</span></p></div></div>
 <div class="floor"><div class="fl">2F</div><div><h4>지원·운영 공간 <small>390㎡</small></h4><p class="rooms"><span class="rm">사무실</span><span class="rm">원장실</span><span class="rm">이사장실</span><span class="rm">소회의실</span><span class="rm">의무지원실</span><span class="rm">영양지원실</span><span class="rm">탕비실</span><span class="rm">서고</span></p></div></div></div>
-<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">임원현황</h3>
-<div class="board-grid">
-<div class="mem lead-m"><small>대표이사</small><b>정태춘</b><span>사회복지학박사</span></div>
-<div class="mem"><small>이사</small><b>이희경</b><span>세종YWCA 사무총장</span></div>
-<div class="mem"><small>이사</small><b>권영봉</b><span>前 세종시자원봉사센터장</span></div>
-<div class="mem"><small>이사</small><b>남택수</b><span>前 장충초등학교 교장</span></div>
-<div class="mem"><small>이사</small><b>이원숙</b><span>前 세종시대한적십자회장</span></div>
-<div class="mem"><small>이사</small><b>박용준</b><span>(사)선한이웃 대표</span></div>
-<div class="mem"><small>사외이사</small><b>임의순</b><span>前 농협중앙회 지부장</span></div>
-<div class="mem"><small>사외이사</small><b>원유봉</b><span>원유봉노무사무소 대표</span></div>
-<div class="mem"><small>감사</small><b>최재민</b><span>최재민법무사무소 대표</span></div>
-<div class="mem"><small>감사</small><b>류경남</b><span>주사랑교회 목사</span></div></div>
+
 <div class="grid-cards" style="margin-top:28px">
 <div class="box"><h4>재활사업 · 교육사업</h4><p>안락하고 쾌적한 환경을 제공하고 스스로 장애를 극복할 수 있도록 지원합니다. 음악, 미술, 놀이, 취미, 운동 등 다양한 학습·여가활동으로 새로운 능력 개발의 기회를 드립니다.</p></div>
 <div class="box"><h4>의료재활사업</h4><p>의료진단, 작업치료 등 의료적 서비스로 결손 기능을 회복하여 퇴행과 변형을 최소화하고 심리적·사회적 안정을 돕습니다.</p></div>
