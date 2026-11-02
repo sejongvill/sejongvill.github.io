@@ -269,3 +269,4 @@ table.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;
 .joinform .ck input{margin-top:5px}
 .req{color:var(--red)}
 .joinform button[disabled]{opacity:.45;cursor:not-allowed}
+.writebtn{padding:9px 18px;font-size:.92rem}

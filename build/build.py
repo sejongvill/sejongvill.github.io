@@ -357,7 +357,7 @@ for key, posts in P.items():
             if not top and lp['images']:
                 src = lp['images'][0]
                 top = f'<h2 class="t" style="font-size:1.5rem;margin:0 0 14px">{"이번 주 식단" if key == "menu" else "이번 달 일정"} · {E(lp["title"])}</h2><a href="{src}" target="_blank" rel="noopener"><img class="att-img" src="{src}" alt="{E(lp["title"])}"></a><p class="note" style="margin:-4px 0 40px">그림을 누르면 크게 볼 수 있어요.</p>'
-        inner = top + f'<p class="note" style="margin-bottom:20px">전체 {len(posts)}건</p>' + inner
+        inner = top + f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px"><p class="note">전체 {len(posts)}건</p><a class="btn line writebtn" href="/admin/#/collections/{key}/new">✏️ 글쓰기</a></div>' + inner
         write(f'/board/{key}/' + ('' if pg == 1 else f'page{pg}.html'), page(name, subpage(sec, name, name, inner), sec))
     for i, p in enumerate(posts):
         imgs = ''
