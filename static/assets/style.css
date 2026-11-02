@@ -321,3 +321,22 @@ table.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;
   .hero2 .glass{position:relative;top:auto;bottom:auto;left:auto;width:auto;margin:-44px 16px 0;padding:26px 22px;background:rgba(255,253,249,.95)}
   .hero2 h1{font-size:1.9rem}
 }
+/* 첫 화면 높이 줄이기: 아래 바로가기가 보이도록 */
+.hero2{padding:24px 0 28px}
+.hero2 .frame{height:clamp(400px,calc(100vh - 300px),540px);min-height:0}
+.hero2 .glass{top:18px;bottom:18px;left:18px;padding:30px 36px}
+.hero2 h1{font-size:clamp(1.9rem,3.2vw,2.5rem);margin:10px 0 14px}
+.hero2 .lead{font-size:1rem;line-height:1.7}
+.hero2 .cta{margin-top:22px}
+@media (max-width:900px){
+  .hero2{padding:0 0 12px}
+  .hero2 .frame::before,.hero2 .sl{aspect-ratio:16/10}
+  .hero2 .frame{height:auto}
+  .hero2 .glass{margin:-36px 14px 0;padding:20px 20px}
+  .hero2 h1{font-size:1.6rem;margin:8px 0 10px}
+  .hero2 .lead{font-size:.95rem}
+  .hero2 .cta{margin-top:16px;flex-wrap:nowrap;gap:8px}
+  .hero2 .btn{padding:11px 16px;font-size:.92rem}
+  .quick .wrap{padding-top:14px}
+}
+@media (max-width:900px){.hero2 .cta{flex-wrap:wrap}.hero2 .btn{padding:10px 13px;font-size:.88rem}.hero2 .btn .ico{width:15px;height:15px}}
