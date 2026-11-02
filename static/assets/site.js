@@ -95,7 +95,7 @@
 
 (function(){ /* 탭 */
   document.querySelectorAll('.tabbar').forEach(function(tb){
-    var sec=tb.closest('section'),bs=tb.querySelectorAll('button'),ps=[].filter.call(tb.parentElement.children,function(x){return x.classList.contains('tp')}),more=sec.querySelector('.tabmore');
+    var sec=tb.closest('section'),bs=tb.querySelectorAll('button'),ps=[].filter.call((tb.parentElement.classList.contains("tabrow")?tb.parentElement.parentElement:tb.parentElement).children,function(x){return x.classList.contains('tp')}),more=sec.querySelector('.tabmore');
     bs.forEach(function(b,i){b.addEventListener('click',function(){
       bs.forEach(function(x,j){x.setAttribute('aria-selected',j===i)});ps.forEach(function(p,j){p.hidden=j!==i});
       if(more&&b.dataset.more)more.href=b.dataset.more;

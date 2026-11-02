@@ -484,3 +484,10 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .pc-stories .cap,.pc-neighbors .cap{flex:1}
 [data-theme=dark] .pc-stories .cap{background:#1f3326}[data-theme=dark] .pc-stories .cap small{color:#9fd8ad}
 [data-theme=dark] .pc-neighbors .cap{background:#3a2229}[data-theme=dark] .pc-neighbors .cap small{color:#f2a7ba}
+/* 소식 탭줄 오른쪽에 화살표·더보기 */
+.tabrow{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);margin:-6px 0 24px}
+.tabrow .tabbar{border-bottom:0;margin:0;flex:1;min-width:0}
+.tabrow .tabbar button{margin-bottom:-1px}
+.tabrow .headr{flex:none;gap:12px;padding-bottom:4px}
+.tabrow .cnav button{width:36px;height:36px;font-size:19px;line-height:32px}
+@media (max-width:900px){.tabrow .cnav{display:none}.tabrow{gap:8px}.tabrow .more{font-size:.9rem;white-space:nowrap}}

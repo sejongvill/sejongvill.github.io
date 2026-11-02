@@ -216,7 +216,9 @@ news_panes = []
 for label, kind, more in NEWS_TABS:
     items = [x for x in allnews if kind is None or x[0] == kind][:18]
     news_panes.append('<div class="carousel"><div class="cards ngrid nscroll">' + ''.join(ncard(*x) for x in items) + '</div></div>' if items else '<p class="note">아직 글이 없어요.</p>')
+NEWS_CTL = '''<div class="headr"><div class="cnav" data-page="2"><button class="cprev" type="button" aria-label="이전 소식">‹</button><button class="cnext" type="button" aria-label="다음 소식">›</button></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>'''
 news_tabs = tabset('소식 분류', NEWS_TABS, news_panes)
+news_tabs = news_tabs.replace('<div class="tabbar"', '<div class="tabrow"><div class="tabbar"', 1).replace('</button></div>', '</button></div>' + NEWS_CTL + '</div>', 1)
 PHOTO_TABS = [('전체', None, '/board/stories/'), ('일상 이야기', 'stories', '/board/stories/'), ('아름다운 이웃', 'neighbors', '/board/neighbors/')]
 allphoto = sorted([(k, p) for k in ('stories', 'neighbors') for p in P[k]], key=lambda x: x[1]['sort'], reverse=True)
 def pcard(k, p):
@@ -244,7 +246,7 @@ home = f'''
 <div class="stats"><div><b>2003<small>년</small></b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026<small>년</small></b><span>새 단장 완료</span></div></div></div>
 <div class="aslides" aria-roledescription="carousel" aria-label="세종빌 일상 사진"><img class="as on" src="/assets/img/museum.jpg" alt="박물관 나들이 단체사진" style="object-position:center 45%" loading="lazy"><img class="as" src="/assets/img/cook.jpg" alt="함께 만든 음식 앞에서" style="object-position:center 40%" loading="lazy"><img class="as" src="/assets/img/sea.jpg" alt="바닷가 나들이" style="object-position:center 60%" loading="lazy"><img class="as" src="/assets/img/pine.jpg" alt="소나무 아래에서" style="object-position:center 50%" loading="lazy"><img class="as" src="/assets/img/lake.jpg" alt="호숫가 산책" style="object-position:center 70%" loading="lazy"><div class="adots" role="tablist"></div></div></div></section>
 <section class="blk"><div class="wrap">
-<div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div><div class="headr"><div class="cnav" data-page="2"><button class="cprev" type="button" aria-label="이전 소식">‹</button><button class="cnext" type="button" aria-label="다음 소식">›</button></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
+<div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div></div>
 <div class="newsrow"><div class="newsmain">{news_tabs}</div>{board_panel}</div></div></section>
 <section class="blk bg-cream photonews"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">PHOTO</div><h2 class="t">사진으로 보는 세종빌</h2></div>
