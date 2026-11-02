@@ -84,7 +84,7 @@ ICON = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true"
 </defs></svg>'''
 
 NAV = [
-    ('세종빌 소개', '/about/corp.html', [('법인 소개', '/about/corp.html'), ('인사말', '/about/greeting.html'), ('미션·비전', '/about/vision.html'),
+    ('세종빌 소개', '/about/corp.html', [('법인 소개', '/about/corp.html'), ('인사말', '/about/greeting.html'), ('시설 소개', '/about/facility.html'), ('미션·비전', '/about/vision.html'),
                                         ('연혁', '/about/history.html'), ('조직·현황', '/about/org.html'), ('오시는 길', '/about/location.html')]),
     ('우리의 일상', '/days/services.html', [('주요 서비스', '/days/services.html'), ('일상 이야기', '/board/stories/'), ('금주의 식단', '/board/menu/'), ('주요 일정', '/board/schedule/')]),
     ('입주 안내', '/admission.html', [('입주 조건·절차', '/admission.html')]),
@@ -280,7 +280,10 @@ corp = '''<div class="split"><div class="side"><img src="/assets/img/chairman.jp
 <p class="sign">사회복지법인 예일 이사장 정태춘</p></div></div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">설립목적</h3>
 <div class="box purpose"><p>장애인복지법의 규정에 의한 장애인복지사업을 수행함으로써 기독교 정신을 바탕으로 <b>사랑과 봉사, 섬김과 나눔</b>으로 소외된 이웃들에게 더 나은 삶의 기회를 제공하고, 더 나아가 사회복지 증진과 발전에 기여함을 목적으로 합니다.</p></div>
-<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">기본현황</h3>
+'''
+write('/about/corp.html', page('법인 소개', subpage(0, '법인 소개', '법인 소개', corp), 0))
+
+facility = '''<h3 style="font-family:var(--serif);font-size:1.4rem;margin:0 0 16px">기본현황</h3>
 <div class="tbl-scroll"><table class="tb"><tr><th>시설명</th><td>세종빌</td><th>시설구분</th><td>지적장애인 거주시설</td></tr>
 <tr><th>시설장</th><td>정원용 (사회복지학 석사)</td><th>설치일자</th><td>2006. 10. 18.</td></tr>
 <tr><th>운영법인</th><td>사회복지법인 예일</td><th>법인설립</th><td>2014. 03. 13.</td></tr>
@@ -290,11 +293,12 @@ corp = '''<div class="split"><div class="side"><img src="/assets/img/chairman.jp
 <div class="floors"><div class="floor"><div class="fl">1F</div><div><h4>생활 공간 <small>390㎡</small></h4><p class="rooms"><span class="rm main">생활실 6실 · 요한 · 요나 · 모세 · 요셉 · 야곱 · 이삭</span><span class="rm">거실</span><span class="rm">식당</span><span class="rm">휴게실</span><span class="rm">세탁실</span><span class="rm">샤워장</span><span class="rm">사무실</span><span class="rm">사무국장실</span></p></div></div>
 <div class="floor"><div class="fl">2F</div><div><h4>지원·운영 공간 <small>390㎡</small></h4><p class="rooms"><span class="rm">사무실</span><span class="rm">원장실</span><span class="rm">이사장실</span><span class="rm">소회의실</span><span class="rm">의무지원실</span><span class="rm">영양지원실</span><span class="rm">탕비실</span><span class="rm">서고</span></p></div></div></div>
 
-<div class="grid-cards" style="margin-top:28px">
+<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">주요 사업</h3>
+<div class="grid-cards" style="margin-top:0">
 <div class="box"><h4>재활사업 · 교육사업</h4><p>안락하고 쾌적한 환경을 제공하고 스스로 장애를 극복할 수 있도록 지원합니다. 음악, 미술, 놀이, 취미, 운동 등 다양한 학습·여가활동으로 새로운 능력 개발의 기회를 드립니다.</p></div>
 <div class="box"><h4>의료재활사업</h4><p>의료진단, 작업치료 등 의료적 서비스로 결손 기능을 회복하여 퇴행과 변형을 최소화하고 심리적·사회적 안정을 돕습니다.</p></div>
 <div class="box"><h4>지역홍보 · 사회참여</h4><p>자원봉사자·후원자와 함께 교육과 훈련에 참여하고, 지역 환경미화와 나눔 행사로 장애인에 대한 인식을 개선합니다.</p></div></div>'''
-write('/about/corp.html', page('법인 소개', subpage(0, '법인 소개', '법인 소개', corp), 0))
+write('/about/facility.html', page('시설 소개', subpage(0, '시설 소개', '시설 소개', facility), 0))
 
 vision = '''<div class="grid-cards" style="margin-top:0">
 <div class="box" style="background:var(--ink);color:#fff"><div class="eyebrow" style="color:#f08a8f">MISSION</div><p style="color:#fff;font-family:var(--serif);font-size:1.5rem;line-height:1.5;margin-top:10px;font-weight:700">사랑과 봉사, 섬김과 나눔으로<br>사람 중심의 가치 실현</p></div>
