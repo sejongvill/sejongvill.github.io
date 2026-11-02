@@ -103,6 +103,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
         cur = ' aria-current="page"' if sec == i else ''
         menu += f'<li><a href="{href}"{cur}>{name}</a><ul>' + ''.join(f'<li><a href="{h}">{n}</a></li>' for n, h in subs) + '</ul></li>'
     t = f'{title} | 세종빌' if title else '세종빌 | 사회복지법인 예일'
+    allmenu = ''.join(f'<div class="am-col"><a class="am-h" href="{h}">{n}</a><ul>' + ''.join(f'<li><a href="{sh}">{sn}</a></li>' for sn, sh in subs) + '</ul></div>' for n, h, subs in NAV)
     return f'''<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(t)}</title><meta name="description" content="{E(desc)}">
@@ -110,14 +111,16 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <link rel="icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css"></head><body>
+<link rel="stylesheet" href="/assets/style.css">
+<script>try{{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark';var f={{xs:.9,s:1,m:1.12,l:1.25,xl:1.4}}[localStorage.getItem('fs')];if(f)document.documentElement.style.setProperty('--fs',f)}}catch(e){{}}</script></head><body>
 {ICON}<a class="skip" href="#main">본문 바로가기</a>
 <div class="util"><div class="wrap"><span>사회복지법인 예일 · 지적장애인 거주시설 세종빌</span>
-<div class="fsz" role="group" aria-label="글자 크기">글자 크기 <button data-fs="s" aria-label="보통">가</button><button data-fs="m" aria-label="크게" style="font-size:.9rem">가</button><button data-fs="l" aria-label="아주 크게" style="font-size:1rem">가</button></div></div></div>
+<div class="tools"><div class="fsz" role="group" aria-label="글자 크기">글자 <button data-fs="xs" aria-label="작게" style="font-size:.7rem">가</button><button data-fs="s" aria-label="보통">가</button><button data-fs="m" aria-label="크게" style="font-size:.88rem">가</button><button data-fs="l" aria-label="더 크게" style="font-size:.98rem">가</button><button data-fs="xl" aria-label="가장 크게" style="font-size:1.08rem">가</button></div><button class="theme" type="button" aria-pressed="false">🌙 어둡게</button></div></div></div></div>
 <header class="gnb"><div class="wrap"><a class="brand" href="/"><img src="/assets/img/logo.png" alt="사회복지법인 예일 세종빌" width="145" height="45"></a>
 <button class="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
 <nav aria-label="주 메뉴"><ul class="menu">{menu}</ul></nav>
-<a class="btn-call" href="tel:{TEL}"><svg class="ico"><use href="#i-phone"/></svg>{TEL}</a></div></header>
+<a class="btn-call" href="tel:{TEL}"><svg class="ico"><use href="#i-phone"/></svg>{TEL}</a><button class="allmenu-btn" type="button" aria-expanded="false" aria-controls="allmenu"><span class="bars"></span>전체메뉴</button></div>
+<div class="allmenu" id="allmenu" hidden><div class="wrap">{allmenu}<button class="allmenu-close" type="button">닫기 ✕</button></div></div></header>
 <main id="main">{body}</main>
 <footer><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
@@ -152,6 +155,20 @@ def ext(f): return os.path.splitext(f)[1][1:].upper() or 'FILE'
 
 # ---------- 메인 ----------
 stories = P['stories'][:3]
+def first_img(p):
+    for x in p['images']: return x
+    for x in p['previews']: return x
+    for f in p['files']:
+        if os.path.splitext(f['file'])[1].lower() in ('.jpg', '.jpeg', '.png', '.webp'): return f['file']
+    return None
+def now_card(key, label, more):
+    for p in P[key]:
+        im = first_img(p)
+        if im:
+            return f'''<a class="nowcard" href="/board/{key}/{p["id"]}.html"><div class="nc-img"><img src="{im}" alt="{E(p["title"])}" loading="lazy"></div>
+<div class="nc-cap"><small>{label}</small><b>{E(p["title"])}</b><span class="more">{more} <svg class="ico"><use href="#i-arrow"/></svg></span></div></a>'''
+    return ''
+nowcards = now_card('schedule', '이번 달 일정', '일정표 크게 보기') + now_card('menu', '이번 주 식단', '식단표 크게 보기')
 ncards = ''.join(f'''<a class="card" href="/board/neighbors/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
 <div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in P['neighbors'][:3])
 cards = ''.join(f'''<a class="card" href="/board/stories/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">
@@ -169,7 +186,7 @@ disc = [p for p in P['notice'] if disc_cat(p['title'])]
 docs = ''.join(f'<a class="doc" href="/board/notice/{p["id"]}.html"><span class="pdf">{ext(p["files"][0]["file"]) if p["files"] else "글"}</span><div>{E(p["title"][:26])}<small>{disc_cat(p["title"])} · {p["date"]}</small></div></a>' for p in disc[:4])
 
 home = f'''
-<section class="hero2"><div class="wrap"><div class="frame slides" aria-roledescription="carousel" aria-label="세종빌 사진"><figure class="sl on"><img class="bg" src="/assets/img/group.jpg" alt="" aria-hidden="true"><img class="fg" src="/assets/img/group.jpg" alt="세종빌 가족 단체사진" style="object-position:center 62%" fetchpriority=high></figure><figure class="sl"><img class="bg" src="/assets/img/poolgroup.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/poolgroup.jpg" alt="여름캠프 단체사진" style="object-position:center 55%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/hero_pool.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/hero_pool.jpg" alt="여름캠프 물놀이" style="object-position:center 60%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/bubble.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/bubble.jpg" alt="버블쇼를 보는 세종빌 가족들" style="object-position:center 50%" loading=lazy></figure><div class="dots" role="tablist"></div>
+<section class="hero2"><div class="wrap"><div class="frame slides" aria-roledescription="carousel" aria-label="세종빌 사진"><figure class="sl on"><img class="bg" src="/assets/img/group.jpg" alt="" aria-hidden="true"><img class="fg" src="/assets/img/group.jpg" alt="세종빌 가족 단체사진" style="object-position:center 62%" fetchpriority=high></figure><figure class="sl"><img class="bg" src="/assets/img/poolgroup.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/poolgroup.jpg" alt="여름캠프 단체사진" style="object-position:center 55%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/hero_pool.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/hero_pool.jpg" alt="여름캠프 물놀이" style="object-position:center 60%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/bubble.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/bubble.jpg" alt="버블쇼를 보는 세종빌 가족들" style="object-position:center 50%" loading=lazy></figure><div class="sctl"><button class="sprev" type="button" aria-label="이전 사진">‹</button><div class="dots" role="tablist"></div><button class="spause" type="button" aria-label="사진 넘기기 멈춤">❚❚</button><button class="snext" type="button" aria-label="다음 사진">›</button></div>
 <div class="glass"><div class="eyebrow">SEJONGVILL · 2003년부터 함께</div>
 <h1>서로를 존중하고<br>품어주고 사랑하는<br><em>행복한 보금자리</em></h1>
 <p class="lead">세종빌은 이용자 한 분 한 분이 저마다의 속도로 배우고, 쉬고, 웃으며 함께 살아가는 곳입니다.</p>
@@ -181,6 +198,7 @@ home = f'''
 <a href="/together/volunteer.html"><div class="qi"><svg class="ico"><use href="#i-hand"/></svg></div><div><b>자원봉사</b><small>신청 · 활동 안내</small></div></a>
 <a href="/about/location.html"><div class="qi"><svg class="ico"><use href="#i-pin"/></svg></div><div><b>오시는 길</b><small>전의면 양지편길 13-6</small></div></a>
 </div></nav>
+<section class="nowbar"><div class="wrap"><div class="nowgrid">{nowcards}</div></div></section>
 <section class="blk"><div class="wrap about">
 <div><div class="eyebrow">ABOUT</div><h2 class="t">한 사회라는 숲속에서<br>저마다의 빛깔로 자라는 사람들</h2>
 <p>같은 숲, 같은 햇볕 아래에서도 나무마다 자라는 모습은 다릅니다. 세종빌은 이용자 한 분 한 분의 욕구와 속도를 존중하며, 사랑과 봉사·섬김과 나눔으로 사람 중심의 가치를 실현합니다.</p>
