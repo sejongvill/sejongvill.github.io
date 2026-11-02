@@ -258,3 +258,5 @@ table.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;
 @media (max-width:360px){ .cards{grid-template-columns:1fr} }
 .cols2>*,.about>*,.split>*,.support>*,.hero .wrap>*{min-width:0}
 @media (max-width:900px) and (min-width:361px){ .cards{grid-template-columns:1fr 1fr} }
+.att-img{width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;margin-bottom:16px}
+.files::before{content:"첨부파일 내려받기";display:block;font-size:.85rem;color:var(--mute);margin-bottom:8px}
