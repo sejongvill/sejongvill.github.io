@@ -281,8 +281,26 @@ corp = '''<div class="split"><div class="side"><img src="/assets/img/chairman.jp
 <h3>설립목적</h3>
 <p>장애인복지법의 규정에 의한 장애인복지사업을 수행함으로써 기독교 정신을 바탕으로 사랑과 봉사, 섬김과 나눔으로 소외된 이웃들에게 더 나은 삶의 기회를 제공하고 더 나아가 사회복지 증진과 발전에 기여함을 목적으로 합니다.</p></div></div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">기본현황</h3>
-<div class="tbl-scroll"><table class="tb"><tr><th>시설명</th><td>세종빌</td><th>사업종별</th><td>지적장애인 거주시설</td></tr>
-<tr><th>소재지</th><td>세종특별자치시 전의면 양지편길 13-6</td><th>설립일자</th><td>2014. 03. 13.</td></tr></table></div>
+<div class="tbl-scroll"><table class="tb"><tr><th>시설명</th><td>세종빌</td><th>시설구분</th><td>지적장애인 거주시설</td></tr>
+<tr><th>시설장</th><td>정원용 (사회복지학 석사)</td><th>설치일자</th><td>2006. 10. 18.</td></tr>
+<tr><th>운영법인</th><td>사회복지법인 예일</td><th>법인설립</th><td>2014. 03. 13.</td></tr>
+<tr><th>소재지</th><td colspan="3">세종특별자치시 전의면 양지편길 13-6</td></tr>
+<tr><th>시설규모</th><td colspan="3">대지 990㎡ · 연면적 780㎡ (1층 390㎡, 2층 390㎡) · 철근콘크리트 2층</td></tr></table></div>
+<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">층별 안내</h3>
+<div class="floors"><div class="floor"><div class="fl">1F</div><div><h4>생활 공간 <small>390㎡</small></h4><p class="rooms"><span class="rm main">생활실 6실 · 요한 · 요나 · 모세 · 요셉 · 야곱 · 이삭</span><span class="rm">거실</span><span class="rm">식당</span><span class="rm">휴게실</span><span class="rm">세탁실</span><span class="rm">샤워장</span><span class="rm">사무실</span><span class="rm">사무국장실</span></p></div></div>
+<div class="floor"><div class="fl">2F</div><div><h4>지원·운영 공간 <small>390㎡</small></h4><p class="rooms"><span class="rm">사무실</span><span class="rm">원장실</span><span class="rm">이사장실</span><span class="rm">소회의실</span><span class="rm">의무지원실</span><span class="rm">영양지원실</span><span class="rm">탕비실</span><span class="rm">서고</span></p></div></div></div>
+<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">임원현황</h3>
+<div class="board-grid">
+<div class="mem lead-m"><small>대표이사</small><b>정태춘</b><span>사회복지학박사</span></div>
+<div class="mem"><small>이사</small><b>이희경</b><span>세종YWCA 사무총장</span></div>
+<div class="mem"><small>이사</small><b>권영봉</b><span>前 세종시자원봉사센터장</span></div>
+<div class="mem"><small>이사</small><b>남택수</b><span>前 장충초등학교 교장</span></div>
+<div class="mem"><small>이사</small><b>이원숙</b><span>前 세종시대한적십자회장</span></div>
+<div class="mem"><small>이사</small><b>박용준</b><span>(사)선한이웃 대표</span></div>
+<div class="mem"><small>사외이사</small><b>임의순</b><span>前 농협중앙회 지부장</span></div>
+<div class="mem"><small>사외이사</small><b>원유봉</b><span>원유봉노무사무소 대표</span></div>
+<div class="mem"><small>감사</small><b>최재민</b><span>최재민법무사무소 대표</span></div>
+<div class="mem"><small>감사</small><b>류경남</b><span>주사랑교회 목사</span></div></div>
 <div class="grid-cards" style="margin-top:28px">
 <div class="box"><h4>재활사업 · 교육사업</h4><p>안락하고 쾌적한 환경을 제공하고 스스로 장애를 극복할 수 있도록 지원합니다. 음악, 미술, 놀이, 취미, 운동 등 다양한 학습·여가활동으로 새로운 능력 개발의 기회를 드립니다.</p></div>
 <div class="box"><h4>의료재활사업</h4><p>의료진단, 작업치료 등 의료적 서비스로 결손 기능을 회복하여 퇴행과 변형을 최소화하고 심리적·사회적 안정을 돕습니다.</p></div>
@@ -297,6 +315,14 @@ vision = '''<div class="grid-cards" style="margin-top:0">
 <div class="box"><span class="num">02</span><h4>시설 브랜드 강화</h4><p>전문성에 기반한 특화사업 개발</p></div>
 <div class="box"><span class="num">03</span><h4>운영 시스템 구축</h4><p>과학적 시설경영 시스템 구축, 윤리경영 도입</p></div>
 <div class="box"><span class="num">04</span><h4>사회공헌</h4><p>지역사회 기여 실현</p></div></div>
+<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">핵심가치</h3>
+<div class="core3"><div class="core c1"><b>사랑</b><span>아가페적 사랑에<br>기반한 실천</span></div><div class="core c2"><b>나눔</b><span>지역사회 주민들과<br>나눔의 기회 제공</span></div><div class="core c3"><b>섬김</b><span>직원들의 서비스<br>제공 자세와 역할</span></div></div>
+<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">행동가치</h3>
+<div class="act4">
+<div class="act"><h4>긍정적 생활실천</h4><ul><li>긍정적 불편 실천하기</li><li>깨끗한 환경 만들기</li><li>지지와 격려의 일상화</li></ul></div>
+<div class="act"><h4>책임감 있는 업무수행</h4><ul><li>업무 관련 규정 준수하기</li><li>업무의 시작과 끝은 명확하게</li><li>협력적 업무 수행하기</li></ul></div>
+<div class="act"><h4>명확한 의사소통</h4><ul><li>공감적 경청의 생활화</li><li>담당자 의견 존중하기</li><li>정확하게 서로 확인하기</li></ul></div>
+<div class="act"><h4>상호간 존중하기</h4><ul><li>적절한 호칭 사용하기</li><li>작은 의견도 귀담아 듣기</li><li>부정적 언어 사용하지 않기</li></ul></div></div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">기본운영방침 · 슬로건</h3>
 <div class="grid-cards" style="margin-top:0"><div class="box"><h4>함께 만들고 함께 나누는 세종빌</h4><p>기본운영방침</p></div><div class="box"><h4>함께 배려하는 세종빌</h4><p>슬로건</p></div></div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">운영목적 및 목표</h3>
@@ -338,13 +364,23 @@ loc = f'''<div class="split"><div class="side"><img src="/assets/img/building.pn
 write('/about/location.html', page('오시는 길', subpage(0, '오시는 길', '오시는 길', loc), 0))
 
 # ---------- 일상 ----------
-svc = '''<p class="lead" style="max-width:760px">세종빌 전체 입주자를 대상으로 건강한 생활 유지와 신변처리 능력 향상, 자립 능력 향상, 정기적인 치료·진료를 통한 건강 증진을 목표로 합니다.</p>
-<div class="grid-cards">
-<div class="box"><span class="num">01</span><h4>생활재활서비스</h4><p>개별 인지 능력과 특성에 따라 세면, 양치 등 기초생활을 지원하여 건강한 생활을 유지하고 신변처리 능력을 키우도록 돕습니다.</p></div>
-<div class="box"><span class="num">02</span><h4>사회·심리재활서비스</h4><p>지역사회 문화체험 등 다양한 외부 프로그램으로 사회 통합을 도모하고 사회 적응 능력을 키웁니다.</p></div>
-<div class="box"><span class="num">03</span><h4>교육재활서비스</h4><p>교육의 기회를 제공하여 잠재능력과 소질을 최대한 개발할 수 있도록 지원합니다.</p></div>
-<div class="box"><span class="num">04</span><h4>건강 지원 서비스</h4><p>질병의 예방과 치료, 신체 기능의 퇴화 방지와 기능 향상, 맞춤형 식이 제공으로 건강한 삶을 지원합니다.</p></div></div>
-<div class="cards" style="margin-top:48px"><div class="card"><img src="/assets/img/meal.jpg" alt="" loading="lazy"></div><div class="card"><img src="/assets/img/soccer.jpg" alt="" loading="lazy"></div><div class="card"><img src="/assets/img/bubble.jpg" alt="" loading="lazy"></div></div>'''
+SVCS = [
+ ('생활재활서비스', '스스로 해내는 하루', '일상생활에 필요한 지식과 기능을 개인의 능력에 따라 지도하여, 생활자립과 사회적 자립에 필요한 기본 생활능력을 익히고 꾸준히 유지할 수 있도록 지원합니다.', ['세면·양치 등 기초생활 지원', '신변처리 능력 향상', '식사·청소 등 생활훈련'], 14, 3),
+ ('사회재활서비스', '이웃과 함께하는 경험', '이용자의 개별 욕구 충족과 정서적 안정을 위해 사회적 능력을 키우고, 궁극적으로 사회 통합을 이룰 수 있도록 돕습니다.', ['나들이·문화체험', '지역사회 행사 참여', '사회적응 프로그램'], 15, 3),
+ ('교육재활서비스', '배우고 키우는 재능', '일상생활과 사회생활 적응에 필요한 다양한 지식과 기술을 배울 기회를 드리고, 개인별 특기와 적성 개발을 지원합니다.', ['요리·제과 등 생활기술', '미술·음악 등 특기활동', '개인별 적성 개발'], 16, 3),
+ ('자립지원서비스', '나다운 삶을 향해', '자립 가능성을 존중하고 한 분 한 분에게 맞는 다양한 지원으로 자립생활을 영위할 수 있도록 돕습니다.', ['가사·금전관리 연습', '키오스크 등 생활기기 이용', '자립생활 체험'], 17, 3),
+ ('지역사회연계서비스', '마을 속의 세종빌', '지역사회와 적극적으로 연계하여 장애인식 개선에 앞장서고 사회 통합을 도모합니다.', ['지역 봉사·환경정화', '기관·단체 협력 행사', '장애인식 개선 활동'], 18, 3),
+ ('건강지원서비스', '건강한 몸과 마음', '질병의 예방과 치료 전 과정을 살피고, 신체 기능의 퇴화 방지와 기능 향상, 맞춤형 식이 제공으로 건강한 삶을 지원합니다.', ['간호사 상주 건강관리', '정기 진료·투약 관리', '영양사의 맞춤 식단'], 19, 2),
+ ('이용자 권리보장', '내 목소리가 존중받는 집', '이용자의 권익 향상과 욕구·고충 처리 등 서비스 전반에 의견을 반영하여, 개인의 선택과 참여, 권리를 강화하기 위해 최선을 다합니다.', ['인권지킴이단 운영', '고충·진정함 상시 운영', '자기결정권 존중'], 20, 2),
+]
+def svc_row(n, t):
+    name, tag, desc, pts, sl, cnt = t
+    imgs = ''.join(f'<img src="/assets/img/svc/s{sl}_{k}.jpg" alt="{name} 활동 사진" loading="lazy">' for k in range(1, cnt + 1))
+    return (f'<article class="svc-row{" rev" if n % 2 else ""}"><div class="svc-txt"><span class="num">{n+1:02d}</span><div class="eyebrow">{tag}</div><h3>{name}</h3><p>{desc}</p>'
+            f'<ul class="svc-pts">' + ''.join(f'<li>{x}</li>' for x in pts) + f'</ul></div><div class="svc-pics n{cnt}">{imgs}</div></article>')
+svc = ('<p class="lead" style="max-width:760px">세종빌은 사례회의를 통해 이용자 한 분 한 분에게 맞는 서비스를 계획하고, 일상부터 건강·자립·권리까지 삶 전체를 함께 지원합니다.</p>'
+       '<div class="svc-tags">' + ''.join(f'<span>{x}</span>' for x in ['사례회의를 통한 개별 맞춤 서비스', '일상생활지원', '사회심리재활', '자립생활지원', '직업재활', '의료재활', '프로그램 개발 및 평가', '영양급식지원']) + '</div>'
+       + ''.join(svc_row(n, t) for n, t in enumerate(SVCS)))
 write('/days/services.html', page('주요 서비스', subpage(1, '주요 서비스', '주요 서비스', svc), 1))
 
 # ---------- 입주 ----------
@@ -363,6 +399,7 @@ sup = f'''<div class="split"><div><p class="quote">여러분의 작은 정성이
 <div><div class="grid-cards" style="margin-top:0;grid-template-columns:1fr">
 <div class="box"><h4>재정후원</h4><p>지적장애인들에게 필요한 재활서비스와 기관 운영에 필요한 사업비를 정기적으로 후원하실 수 있습니다.</p></div>
 <div class="box"><h4>저금통후원</h4><p>나눔 저금통에 동전을 모아 전해 주실 수 있습니다. 동전이 할 수 있는 가장 아름다운 일입니다.</p></div>
+<div class="box"><h4>물품후원</h4><p>생활용품, 식품 등 지적장애인들에게 필요한 각종 물품을 후원하실 수 있습니다.</p></div>
 <div class="box"><h4>결연후원</h4><p>세종빌의 지적장애인과 1:1 결연을 맺어 매월 일정 금액을 후원하실 수 있습니다.</p></div>
 <div class="box"><h4>문의 및 상담</h4><p>행정지원팀 TEL <a href="tel:{TEL}"><b>{TEL}</b></a> / FAX 044-864-3016</p></div></div></div></div>'''
 write('/together/support.html', page('후원 안내', subpage(3, '후원 안내', '후원 안내', sup), 3))
