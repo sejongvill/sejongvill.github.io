@@ -240,7 +240,7 @@ home = f'''
 <a href="/together/volunteer.html"><div class="qi"><svg class="ico"><use href="#i-hand"/></svg></div><div><b>자원봉사</b><small>신청 · 활동 안내</small></div></a>
 <a href="/about/location.html"><div class="qi"><svg class="ico"><use href="#i-pin"/></svg></div><div><b>오시는 길</b><small>전의면 양지편길 13-6</small></div></a>
 </div></nav>
-<section class="blk"><div class="wrap about">
+<section class="blk bg-cream aboutsec"><div class="wrap about">
 <div><div class="eyebrow">ABOUT</div><h2 class="t">한 사회라는 숲속에서<br>저마다의 빛깔로 자라는 사람들</h2>
 <p>같은 숲, 같은 햇볕 아래에서도 나무마다 자라는 모습은 다릅니다. 세종빌은 이용자 한 분 한 분의 욕구와 속도를 존중하며, 사랑과 봉사·섬김과 나눔으로 사람 중심의 가치를 실현합니다.</p>
 <div class="stats"><div><b>2003<small>년</small></b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026<small>년</small></b><span>새 단장 완료</span></div></div></div>
