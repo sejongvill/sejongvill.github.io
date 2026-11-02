@@ -120,7 +120,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <main id="main">{body}</main>
 <footer><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
-<a href="/privacy.html">개인정보처리방침</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
+<a href="/privacy.html">개인정보처리방침</a> · <a href="/admin/">직원 로그인</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
 <script src="/assets/site.js"></script></body></html>'''
 
