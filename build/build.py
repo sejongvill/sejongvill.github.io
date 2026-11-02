@@ -488,7 +488,7 @@ action = f'https://formspree.io/f/{FORM_ID}' if FORM_ID else ''
 join_body = f'''<div class="split"><div><p class="quote">세종빌 직원이신가요?</p>
 <p class="lead">홈페이지에 글을 올리려면 회원가입 신청을 해주세요. 사무국장이 확인한 뒤 <b>가입 안내 메일</b>을 보내드립니다.</p>
 <ol class="steps" style="margin-top:28px;grid-template-columns:1fr"><li><b>신청서 작성</b><span>이 화면에서 신청</span></li><li><b>사무국장 승인</b><span>보통 1~2일</span></li>
-<li><b>가입 안내 메일 확인</b><span>메일의 링크를 눌러 비밀번호 설정</span></li><li><b>로그인 후 글쓰기</b><span>홈페이지 맨 아래 ‘직원 로그인’</span></li></ol></div>
+<li><b>가입 안내 메일 확인</b><span>메일의 링크를 눌러 비밀번호 설정</span></li><li><b>로그인 후 글쓰기</b><span>홈페이지 맨 아래 ‘직원 글쓰기’</span></li></ol></div>
 <form class="box joinform" id="joinform" action="{action}" method="POST">
 <label><span>이름 <b class="req">*</b></span><input name="이름" required autocomplete="name"></label>
 <label><span>직책 <b class="req">*</b></span><input name="직책" required placeholder="예: 생활재활교사"></label>
