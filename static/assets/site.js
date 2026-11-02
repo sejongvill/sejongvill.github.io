@@ -69,25 +69,38 @@
   b.addEventListener('click',function(){t(m.hidden)});m.querySelector('.allmenu-close').addEventListener('click',function(){t(false);b.focus()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden){t(false);b.focus()}});
 })();
-(function(){ /* 카드 넘기기 */
-  document.querySelectorAll('.carousel').forEach(function(c){
-    var row=c.querySelector('.cards'),head=c.previousElementSibling,pv=head&&head.querySelector('.cprev'),nx=head&&head.querySelector('.cnext');
-    if(!row||!pv)return;
-    function step(){var a=row.children[0];return a?a.getBoundingClientRect().width+22:300}
-    function upd(){pv.disabled=row.scrollLeft<5;nx.disabled=row.scrollLeft+row.clientWidth>=row.scrollWidth-5}
-    pv.onclick=function(){row.scrollBy({left:-step()*3,behavior:'smooth'})};nx.onclick=function(){row.scrollBy({left:step()*3,behavior:'smooth'})};
-    row.addEventListener('scroll',function(){clearTimeout(row._t);row._t=setTimeout(upd,80)});window.addEventListener('resize',upd);upd();
+(function(){ /* 카드 넘기기 (보이는 탭 기준) */
+  document.querySelectorAll('.cnav').forEach(function(nav){
+    var sec=nav.closest('section'),pv=nav.querySelector('.cprev'),nx=nav.querySelector('.cnext');
+    function row(){var c=[].filter.call(sec.querySelectorAll('.carousel'),function(x){return !x.closest('[hidden]')})[0];return c&&c.querySelector('.cards')}
+    function step(){var r=row(),a=r&&r.children[0];return a?a.getBoundingClientRect().width+22:300}
+    function upd(){var r=row();if(!r)return;pv.disabled=r.scrollLeft<5;nx.disabled=r.scrollLeft+r.clientWidth>=r.scrollWidth-5}
+    pv.onclick=function(){row().scrollBy({left:-step()*3,behavior:'smooth'})};nx.onclick=function(){row().scrollBy({left:step()*3,behavior:'smooth'})};
+    sec.querySelectorAll('.carousel .cards').forEach(function(r){r.addEventListener('scroll',function(){clearTimeout(r._t);r._t=setTimeout(upd,80)})});
+    window.addEventListener('resize',upd);sec.addEventListener('tabchange',upd);upd();
   });
 })();
 (function(){ /* 스크롤하면 떠오르기 */
-  if(!('IntersectionObserver' in window))return;
+  if(typeof window.IntersectionObserver!=='function')return;
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   document.documentElement.classList.add('js');
-  var sel='.blk .sec-head,.blk .card,.panel,.nowcard,.about>div,.about>img,.support,.band .wrap,.box,.yr,.board-list li,.quick a';
+  var sel='.blk .sec-head,.blk .card,.ncard,.panel,.nowcard,.about>div,.about>img,.support,.band .wrap,.box,.yr,.board-list li,.quick a';
   var els=[].slice.call(document.querySelectorAll(sel)).filter(function(e){return !e.closest('.hero2')});
   var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
   els.forEach(function(e){
     var sib=e.parentElement?[].indexOf.call(e.parentElement.children,e):0;
     e.style.transitionDelay=Math.min(sib,5)*90+'ms';e.classList.add('rv');io.observe(e);
+  });
+})();
+
+(function(){ /* 탭 */
+  document.querySelectorAll('.tabbar').forEach(function(tb){
+    var sec=tb.closest('section'),bs=tb.querySelectorAll('button'),ps=[].filter.call(tb.parentElement.children,function(x){return x.classList.contains('tp')}),more=sec.querySelector('.tabmore');
+    bs.forEach(function(b,i){b.addEventListener('click',function(){
+      bs.forEach(function(x,j){x.setAttribute('aria-selected',j===i)});ps.forEach(function(p,j){p.hidden=j!==i});
+      if(more&&b.dataset.more)more.href=b.dataset.more;
+      ps[i].querySelectorAll('.rv').forEach(function(e){e.classList.add('in')});
+      var r=ps[i].querySelector('.cards');if(r)r.scrollLeft=0;sec.dispatchEvent(new Event('tabchange'));
+    })});
   });
 })();

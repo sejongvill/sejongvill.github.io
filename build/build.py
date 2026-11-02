@@ -185,6 +185,35 @@ def disc_cat(t):
 disc = [p for p in P['notice'] if disc_cat(p['title'])]
 docs = ''.join(f'<a class="doc" href="/board/notice/{p["id"]}.html"><span class="pdf">{ext(p["files"][0]["file"]) if p["files"] else "글"}</span><div>{E(p["title"][:26])}<small>{disc_cat(p["title"])} · {p["date"]}</small></div></a>' for p in disc[:4])
 
+
+# ---------- 메인: 소식 탭 / 사진 탭 ----------
+def news_kind(key, p):
+    if key == 'notice':
+        return '정보공개' if disc_cat(p['title']) else '공지사항'
+    return {'rights': '인권존중', 'newsletter': '소식지', 'schedule': '주요일정', 'menu': '금주의 식단'}[key]
+NEWS_TABS = [('전체', None, '/board/notice/'), ('공지사항', '공지사항', '/board/notice/'), ('정보공개', '정보공개', '/disclosure.html'),
+             ('인권존중', '인권존중', '/board/rights/'), ('소식지', '소식지', '/board/newsletter/'), ('주요일정', '주요일정', '/board/schedule/'), ('금주의 식단', '금주의 식단', '/board/menu/')]
+allnews = sorted([(news_kind(k, p), k, p) for k in ('notice', 'rights', 'newsletter', 'schedule', 'menu') for p in P[k]], key=lambda x: x[2]['sort'], reverse=True)
+def ncard(kind, k, p):
+    return (f'<a class="ncard" href="/board/{k}/{p["id"]}.html"><span class="chip{" r" if kind in ("공지사항", "정보공개") else ""}">{kind}</span>'
+            f'<b>{E(p["title"])}</b><time>{p["date"].replace("-", ". ")}.</time></a>')
+def tabset(name, tabs, panes):
+    bar = f'<div class="tabbar" role="tablist" aria-label="{name}">' + ''.join(
+        f'<button role="tab" type="button" aria-selected="{"true" if n == 0 else "false"}" data-more="{t[2]}">{t[0]}</button>' for n, t in enumerate(tabs)) + '</div>'
+    return bar + ''.join(f'<div class="tp" role="tabpanel"{" hidden" if n else ""}>{pane}</div>' for n, pane in enumerate(panes))
+news_panes = []
+for label, kind, more in NEWS_TABS:
+    items = [x for x in allnews if kind is None or x[0] == kind][:6]
+    news_panes.append('<div class="ngrid">' + (''.join(ncard(*x) for x in items) or '<p class="note">아직 글이 없어요.</p>') + '</div>')
+news_tabs = tabset('소식 분류', NEWS_TABS, news_panes)
+PHOTO_TABS = [('전체', None, '/board/stories/'), ('일상 이야기', 'stories', '/board/stories/'), ('아름다운 이웃', 'neighbors', '/board/neighbors/')]
+allphoto = sorted([(k, p) for k in ('stories', 'neighbors') for p in P[k]], key=lambda x: x[1]['sort'], reverse=True)
+def pcard(k, p):
+    return (f'<a class="card" href="/board/{k}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">'
+            f'<div class="cap"><small>{BOARD_META[k][0]} · {fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>')
+photo_panes = ['<div class="carousel"><div class="cards row3">' + ''.join([pcard(k, p) for k, p in allphoto if b is None or k == b][:9]) + '</div></div>' for _, b, _ in PHOTO_TABS]
+photo_tabs = tabset('사진 분류', PHOTO_TABS, photo_panes)
+
 home = f'''
 <section class="hero2"><div class="wrap"><div class="frame slides" aria-roledescription="carousel" aria-label="세종빌 사진"><figure class="sl on"><img class="bg" src="/assets/img/group.jpg" alt="" aria-hidden="true"><img class="fg" src="/assets/img/group.jpg" alt="세종빌 가족 단체사진" style="object-position:center 62%" fetchpriority=high></figure><figure class="sl"><img class="bg" src="/assets/img/poolgroup.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/poolgroup.jpg" alt="여름캠프 단체사진" style="object-position:center 55%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/hero_pool.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/hero_pool.jpg" alt="여름캠프 물놀이" style="object-position:center 60%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/bubble.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/bubble.jpg" alt="버블쇼를 보는 세종빌 가족들" style="object-position:center 50%" loading=lazy></figure><div class="sctl"><button class="sprev" type="button" aria-label="이전 사진">‹</button><div class="dots" role="tablist"></div><button class="spause" type="button" aria-label="사진 넘기기 멈춤">❚❚</button><button class="snext" type="button" aria-label="다음 사진">›</button></div>
 <div class="glass"><div class="eyebrow">SEJONGVILL · 2003년부터 함께</div>
@@ -203,15 +232,13 @@ home = f'''
 <p>같은 숲, 같은 햇볕 아래에서도 나무마다 자라는 모습은 다릅니다. 세종빌은 이용자 한 분 한 분의 욕구와 속도를 존중하며, 사랑과 봉사·섬김과 나눔으로 사람 중심의 가치를 실현합니다.</p>
 <div class="stats"><div><b>2003</b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026</b><span>새 단장 완료</span></div></div></div>
 <img src="/assets/img/poolgroup.jpg" alt="2026 여름캠프 단체사진" loading="lazy"></div></section>
-<section class="blk bg-cream"><div class="wrap">
-<div class="sec-head"><div><div class="eyebrow">OUR DAYS</div><h2 class="t">세종빌의 일상 이야기</h2></div><div class="headr"><div class="cnav"><button class="cprev" type="button" aria-label="일상 이야기 이전">‹</button><button class="cnext" type="button" aria-label="일상 이야기 다음">›</button></div><a class="more" href="/board/stories/">이야기 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
-<div class="carousel"><div class="cards row3">{cards}</div></div>
-<div class="sec-head" style="margin-top:72px"><div><div class="eyebrow">WITH NEIGHBORS</div><h2 class="t">아름다운 이웃</h2></div><div class="headr"><div class="cnav"><button class="cprev" type="button" aria-label="아름다운 이웃 이전">‹</button><button class="cnext" type="button" aria-label="아름다운 이웃 다음">›</button></div><a class="more" href="/board/neighbors/">이웃 소식 더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
-<div class="carousel"><div class="cards row3">{ncards}</div></div></div></section>
-<section class="blk"><div class="wrap cols2">
-<div class="panel"><h3>공지사항 <a class="more" href="/board/notice/">전체</a></h3><ul class="list">{notices}</ul></div>
-<div class="panel"><h3>정보공개 <a class="more" href="/disclosure.html">전체</a></h3><p class="note" style="margin-bottom:16px">예산·결산과 회의록을 한곳에서 투명하게 공개합니다.</p><div class="docs">{docs}</div></div>
-</div></section>
+<section class="blk"><div class="wrap">
+<div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
+{news_tabs}</div></section>
+<section class="blk bg-cream photonews"><div class="wrap">
+<div class="sec-head"><div><div class="eyebrow">PHOTO</div><h2 class="t">사진으로 보는 세종빌</h2></div>
+<div class="headr"><div class="cnav"><button class="cprev" type="button" aria-label="이전 사진">‹</button><button class="cnext" type="button" aria-label="다음 사진">›</button></div><a class="more tabmore" href="/board/stories/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
+{photo_tabs}</div></section>
 <section class="nowbar after"><div class="wrap"><div class="nowgrid">{nowcards}</div></div></section>
 <section class="band"><img src="/assets/img/campgroup.jpg" alt="" loading="lazy" style="object-position:center 45%">
 <div class="wrap"><div class="eyebrow" style="color:#ffd9d9">TOGETHER</div><p class="big">같은 숲, 같은 햇볕 아래<br>저마다의 빛깔로</p>
