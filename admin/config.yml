@@ -42,6 +42,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 사진
     name: images
     widget: list
@@ -100,6 +104,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 본문 그림
     name: images
     widget: list
@@ -158,6 +166,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 식단표 사진
     name: images
     widget: list
@@ -216,6 +228,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 일정표 사진
     name: images
     widget: list
@@ -274,6 +290,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 사진
     name: images
     widget: list
@@ -332,6 +352,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 사진
     name: images
     widget: list
@@ -390,6 +414,10 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 글쓴이
+    name: author
+    widget: hidden
+    required: false
   - label: 소식지 그림
     name: images
     widget: list

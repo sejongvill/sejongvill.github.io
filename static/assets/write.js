@@ -9,6 +9,7 @@
   var Q = new URLSearchParams(location.search);
   var board = BOARDS[Q.get('b')] ? Q.get('b') : 'stories';
   var editId = (Q.get('edit') || '').replace(/[^\w.-]/g, '');
+  var ADMINS = ["58ef3e465ce4fd46", "cfabcb3c03dd02e3"];   // 관리자 이메일(암호화한 값)
   var editSha = null, keep = {};   // 수정할 때 그대로 둘 항목(날짜, 미리보기 그림)
 
   function setBoard(b) {
@@ -91,7 +92,7 @@
       var head = ref.object.sha;
       return api('/git/commits/' + head)
         .then(function (cm) { return api('/git/trees', 'POST', { base_tree: cm.tree.sha, tree: tree }); })
-        .then(function (t) { return api('/git/commits', 'POST', { message: message + ' - ' + ((session() || {}).email || ''), tree: t.sha, parents: [head] }); })
+        .then(function (t) { return api('/git/commits', 'POST', { message: message, tree: t.sha, parents: [head] }); })
         .then(function (c) { return api('/git/refs/heads/main', 'PATCH', { sha: c.sha }); });
     });
   }
@@ -134,10 +135,17 @@
       var p = parseFM(unb64(f.content || ''));
       $('#wtitle').value = p.data.title || '';
       $('#wbody').value = htmlToText(p.body || '');
-      keep = { date: p.data.date, previews: p.data.previews || [] };
+      keep = { date: p.data.date, previews: p.data.previews || [], author: p.data.author || '' };
       (p.data.images || []).forEach(function (src) { if (src) picked.push({ old: src, url: src }); });
       (p.data.files || []).forEach(function (x) { if (typeof x === 'string') x = { file: x }; if (x && x.file) oldFiles.push({ name: x.name || x.file.split('/').pop(), file: x.file }); });
       render(); renderFiles(); msg('');
+      return who().then(function (id) {
+        if (ADMINS.indexOf(id) >= 0 || (keep.author && keep.author === id)) return;
+        editSha = null;
+        $('#wsubmit').disabled = true; $('#delBtn').hidden = true;
+        [].forEach.call($('#writeForm').querySelectorAll('input,textarea,select'), function (x) { if (x.id !== 'logout') x.disabled = true; });
+        msg('본인이 쓴 글만 수정·삭제할 수 있어요. 고칠 내용이 있으면 관리자(사무국)에 요청해 주세요.', true);
+      });
     }).catch(function (err) {
       if (err.message === 'login') { showState(); return; }
       msg('글을 불러오지 못했어요: ' + err.message, true);
@@ -180,6 +188,12 @@
       return new Promise(function (res) { c.toBlob(function (b) { b.arrayBuffer().then(function (buf) { res({ buf: buf, ext: 'jpg' }); }); }, 'image/jpeg', 0.84); });
     }).catch(function () { return file.arrayBuffer().then(function (b) { return { buf: b, ext: 'jpg' }; }); });
   }
+  function who() {   // 로그인한 사람의 이메일을 알아볼 수 없게 바꾼 값 (글쓴이 확인용)
+    var em = ((session() || {}).email || '').trim().toLowerCase();
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(em)).then(function (b) {
+      return [].map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('').slice(0, 16);
+    });
+  }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function yq(s) { return JSON.stringify(s); }
 
@@ -211,8 +225,9 @@
         attPaths.push({ name: f.name, file: '/' + path }); entries.push({ path: 'static/' + path, content: b64(buf) });
       });
     });
-    chain.then(function () {
+    chain.then(function () { return editId ? keep.author : who(); }).then(function (author) {
       var fm = '---\ntitle: ' + yq(title) + '\ndate: ' + date + '\n';
+      if (author) fm += 'author: ' + author + '\n';
       if (imgPaths.length) fm += 'images:\n' + imgPaths.map(function (x) { return '- ' + x; }).join('\n') + '\n';
       if (attPaths.length) fm += 'files:\n' + attPaths.map(function (x) { return '- name: ' + yq(x.name) + '\n  file: ' + x.file; }).join('\n') + '\n';
       if (keep.previews && keep.previews.length) fm += 'previews:\n' + keep.previews.map(function (x) { return '- ' + x; }).join('\n') + '\n';

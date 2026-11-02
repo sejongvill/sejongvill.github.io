@@ -40,9 +40,16 @@
     }).catch(function(){m.textContent='인터넷 연결을 확인한 뒤 다시 시도해 주세요.';b.disabled=false;});
   });
 })();
-(function(){ /* 로그인한 직원에게만 수정·삭제 버튼 보이기 */
-  var on=false;try{var a=JSON.parse(localStorage.getItem('sv-auth'));var g=JSON.parse(localStorage.getItem('gotrue.user'));on=!!((a&&a.access_token)||(g&&g.token))}catch(e){}
-  if(on)document.querySelectorAll('.post-admin').forEach(function(x){x.hidden=false});
+(function(){ /* 글쓴이 본인과 관리자에게만 수정·삭제 버튼 보이기 */
+  var ADMINS=["58ef3e465ce4fd46", "cfabcb3c03dd02e3"],em='';
+  try{var a=JSON.parse(localStorage.getItem('sv-auth'));var g=JSON.parse(localStorage.getItem('gotrue.user'));
+    if(a&&a.access_token)em=a.email||'';else if(g&&g.token)em=g.email||'';}catch(e){}
+  var bars=document.querySelectorAll('.post-admin');if(!em||!bars.length||!(window.crypto&&crypto.subtle))return;
+  crypto.subtle.digest('SHA-256',new TextEncoder().encode(em.trim().toLowerCase())).then(function(b){
+    var id=[].map.call(new Uint8Array(b),function(x){return('0'+x.toString(16)).slice(-2)}).join('').slice(0,16);
+    var adm=ADMINS.indexOf(id)>=0;
+    bars.forEach(function(x){if(adm||(x.dataset.author&&x.dataset.author===id))x.hidden=false});
+  });
 })();
 (function(){ /* 메인 사진 10초마다 넘기기 */
   var box=document.querySelector('.slides');if(!box)return;
