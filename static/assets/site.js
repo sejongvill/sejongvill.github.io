@@ -26,3 +26,17 @@
     var c=b.dataset.cat;document.querySelectorAll('[data-cat-item]').forEach(function(li){li.hidden=!(c==='all'||li.dataset.catItem===c)});
   })});
 })();
+(function(){
+  var f=document.getElementById('joinform');if(!f||!f.action)return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();var m=document.getElementById('joinmsg'),b=f.querySelector('button');
+    b.disabled=true;m.textContent='보내는 중…';
+    var d=new FormData(f);var gs=[].map.call(f.querySelectorAll('input[name="게시판"]:checked'),function(x){return x.value});
+    d.delete('게시판');d.append('게시판',gs.join(', ')||'선택 안 함');
+    fetch(f.action,{method:'POST',body:d,headers:{Accept:'application/json'}}).then(function(r){
+      if(r.ok){f.reset();m.textContent='신청이 접수되었어요. 사무국장 확인 후 가입 안내 메일을 보내드릴게요.';}
+      else{m.textContent='신청을 보내지 못했어요. 잠시 후 다시 시도하거나 사무국(044-864-3015)으로 연락해 주세요.';}
+      b.disabled=false;
+    }).catch(function(){m.textContent='인터넷 연결을 확인한 뒤 다시 시도해 주세요.';b.disabled=false;});
+  });
+})();

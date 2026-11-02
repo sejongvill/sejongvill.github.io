@@ -68,6 +68,7 @@ for key in BOARDS:
     P[key] = sorted(posts, key=lambda p: p['sort'], reverse=True)
     for n, p in enumerate(reversed(P[key]), 1): p['no'] = n
 
+FORM_ID = ''  # 폼스프리 양식 ID (예: 'xyzabcd'). 비어 있으면 신청 버튼이 잠김
 TEL = '044-864-3015'
 ADDR = '세종특별자치시 전의면 양지편길 13-6 (양곡리)'
 ACCTS = [('사회복지법인 예일', '농협', '351-0717-260953'), ('사회복지법인 예일', '국민', '455801-04-351341'), ('세종빌', '농협', '419-01-152858')]
@@ -120,7 +121,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <main id="main">{body}</main>
 <footer><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
-<a href="/privacy.html">개인정보처리방침</a> · <a href="/admin/">직원 로그인</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
+<a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/admin/">직원 로그인</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
 <script src="/assets/site.js"></script></body></html>'''
 
@@ -388,6 +389,28 @@ dbody = f'''<p class="lead" style="margin-bottom:28px">사회복지법인 예일
 <div class="filter" role="group" aria-label="분류"><button data-cat="all" aria-pressed="true">전체</button>{''.join(f'<button data-cat="{c}" aria-pressed="false">{c}</button>' for c in cats)}</div>
 <ul class="board-list">{items}</ul>'''
 write('/disclosure.html', page('정보공개', subpage(4, '정보공개', '정보공개', dbody), 4))
+
+
+# ---------- 직원 회원가입 신청 ----------
+boards_ck = ''.join(f'<label class="ck"><input type="checkbox" name="게시판" value="{n}"> {n}</label>' for n in ['일상 이야기', '금주의 식단', '주요 일정', '공지사항', '아름다운 이웃', '인권존중', '소식지'])
+action = f'https://formspree.io/f/{FORM_ID}' if FORM_ID else ''
+join_body = f'''<div class="split"><div><p class="quote">세종빌 직원이신가요?</p>
+<p class="lead">홈페이지에 글을 올리려면 회원가입 신청을 해주세요. 사무국장이 확인한 뒤 <b>가입 안내 메일</b>을 보내드립니다.</p>
+<ol class="steps" style="margin-top:28px;grid-template-columns:1fr"><li><b>신청서 작성</b><span>이 화면에서 신청</span></li><li><b>사무국장 승인</b><span>보통 1~2일</span></li>
+<li><b>가입 안내 메일 확인</b><span>메일의 링크를 눌러 비밀번호 설정</span></li><li><b>로그인 후 글쓰기</b><span>홈페이지 맨 아래 ‘직원 로그인’</span></li></ol></div>
+<form class="box joinform" id="joinform" action="{action}" method="POST">
+<label><span>이름 <b class="req">*</b></span><input name="이름" required autocomplete="name"></label>
+<label><span>직책 <b class="req">*</b></span><input name="직책" required placeholder="예: 생활재활교사"></label>
+<label><span>이메일 <b class="req">*</b></span><input type="email" name="email" required autocomplete="email" placeholder="가입 안내를 받을 이메일"></label>
+<fieldset><legend>글을 올릴 게시판</legend><div class="cks">{boards_ck}</div></fieldset>
+<label><span>남길 말</span><textarea name="남길 말" rows="3"></textarea></label>
+<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+<input type="hidden" name="_subject" value="[세종빌 홈페이지] 직원 회원가입 신청">
+<label class="ck"><input type="checkbox" required> 가입 처리를 위해 이름·직책·이메일을 사무국장에게 보내는 것에 동의합니다. (가입 처리 후 신청 내용은 보관하지 않습니다)</label>
+<button class="btn red" type="submit" {"" if FORM_ID else "disabled"}>회원가입 신청하기</button>
+<p class="note" id="joinmsg" role="status">{"" if FORM_ID else "신청 기능을 준비 중입니다. 급하신 분은 사무국(044-864-3015)으로 연락해 주세요."}</p>
+</form></div>'''
+write('/join.html', page('직원 회원가입 신청', subpage(4, '직원 회원가입 신청', '직원 회원가입 신청', join_body, '없음'), 4))
 
 # 404, 기타
 write('/404.html', page('페이지를 찾을 수 없어요', '<div class="content"><div class="wrap" style="text-align:center;padding:80px 0"><p class="quote">페이지를 찾을 수 없어요</p><p class="lead">주소가 바뀌었거나 삭제된 페이지입니다.</p><div class="cta" style="justify-content:center"><a class="btn red" href="/">처음으로</a></div></div></div>'))
