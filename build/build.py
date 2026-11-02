@@ -131,7 +131,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <script src="/assets/site.js?v={VER}"></script></body></html>'''
 
 WRITTEN = []
-BASE = 'https://sejongvill.github.io'  # 세종빌.com 연결 후 'https://www.xn--ix3bl7ch6i.com' 으로 바꾸기
+BASE = 'https://www.xn--ix3bl7ch6i.com'  # 세종빌.com
 def write(path, s):
     WRITTEN.append(path)
     full = f'{SITE}{path}'
