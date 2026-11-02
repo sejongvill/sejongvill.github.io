@@ -18,10 +18,6 @@ display_url: https://sejongvill.github.io
 logo_url: /assets/img/logo.png
 media_folder: static/files/uploads
 public_folder: /files/uploads
-media_library:
-  name: default
-  config:
-    max_file_size: 15000000
 collections:
 - name: stories
   label: 일상 이야기
@@ -34,12 +30,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
@@ -96,12 +88,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
@@ -158,12 +146,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
@@ -220,12 +204,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
@@ -282,12 +262,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
@@ -344,12 +320,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
@@ -406,12 +378,8 @@ collections:
   format: frontmatter
   summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
   sortable_fields:
-    default:
-      field: date
-      direction: descending
-    fields:
-    - date
-    - title
+  - date
+  - title
   fields:
   - label: 제목
     name: title
