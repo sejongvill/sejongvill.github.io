@@ -169,18 +169,12 @@ disc = [p for p in P['notice'] if disc_cat(p['title'])]
 docs = ''.join(f'<a class="doc" href="/board/notice/{p["id"]}.html"><span class="pdf">{ext(p["files"][0]["file"]) if p["files"] else "글"}</span><div>{E(p["title"][:26])}<small>{disc_cat(p["title"])} · {p["date"]}</small></div></a>' for p in disc[:4])
 
 home = f'''
-<section class="hero"><div class="wrap">
-<div><div class="eyebrow">SEJONGVILL · 2003년부터 함께</div>
+<section class="hero2"><div class="wrap"><div class="frame slides" aria-roledescription="carousel" aria-label="세종빌 사진"><figure class="sl on"><img class="bg" src="/assets/img/group.jpg" alt="" aria-hidden="true"><img class="fg" src="/assets/img/group.jpg" alt="세종빌 가족 단체사진" style="object-position:center 62%" fetchpriority=high></figure><figure class="sl"><img class="bg" src="/assets/img/poolgroup.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/poolgroup.jpg" alt="여름캠프 단체사진" style="object-position:center 55%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/hero_pool.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/hero_pool.jpg" alt="여름캠프 물놀이" style="object-position:center 60%" loading=lazy></figure><figure class="sl"><img class="bg" src="/assets/img/bubble.jpg" alt="" aria-hidden="true" loading=lazy><img class="fg" src="/assets/img/bubble.jpg" alt="버블쇼를 보는 세종빌 가족들" style="object-position:center 50%" loading=lazy></figure><div class="dots" role="tablist"></div>
+<div class="glass"><div class="eyebrow">SEJONGVILL · 2003년부터 함께</div>
 <h1>서로를 존중하고<br>품어주고 사랑하는<br><em>행복한 보금자리</em></h1>
-<p class="lead">세종빌은 이용자 한 분 한 분이 저마다의 속도로<br>배우고, 쉬고, 웃으며 함께 살아가는 곳입니다.</p>
+<p class="lead">세종빌은 이용자 한 분 한 분이 저마다의 속도로 배우고, 쉬고, 웃으며 함께 살아가는 곳입니다.</p>
 <div class="cta"><a class="btn red" href="/about/greeting.html">세종빌 둘러보기 <svg class="ico"><use href="#i-arrow"/></svg></a><a class="btn line" href="/together/support.html">후원으로 함께하기</a></div></div>
-<div class="photo slides" aria-roledescription="carousel" aria-label="세종빌 사진">
-<img class="on" src="/assets/img/group.jpg" alt="세종빌 가족 단체사진" style="object-position:center 60%" fetchpriority="high">
-<img src="/assets/img/poolgroup.jpg" alt="여름캠프 단체사진" loading="lazy">
-<img src="/assets/img/hero_pool.jpg" alt="여름캠프 물놀이" loading="lazy">
-<img src="/assets/img/bubble.jpg" alt="버블쇼를 보는 세종빌 가족들" loading="lazy">
-<div class="dots" role="tablist"></div></div>
-</div></section>
+</div></div></section>
 <nav class="quick" aria-label="바로가기"><div class="wrap">
 <a href="/admission.html"><div class="qi"><svg class="ico"><use href="#i-home"/></svg></div><div><b>입주 상담</b><small>조건 · 절차 · 서류</small></div></a>
 <a href="/together/support.html"><div class="qi"><svg class="ico"><use href="#i-heart"/></svg></div><div><b>후원 안내</b><small>계좌 복사 한 번으로</small></div></a>
