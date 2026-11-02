@@ -454,3 +454,18 @@ footer .relsites a:hover{border-color:#fff;color:#fff}
 @media (max-width:1040px){.newsrow{grid-template-columns:minmax(0,1fr)}.board{position:static;max-width:560px;width:100%;margin:0 auto}}
 @media (max-width:900px){.newsrow{gap:24px}.newsrow .ngrid{grid-template-columns:1fr}}
 .newsmain{min-width:0}
+/* 어바웃 사진 로테이션 */
+.aslides{position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:var(--cream)}
+.about .aslides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0;aspect-ratio:auto;opacity:0;transition:opacity 1.2s ease}
+.about .aslides img.on{opacity:1}
+.adots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:6px;z-index:2}
+.adots button{width:8px;height:8px;border-radius:8px;background:rgba(255,255,255,.6);transition:width .3s,background .3s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.adots button[aria-selected=true]{width:22px;background:#fff}
+/* 여백 정리 */
+section.blk{padding:80px 0}
+section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
+.sec-head{margin-bottom:28px}
+.band{margin-top:0}
+.support{margin-top:80px}
+.about p{margin:18px 0 28px}
+@media (max-width:900px){section.blk{padding:52px 0}section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:4px}.sec-head{margin-bottom:20px}.support{margin-top:52px}}

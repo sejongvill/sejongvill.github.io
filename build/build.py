@@ -198,8 +198,8 @@ def news_kind(key, p):
         return '정보공개' if disc_cat(p['title']) else '공지사항'
     return {'rights': '인권존중', 'newsletter': '소식지', 'schedule': '주요일정', 'menu': '금주의 식단'}[key]
 NEWS_TABS = [('전체', None, '/board/notice/'), ('공지사항', '공지사항', '/board/notice/'), ('정보공개', '정보공개', '/disclosure.html'),
-             ('인권존중', '인권존중', '/board/rights/'), ('소식지', '소식지', '/board/newsletter/'), ('주요일정', '주요일정', '/board/schedule/'), ('금주의 식단', '금주의 식단', '/board/menu/')]
-allnews = sorted([(news_kind(k, p), k, p) for k in ('notice', 'rights', 'newsletter', 'schedule', 'menu') for p in P[k]], key=lambda x: x[2]['sort'], reverse=True)
+             ('인권존중', '인권존중', '/board/rights/'), ('소식지', '소식지', '/board/newsletter/')]
+allnews = sorted([(news_kind(k, p), k, p) for k in ('notice', 'rights', 'newsletter') for p in P[k]], key=lambda x: x[2]['sort'], reverse=True)
 def ncard(kind, k, p):
     return (f'<a class="ncard" href="/board/{k}/{p["id"]}.html"><span class="chip{" r" if kind in ("공지사항", "정보공개") else ""}">{kind}</span>'
             f'<b>{E(p["title"])}</b><time>{p["date"].replace("-", ". ")}.</time></a>')
@@ -209,7 +209,7 @@ def tabset(name, tabs, panes):
     return bar + ''.join(f'<div class="tp" role="tabpanel"{" hidden" if n else ""}>{pane}</div>' for n, pane in enumerate(panes))
 news_panes = []
 for label, kind, more in NEWS_TABS:
-    items = [x for x in allnews if (x[0] != '금주의 식단' if kind is None else x[0] == kind)][:6]
+    items = [x for x in allnews if kind is None or x[0] == kind][:6]
     news_panes.append('<div class="ngrid">' + (''.join(ncard(*x) for x in items) or '<p class="note">아직 글이 없어요.</p>') + '</div>')
 news_tabs = tabset('소식 분류', NEWS_TABS, news_panes)
 PHOTO_TABS = [('전체', None, '/board/stories/'), ('일상 이야기', 'stories', '/board/stories/'), ('아름다운 이웃', 'neighbors', '/board/neighbors/')]
@@ -237,7 +237,7 @@ home = f'''
 <div><div class="eyebrow">ABOUT</div><h2 class="t">한 사회라는 숲속에서<br>저마다의 빛깔로 자라는 사람들</h2>
 <p>같은 숲, 같은 햇볕 아래에서도 나무마다 자라는 모습은 다릅니다. 세종빌은 이용자 한 분 한 분의 욕구와 속도를 존중하며, 사랑과 봉사·섬김과 나눔으로 사람 중심의 가치를 실현합니다.</p>
 <div class="stats"><div><b>2003</b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026</b><span>새 단장 완료</span></div></div></div>
-<img src="/assets/img/poolgroup.jpg" alt="2026 여름캠프 단체사진" loading="lazy"></div></section>
+<div class="aslides" aria-roledescription="carousel" aria-label="세종빌 일상 사진"><img class="as on" src="/assets/img/museum.jpg" alt="박물관 나들이 단체사진" style="object-position:center 45%" loading="lazy"><img class="as" src="/assets/img/cook.jpg" alt="함께 만든 음식 앞에서" style="object-position:center 40%" loading="lazy"><img class="as" src="/assets/img/sea.jpg" alt="바닷가 나들이" style="object-position:center 60%" loading="lazy"><img class="as" src="/assets/img/pine.jpg" alt="소나무 아래에서" style="object-position:center 50%" loading="lazy"><img class="as" src="/assets/img/lake.jpg" alt="호숫가 산책" style="object-position:center 70%" loading="lazy"><div class="adots" role="tablist"></div></div></div></section>
 <section class="blk"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
 <div class="newsrow"><div class="newsmain">{news_tabs}</div>{board_panel}</div></div></section>

@@ -120,3 +120,14 @@
   b.addEventListener('focusin',function(){clearInterval(t)});
   setP(paused);
 })();
+// 어바웃 사진 로테이션
+(function(){
+  var w=document.querySelector('.aslides');if(!w)return;
+  var im=[].slice.call(w.querySelectorAll('img.as')),d=w.querySelector('.adots'),i=0,t;
+  var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  im.forEach(function(x,k){var b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-label',(k+1)+'번째 사진');b.setAttribute('aria-selected',k===0);b.addEventListener('click',function(){go(k);run()});d.appendChild(b)});
+  var bs=d.querySelectorAll('button');
+  function go(k){im[i].classList.remove('on');bs[i].setAttribute('aria-selected','false');i=(k+im.length)%im.length;im[i].classList.add('on');im[i].loading='eager';bs[i].setAttribute('aria-selected','true')}
+  function run(){clearInterval(t);if(!still)t=setInterval(function(){go(i+1)},5000)}
+  run();
+})();
