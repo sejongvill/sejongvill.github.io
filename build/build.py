@@ -485,7 +485,7 @@ for key, posts in P.items():
 cats = DISC_CATS
 items = ''.join(f'''<li data-cat-item="{disc_cat(p)}"><a href="/board/notice/{p["id"]}.html"><span class="chip">{disc_cat(p)}</span><span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in disc)
 dbody = f'''<p class="lead" style="margin-bottom:28px">사회복지법인 예일과 세종빌의 예산·결산, 이사회 회의록, 운영위원회 결과, 후원금 사용내역을 공개합니다.</p>
-<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px"><p class="note">전체 {len(disc)}건</p><a class="btn line writebtn" href="/write/?b=notice&amp;disc=1">✏️ 정보공개 글쓰기</a></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px"><p class="note">전체 {len(disc)}건</p><a class="btn line writebtn" href="/write/?b=notice&amp;disc=1">✏️ 글쓰기</a></div>
 <div class="filter" role="group" aria-label="분류"><button data-cat="all" aria-pressed="true">전체</button>{''.join(f'<button data-cat="{c}" aria-pressed="false">{c}</button>' for c in cats)}</div>
 <ul class="board-list">{items}</ul>'''
 write('/disclosure.html', page('정보공개', subpage(4, '정보공개', '정보공개', dbody), 4))
