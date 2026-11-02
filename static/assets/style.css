@@ -491,3 +491,12 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .tabrow .headr{flex:none;gap:12px;padding-bottom:4px}
 .tabrow .cnav button{width:36px;height:36px;font-size:19px;line-height:32px}
 @media (max-width:900px){.tabrow .cnav{display:none}.tabrow{gap:8px}.tabrow .more{font-size:.9rem;white-space:nowrap}}
+/* 소식 분류별 파스텔 칩 */
+.chip.k-notice{background:#fde4e4;color:#c0392b}
+.chip.k-disc{background:#e3edfb;color:#2f5f9e}
+.chip.k-rights{background:#efe6f8;color:#7348a3}
+.chip.k-letter{background:#fdf0d8;color:#a8690f}
+[data-theme=dark] .chip.k-notice{background:#4a2626;color:#f3a9a9}
+[data-theme=dark] .chip.k-disc{background:#22334d;color:#a9c6f0}
+[data-theme=dark] .chip.k-rights{background:#362a47;color:#cfb3ef}
+[data-theme=dark] .chip.k-letter{background:#43351d;color:#f0cc8a}

@@ -206,7 +206,7 @@ NEWS_TABS = [('전체', None, '/board/notice/'), ('공지사항', '공지사항'
              ('인권존중', '인권존중', '/board/rights/'), ('소식지', '소식지', '/board/newsletter/')]
 allnews = sorted([(news_kind(k, p), k, p) for k in ('notice', 'rights', 'newsletter') for p in P[k]], key=lambda x: x[2]['sort'], reverse=True)
 def ncard(kind, k, p):
-    return (f'<a class="ncard" href="/board/{k}/{p["id"]}.html"><span class="chip{" r" if kind in ("공지사항", "정보공개") else ""}">{kind}</span>'
+    return (f'<a class="ncard" href="/board/{k}/{p["id"]}.html"><span class="chip k-{ {"공지사항": "notice", "정보공개": "disc", "인권존중": "rights", "소식지": "letter"}.get(kind, "etc")}">{kind}</span>'
             f'<b>{E(p["title"])}</b><time>{p["date"].replace("-", ". ")}.</time></a>')
 def tabset(name, tabs, panes):
     bar = f'<div class="tabbar" role="tablist" aria-label="{name}">' + ''.join(
