@@ -515,6 +515,7 @@ write('/join.html', page('직원 회원가입 신청', subpage(4, '직원 회원
 
 # ---------- 간편 글쓰기 ----------
 board_opts = ''.join(f'<option value="{k}">{v[0]}</option>' + ('<option value="disclosure">정보공개</option>' if k == 'notice' else '') for k, v in BOARD_META.items())
+WVER = _h.md5(open(os.path.join(ROOT, 'static/assets/write.js'), 'rb').read()).hexdigest()[:8]
 write_body = f'''<div style="max-width:760px">
 <div id="loginBox" class="box joinform" hidden>
 <p class="quote" style="font-size:1.3rem;margin:0">직원 로그인</p>
@@ -525,7 +526,7 @@ write_body = f'''<div style="max-width:760px">
 <p class="note">아직 계정이 없으면 <a href="/join.html" style="text-decoration:underline">직원 회원가입 신청</a></p></div>
 <form id="writeForm" class="box joinform" hidden>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><p class="note"><b id="who"></b> · <button type="button" id="logout" style="text-decoration:underline">로그아웃</button></p>
-<label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><option data-g="n">공지</option><option data-g="n">채용</option>{''.join(f'<option data-g="d">{c}</option>' for c in DISC_CATS)}</select></label></div>
+<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-left:auto"><label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><option data-g="n">공지</option><option data-g="n">채용</option>{''.join(f'<option data-g="d">{c}</option>' for c in DISC_CATS)}</select></label></div></div>
 <label><span>제목 <b class="req">*</b></span><input id="wtitle" required placeholder="예: 2026. 11. 2.(월) 가을 산책"></label>
 <label><span>내용</span><textarea id="wbody" rows="6" placeholder="간단히 적어 주세요. 줄바꿈도 그대로 보여요."></textarea></label>
 <div><span style="font-weight:600">사진</span>
@@ -538,7 +539,7 @@ write_body = f'''<div style="max-width:760px">
 <div id="done" class="box" hidden style="text-align:center;padding:48px 24px"><p class="quote" style="font-size:1.5rem" id="doneTitle">올렸어요! 🎉</p>
 <p class="lead">2~3분 뒤 게시판에 보여요.</p><div class="cta" style="justify-content:center"><a class="btn red" id="doneLink" href="/">게시판으로 가기</a><button class="btn line" id="again" type="button">글 하나 더 쓰기</button></div></div>
 <p style="margin-top:20px"><a class="more" id="backLink" href="/">← 게시판으로 돌아가기</a></p></div>
-<script src="/assets/write.js"></script>'''
+<script src="/assets/write.js?v={WVER}"></script>'''
 write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="wrap"><div class="crumb">직원 글쓰기</div><h1><span id="boardName">게시판</span> <span id="modeWord">글쓰기</span></h1></div></div><div class="content"><div class="wrap">{write_body}</div></div>'))
 
 # 404, 기타
