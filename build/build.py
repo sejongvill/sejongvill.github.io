@@ -68,7 +68,7 @@ for key in BOARDS:
     P[key] = sorted(posts, key=lambda p: p['sort'], reverse=True)
     for n, p in enumerate(reversed(P[key]), 1): p['no'] = n
 
-FORM_ID = ''  # 폼스프리 양식 ID (예: 'xyzabcd'). 비어 있으면 신청 버튼이 잠김
+FORM_ID = 'xnppoaez'  # 폼스프리 양식 ID (예: 'xyzabcd'). 비어 있으면 신청 버튼이 잠김
 TEL = '044-864-3015'
 ADDR = '세종특별자치시 전의면 양지편길 13-6 (양곡리)'
 ACCTS = [('사회복지법인 예일', '농협', '351-0717-260953'), ('사회복지법인 예일', '국민', '455801-04-351341'), ('세종빌', '농협', '419-01-152858')]
