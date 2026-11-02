@@ -40,3 +40,7 @@
     }).catch(function(){m.textContent='인터넷 연결을 확인한 뒤 다시 시도해 주세요.';b.disabled=false;});
   });
 })();
+(function(){ /* 로그인한 직원에게만 수정·삭제 버튼 보이기 */
+  var on=false;try{var a=JSON.parse(localStorage.getItem('sv-auth'));var g=JSON.parse(localStorage.getItem('gotrue.user'));on=!!((a&&a.access_token)||(g&&g.token))}catch(e){}
+  if(on)document.querySelectorAll('.post-admin').forEach(function(x){x.hidden=false});
+})();

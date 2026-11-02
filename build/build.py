@@ -379,7 +379,8 @@ for key, posts in P.items():
         next_ = posts[i - 1] if i > 0 else None
         nav = '<nav class="post-nav">' + (f'<a href="/board/{key}/{prev_["id"]}.html">← {E(prev_["title"][:24])}</a>' if prev_ else '<span></span>') + \
               f'<a class="more" href="/board/{key}/">목록</a>' + (f'<a href="/board/{key}/{next_["id"]}.html">{E(next_["title"][:24])} →</a>' if next_ else '<span></span>') + '</nav>'
-        body = f'<article><header class="post-head"><h2>{E(p["title"])}</h2><time datetime="{p["date"]}">{fmt(p["date"])}</time></header>{show}{imgs}<div class="prose" style="max-width:none">{p["body"]}</div>{files}{nav}</article>'
+        admin_bar = f'<div class="post-admin" hidden><a class="btn line writebtn" href="/write/?b={key}&amp;edit={p["id"]}">✏️ 수정·삭제</a></div>'
+        body = admin_bar + f'<article><header class="post-head"><h2>{E(p["title"])}</h2><time datetime="{p["date"]}">{fmt(p["date"])}</time></header>{show}{imgs}<div class="prose" style="max-width:none">{p["body"]}</div>{files}{nav}</article>'
         write(f'/board/{key}/{p["id"]}.html', page(p['title'], subpage(sec, name, name, body), sec, desc=p['text'][:120] or name))
 
 # 정보공개
@@ -431,15 +432,15 @@ write_body = f'''<div style="max-width:760px">
 <div><span style="font-weight:600">사진</span>
 <label class="pick"><input id="photos" type="file" accept="image/*" multiple hidden>📷 사진 고르기 (여러 장 한 번에)</label>
 <p class="note" id="pcount"></p><div id="thumbs" class="thumbs"></div></div>
-<label><span>첨부파일 <small class="note">(한글·PDF·엑셀 등, 필요할 때만)</small></span><input id="attach" type="file" multiple></label>
-<button class="btn red" id="wsubmit" type="submit" style="justify-content:center">올리기</button>
+<div><span style="font-weight:600">첨부파일 <small class="note">(한글·PDF·엑셀 등, 필요할 때만)</small></span><ul id="oldFiles" style="list-style:none;margin:6px 0"></ul><input id="attach" type="file" multiple style="font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px;width:100%;background:var(--paper)"></div>
+<button class="btn red" id="wsubmit" type="submit" style="justify-content:center">올리기</button><button class="btn line" id="delBtn" type="button" hidden style="justify-content:center;color:var(--red);border-color:var(--red)">이 글 삭제</button>
 <p class="note" id="wmsg" role="status"></p>
-<p class="note">올린 글 고치기·지우기는 <a href="/admin/" style="text-decoration:underline">관리 화면</a>에서 할 수 있어요.</p></form>
-<div id="done" class="box" hidden style="text-align:center;padding:48px 24px"><p class="quote" style="font-size:1.5rem">올렸어요! 🎉</p>
+<p class="note">올린 글은 글 화면 위쪽의 <b>수정·삭제</b> 버튼으로 고칠 수 있어요.</p></form>
+<div id="done" class="box" hidden style="text-align:center;padding:48px 24px"><p class="quote" style="font-size:1.5rem" id="doneTitle">올렸어요! 🎉</p>
 <p class="lead">2~3분 뒤 게시판에 보여요.</p><div class="cta" style="justify-content:center"><a class="btn red" id="doneLink" href="/">게시판으로 가기</a><button class="btn line" id="again" type="button">글 하나 더 쓰기</button></div></div>
 <p style="margin-top:20px"><a class="more" id="backLink" href="/">← 게시판으로 돌아가기</a></p></div>
 <script src="/assets/write.js"></script>'''
-write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="wrap"><div class="crumb">직원 글쓰기</div><h1><span id="boardName">게시판</span> 글쓰기</h1></div></div><div class="content"><div class="wrap">{write_body}</div></div>'))
+write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="wrap"><div class="crumb">직원 글쓰기</div><h1><span id="boardName">게시판</span> <span id="modeWord">글쓰기</span></h1></div></div><div class="content"><div class="wrap">{write_body}</div></div>'))
 
 # 404, 기타
 write('/404.html', page('페이지를 찾을 수 없어요', '<div class="content"><div class="wrap" style="text-align:center;padding:80px 0"><p class="quote">페이지를 찾을 수 없어요</p><p class="lead">주소가 바뀌었거나 삭제된 페이지입니다.</p><div class="cta" style="justify-content:center"><a class="btn red" href="/">처음으로</a></div></div></div>'))

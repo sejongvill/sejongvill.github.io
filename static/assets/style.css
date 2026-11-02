@@ -280,3 +280,4 @@ table.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;
 .joinform>*,.joinform label{min-width:0}
 .joinform input,.joinform textarea,.joinform select{max-width:100%;width:100%}
 .joinform .ck input,.joinform input[type=checkbox]{width:auto}
+.post-admin{display:flex;justify-content:flex-end;margin-bottom:12px}
