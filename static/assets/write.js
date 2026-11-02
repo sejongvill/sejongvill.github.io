@@ -12,10 +12,18 @@
   var ADMINS = ["58ef3e465ce4fd46", "cfabcb3c03dd02e3"];   // 관리자 이메일(암호화한 값)
   var editSha = null, keep = {};   // 수정할 때 그대로 둘 항목(날짜, 미리보기 그림)
 
-  function setBoard(b) {
-    board = b; $('#boardName').textContent = BOARDS[b]; $('#boardSel').value = b;
-    $('#backLink').href = '/board/' + b + '/';
+  var DISC = Q.get('disc') === '1' && board === 'notice';   // 정보공개 글쓰기로 들어왔는지
+  var DISC_KEYS = [['예산', '예산·결산'], ['결산', '예산·결산'], ['이사회', '회의록'], ['운영위원회', '회의록'], ['후원금', '후원금'], ['수의계약', '계약']];
+  function guessCat(t) {   // 말머리가 없는 예전 글: 제목으로 짐작 (홈페이지 정보공개 분류와 같은 규칙)
+    for (var i = 0; i < DISC_KEYS.length; i++) if (t.indexOf(DISC_KEYS[i][0]) >= 0) return DISC_KEYS[i][1];
+    return /채용|합격/.test(t) ? '채용' : '공지';
   }
+  function setBoard(b) {
+    board = b; $('#boardName').textContent = (b === 'notice' && DISC) ? '정보공개' : BOARDS[b]; $('#boardSel').value = b;
+    $('#backLink').href = (b === 'notice' && DISC) ? '/disclosure.html' : '/board/' + b + '/';
+    $('#catRow').hidden = b !== 'notice';
+  }
+  if (DISC) $('#catSel').value = '예산·결산';
   setBoard(board);
   $('#boardSel').addEventListener('change', function () { setBoard(this.value); if (!editId) history.replaceState(null, '', '?b=' + board); });
   if (editId) { $('#boardSel').disabled = true; $('#modeWord').textContent = '수정'; $('#wsubmit').textContent = '수정 저장하기'; $('#delBtn').hidden = false; }
@@ -136,6 +144,7 @@
       $('#wtitle').value = p.data.title || '';
       $('#wbody').value = htmlToText(p.body || '');
       keep = { date: p.data.date, previews: p.data.previews || [], author: p.data.author || '' };
+      if (board === 'notice') $('#catSel').value = p.data.category || guessCat(p.data.title || '');
       (p.data.images || []).forEach(function (src) { if (src) picked.push({ old: src, url: src }); });
       (p.data.files || []).forEach(function (x) { if (typeof x === 'string') x = { file: x }; if (x && x.file) oldFiles.push({ name: x.name || x.file.split('/').pop(), file: x.file }); });
       render(); renderFiles(); msg('');
@@ -228,6 +237,7 @@
     chain.then(function () { return editId ? keep.author : who(); }).then(function (author) {
       var fm = '---\ntitle: ' + yq(title) + '\ndate: ' + date + '\n';
       if (author) fm += 'author: ' + author + '\n';
+      if (board === 'notice') fm += 'category: ' + yq($('#catSel').value) + '\n';
       if (imgPaths.length) fm += 'images:\n' + imgPaths.map(function (x) { return '- ' + x; }).join('\n') + '\n';
       if (attPaths.length) fm += 'files:\n' + attPaths.map(function (x) { return '- name: ' + yq(x.name) + '\n  file: ' + x.file; }).join('\n') + '\n';
       if (keep.previews && keep.previews.length) fm += 'previews:\n' + keep.previews.map(function (x) { return '- ' + x; }).join('\n') + '\n';
@@ -251,7 +261,7 @@
 
   function finish(t) {
     msg(''); $('#writeForm').hidden = true; $('#done').hidden = false;
-    $('#doneTitle').textContent = t; $('#doneLink').href = '/board/' + board + '/';
+    $('#doneTitle').textContent = t; $('#doneLink').href = (board === 'notice' && ['예산·결산', '회의록', '후원금', '계약', '기타 공개'].indexOf($('#catSel').value) >= 0) ? '/disclosure.html' : '/board/' + board + '/';
     $('#again').hidden = !!editId;
   }
   function fail(err) {

@@ -104,6 +104,12 @@ collections:
     format: YYYY-MM-DD HH:mm
     date_format: YYYY-MM-DD
     time_format: HH:mm
+  - label: 말머리
+    name: category
+    widget: select
+    required: false
+    options: [공지, 채용, 예산·결산, 회의록, 후원금, 계약, 기타 공개]
+    hint: 예산·결산, 회의록, 후원금, 계약, 기타 공개를 고르면 정보공개에도 올라가요.
   - label: 글쓴이
     name: author
     widget: hidden

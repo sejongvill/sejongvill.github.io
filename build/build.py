@@ -64,7 +64,7 @@ for key in BOARDS:
         text = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', body))).strip()
         posts.append({'id': os.path.splitext(os.path.basename(f))[0], 'title': str(fm.get('title', '제목 없음')),
                       'date': d[:10], 'sort': d, 'body': body, 'text': text[:160], 'images': imgs, 'files': files,
-                      'previews': fm.get('previews') or [], 'author': str(fm.get('author') or '')})
+                      'previews': fm.get('previews') or [], 'author': str(fm.get('author') or ''), 'cat': str(fm.get('category') or '')})
     P[key] = sorted(posts, key=lambda p: p['sort'], reverse=True)
     for n, p in enumerate(reversed(P[key]), 1): p['no'] = n
 
@@ -190,17 +190,25 @@ def cat(t):
     return '알림'
 notices = ''.join(f'<li><a href="/board/notice/{p["id"]}.html"><span class="chip{" r" if cat(p["title"]) == "채용" else ""}">{cat(p["title"])}</span><span class="tt">{E(p["title"])}</span><time>{p["date"][5:].replace("-", ".")}</time></a></li>' for p in P['notice'][:5])
 DISC_KEYS = [('예산', '예산·결산'), ('결산', '예산·결산'), ('이사회', '회의록'), ('운영위원회', '회의록'), ('후원금', '후원금'), ('수의계약', '계약')]
-def disc_cat(t):
+DISC_CATS = ['예산·결산', '회의록', '후원금', '계약', '기타 공개']
+def disc_cat(p):
+    """정보공개 말머리. 글에 말머리가 있으면 그대로, 없으면(예전 글) 제목으로 구분"""
+    if isinstance(p, dict):
+        if p.get('cat'):
+            return p['cat'] if p['cat'] in DISC_CATS else None
+        p = p['title']
     for k, c in DISC_KEYS:
-        if k in t: return c
-disc = [p for p in P['notice'] if disc_cat(p['title'])]
-docs = ''.join(f'<a class="doc" href="/board/notice/{p["id"]}.html"><span class="pdf">{ext(p["files"][0]["file"]) if p["files"] else "글"}</span><div>{E(p["title"][:26])}<small>{disc_cat(p["title"])} · {p["date"]}</small></div></a>' for p in disc[:4])
+        if k in p: return c
+def notice_head(p):
+    return p.get('cat') or disc_cat(p) or ('채용' if any(k in p['title'] for k in ('채용', '합격')) else '공지')
+disc = [p for p in P['notice'] if disc_cat(p)]
+docs = ''.join(f'<a class="doc" href="/board/notice/{p["id"]}.html"><span class="pdf">{ext(p["files"][0]["file"]) if p["files"] else "글"}</span><div>{E(p["title"][:26])}<small>{disc_cat(p)} · {p["date"]}</small></div></a>' for p in disc[:4])
 
 
 # ---------- 메인: 소식 탭 / 사진 탭 ----------
 def news_kind(key, p):
     if key == 'notice':
-        return '정보공개' if disc_cat(p['title']) else '공지사항'
+        return '정보공개' if disc_cat(p) else '공지사항'
     return {'rights': '인권존중', 'newsletter': '소식지', 'schedule': '주요일정', 'menu': '금주의 식단'}[key]
 NEWS_TABS = [('전체', None, '/board/notice/'), ('공지사항', '공지사항', '/board/notice/'), ('정보공개', '정보공개', '/disclosure.html'),
              ('인권존중', '인권존중', '/board/rights/'), ('소식지', '소식지', '/board/newsletter/')]
@@ -431,7 +439,7 @@ for key, posts in P.items():
         if gallery:
             inner = '<div class="cards">' + ''.join(f'''<a class="card" href="/board/{key}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/logo.png"}" alt="" loading="lazy"><div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in chunk) + '</div>'
         else:
-            inner = '<ul class="board-list">' + ''.join(f'''<li><a href="/board/{key}/{p["id"]}.html"><span class="no">{p["no"]}</span><span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in chunk) + '</ul>'
+            inner = '<ul class="board-list">' + ''.join(f'''<li><a href="/board/{key}/{p["id"]}.html"><span class="no">{p["no"]}</span>{f'<span class="chip{" r" if notice_head(p) == "채용" else ""}">{notice_head(p)}</span>' if key == "notice" else ""}<span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in chunk) + '</ul>'
         if pages > 1:
             inner += '<nav class="pager" aria-label="페이지">' + ''.join(
                 f'<span aria-current="page">{i}</span>' if i == pg else f'<a href="/board/{key}/{"" if i == 1 else f"page{i}.html"}">{i}</a>' for i in range(1, pages + 1)) + '</nav>'
@@ -474,9 +482,10 @@ for key, posts in P.items():
         write(f'/board/{key}/{p["id"]}.html', page(p['title'], subpage(sec, name, name, body), sec, desc=p['text'][:120] or name))
 
 # 정보공개
-cats = ['예산·결산', '회의록', '후원금', '계약']
-items = ''.join(f'''<li data-cat-item="{disc_cat(p["title"])}"><a href="/board/notice/{p["id"]}.html"><span class="chip">{disc_cat(p["title"])}</span><span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in disc)
+cats = DISC_CATS
+items = ''.join(f'''<li data-cat-item="{disc_cat(p)}"><a href="/board/notice/{p["id"]}.html"><span class="chip">{disc_cat(p)}</span><span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in disc)
 dbody = f'''<p class="lead" style="margin-bottom:28px">사회복지법인 예일과 세종빌의 예산·결산, 이사회 회의록, 운영위원회 결과, 후원금 사용내역을 공개합니다.</p>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px"><p class="note">전체 {len(disc)}건</p><a class="btn line writebtn" href="/write/?b=notice&amp;disc=1">✏️ 정보공개 글쓰기</a></div>
 <div class="filter" role="group" aria-label="분류"><button data-cat="all" aria-pressed="true">전체</button>{''.join(f'<button data-cat="{c}" aria-pressed="false">{c}</button>' for c in cats)}</div>
 <ul class="board-list">{items}</ul>'''
 write('/disclosure.html', page('정보공개', subpage(4, '정보공개', '정보공개', dbody), 4))
@@ -516,7 +525,7 @@ write_body = f'''<div style="max-width:760px">
 <p class="note">아직 계정이 없으면 <a href="/join.html" style="text-decoration:underline">직원 회원가입 신청</a></p></div>
 <form id="writeForm" class="box joinform" hidden>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><p class="note"><b id="who"></b> · <button type="button" id="logout" style="text-decoration:underline">로그아웃</button></p>
-<label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label></div>
+<label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><optgroup label="공지사항"><option>공지</option><option>채용</option></optgroup><optgroup label="정보공개">{''.join(f'<option>{c}</option>' for c in DISC_CATS)}</optgroup></select></label></div>
 <label><span>제목 <b class="req">*</b></span><input id="wtitle" required placeholder="예: 2026. 11. 2.(월) 가을 산책"></label>
 <label><span>내용</span><textarea id="wbody" rows="6" placeholder="간단히 적어 주세요. 줄바꿈도 그대로 보여요."></textarea></label>
 <div><span style="font-weight:600">사진</span>
