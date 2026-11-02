@@ -84,7 +84,7 @@ ICON = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true"
 </defs></svg>'''
 
 NAV = [
-    ('세종빌 소개', '/about/greeting.html', [('인사말', '/about/greeting.html'), ('법인 소개', '/about/corp.html'), ('미션·비전', '/about/vision.html'),
+    ('세종빌 소개', '/about/corp.html', [('법인 소개', '/about/corp.html'), ('인사말', '/about/greeting.html'), ('미션·비전', '/about/vision.html'),
                                         ('연혁', '/about/history.html'), ('조직·현황', '/about/org.html'), ('오시는 길', '/about/location.html')]),
     ('우리의 일상', '/days/services.html', [('주요 서비스', '/days/services.html'), ('일상 이야기', '/board/stories/'), ('금주의 식단', '/board/menu/'), ('주요 일정', '/board/schedule/')]),
     ('입주 안내', '/admission.html', [('입주 조건·절차', '/admission.html')]),
@@ -232,7 +232,7 @@ home = f'''
 <div class="glass"><div class="eyebrow">SEJONGVILL · 2003년부터 함께</div>
 <h1>서로를 존중하고<br>품어주고 사랑하는<br><em>행복한 보금자리</em></h1>
 <p class="lead">세종빌은 이용자 한 분 한 분이 저마다의 속도로 배우고, 쉬고, 웃으며 함께 살아가는 곳입니다.</p>
-<div class="cta"><a class="btn red" href="/about/greeting.html">세종빌 둘러보기 <svg class="ico"><use href="#i-arrow"/></svg></a><a class="btn line" href="/together/support.html">후원으로 함께하기</a></div></div>
+<div class="cta"><a class="btn red" href="/about/corp.html">세종빌 둘러보기 <svg class="ico"><use href="#i-arrow"/></svg></a><a class="btn line" href="/together/support.html">후원으로 함께하기</a></div></div>
 </div></div></section>
 <nav class="quick" aria-label="바로가기"><div class="wrap">
 <a href="/admission.html"><div class="qi"><svg class="ico"><use href="#i-home"/></svg></div><div><b>입주 상담</b><small>조건 · 절차 · 서류</small></div></a>
@@ -277,9 +277,9 @@ corp = '''<div class="split"><div class="side"><img src="/assets/img/chairman.jp
 <p>앞으로도 물심양면으로 입소하신 장애인 가족이 평안하고 행복하고 만족할 때까지 최선의 노력을 다하겠습니다.</p>
 <p>존경하는 후원 회원님과 사랑하는 임직원 여러분! 아무쪼록 항상 건강하시고 하시는 일마다 번창하시기를 바라며, 언제나 격의 없는 충고와 질타를 주시면 청령하는 자세로 우리 임직원 모두 함께 "주님 사랑, 사람 사랑"의 원훈으로 일치단결하여 세종빌이 21세기 신모델의 최우수 중증장애인시설로 창출하는 데 지혜와 사랑을 함께 모아 더 일하고 더 사랑하고 더 봉사하는 부단한 노력을 경주합시다.</p>
 <p>끝으로 후원 회원님의 사랑과 직원 여러분들의 노고에 한번 더 감사드리며 하나님의 은혜와 축복이 함께 하시기를 축원합니다.</p>
-<p class="sign">사회복지법인 예일 이사장 정태춘</p>
-<h3>설립목적</h3>
-<p>장애인복지법의 규정에 의한 장애인복지사업을 수행함으로써 기독교 정신을 바탕으로 사랑과 봉사, 섬김과 나눔으로 소외된 이웃들에게 더 나은 삶의 기회를 제공하고 더 나아가 사회복지 증진과 발전에 기여함을 목적으로 합니다.</p></div></div>
+<p class="sign">사회복지법인 예일 이사장 정태춘</p></div></div>
+<h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">설립목적</h3>
+<div class="box purpose"><p>장애인복지법의 규정에 의한 장애인복지사업을 수행함으로써 기독교 정신을 바탕으로 <b>사랑과 봉사, 섬김과 나눔</b>으로 소외된 이웃들에게 더 나은 삶의 기회를 제공하고, 더 나아가 사회복지 증진과 발전에 기여함을 목적으로 합니다.</p></div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:56px 0 16px">기본현황</h3>
 <div class="tbl-scroll"><table class="tb"><tr><th>시설명</th><td>세종빌</td><th>시설구분</th><td>지적장애인 거주시설</td></tr>
 <tr><th>시설장</th><td>정원용 (사회복지학 석사)</td><th>설치일자</th><td>2006. 10. 18.</td></tr>
@@ -365,7 +365,7 @@ write('/about/location.html', page('오시는 길', subpage(0, '오시는 길', 
 
 # ---------- 일상 ----------
 SVCS = [
- ('생활재활서비스', '스스로 해내는 하루', '일상생활에 필요한 지식과 기능을 개인의 능력에 따라 지도하여, 생활자립과 사회적 자립에 필요한 기본 생활능력을 익히고 꾸준히 유지할 수 있도록 지원합니다.', ['세면·양치 등 기초생활 지원', '신변처리 능력 향상', '식사·청소 등 생활훈련'], 14, 3),
+ ('생활재활서비스', '스스로 해내는 하루', '일상생활에 필요한 지식과 기능을 개인의 능력에 따라 지도하여, 생활자립과 사회적 자립에 필요한 기본 생활능력을 익히고 꾸준히 유지할 수 있도록 지원합니다.', ['옷 고르기·입기 등 기초생활 지원', '신변처리 능력 향상', '식사·청소 등 생활훈련'], 14, 3),
  ('사회재활서비스', '이웃과 함께하는 경험', '이용자의 개별 욕구 충족과 정서적 안정을 위해 사회적 능력을 키우고, 궁극적으로 사회 통합을 이룰 수 있도록 돕습니다.', ['나들이·문화체험', '지역사회 행사 참여', '사회적응 프로그램'], 15, 3),
  ('교육재활서비스', '배우고 키우는 재능', '일상생활과 사회생활 적응에 필요한 다양한 지식과 기술을 배울 기회를 드리고, 개인별 특기와 적성 개발을 지원합니다.', ['요리·제과 등 생활기술', '미술·음악 등 특기활동', '개인별 적성 개발'], 16, 3),
  ('자립지원서비스', '나다운 삶을 향해', '자립 가능성을 존중하고 한 분 한 분에게 맞는 다양한 지원으로 자립생활을 영위할 수 있도록 돕습니다.', ['가사·금전관리 연습', '키오스크 등 생활기기 이용', '자립생활 체험'], 17, 3),

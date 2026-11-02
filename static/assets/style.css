@@ -550,3 +550,4 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .rm{padding:5px 11px;border-radius:8px;background:var(--cream);font-size:.88rem;color:var(--ink2)}
 .rm.main{background:var(--red-soft);color:var(--red);font-weight:700}
 @media (max-width:600px){.floor{grid-template-columns:minmax(0,1fr);gap:12px;padding:18px}.fl{width:56px;height:56px;font-size:1.3rem}}
+.box.purpose{border-left:4px solid var(--red)}.box.purpose p{font-size:1.05rem;line-height:1.9;color:var(--ink2);margin:0}.box.purpose b{color:var(--ink)}
