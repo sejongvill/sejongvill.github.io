@@ -485,7 +485,7 @@ for key, posts in P.items():
 cats = DISC_CATS
 items = ''.join(f'''<li data-cat-item="{disc_cat(p)}"><a href="/board/notice/{p["id"]}.html"><span class="chip">{disc_cat(p)}</span><span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in disc)
 dbody = f'''<p class="lead" style="margin-bottom:28px">사회복지법인 예일과 세종빌의 예산·결산, 이사회 회의록, 운영위원회 결과, 후원금 사용내역을 공개합니다.</p>
-<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px"><p class="note">전체 {len(disc)}건</p><a class="btn line writebtn" href="/write/?b=notice&amp;disc=1">✏️ 글쓰기</a></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px"><p class="note">전체 {len(disc)}건</p><a class="btn line writebtn" href="/write/?b=disclosure">✏️ 글쓰기</a></div>
 <div class="filter" role="group" aria-label="분류"><button data-cat="all" aria-pressed="true">전체</button>{''.join(f'<button data-cat="{c}" aria-pressed="false">{c}</button>' for c in cats)}</div>
 <ul class="board-list">{items}</ul>'''
 write('/disclosure.html', page('정보공개', subpage(4, '정보공개', '정보공개', dbody), 4))
@@ -514,7 +514,7 @@ write('/join.html', page('직원 회원가입 신청', subpage(4, '직원 회원
 
 
 # ---------- 간편 글쓰기 ----------
-board_opts = ''.join(f'<option value="{k}">{v[0]}</option>' for k, v in BOARD_META.items())
+board_opts = ''.join(f'<option value="{k}">{v[0]}</option>' + ('<option value="disclosure">정보공개</option>' if k == 'notice' else '') for k, v in BOARD_META.items())
 write_body = f'''<div style="max-width:760px">
 <div id="loginBox" class="box joinform" hidden>
 <p class="quote" style="font-size:1.3rem;margin:0">직원 로그인</p>
@@ -525,7 +525,7 @@ write_body = f'''<div style="max-width:760px">
 <p class="note">아직 계정이 없으면 <a href="/join.html" style="text-decoration:underline">직원 회원가입 신청</a></p></div>
 <form id="writeForm" class="box joinform" hidden>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><p class="note"><b id="who"></b> · <button type="button" id="logout" style="text-decoration:underline">로그아웃</button></p>
-<label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><optgroup label="공지사항"><option>공지</option><option>채용</option></optgroup><optgroup label="정보공개">{''.join(f'<option>{c}</option>' for c in DISC_CATS)}</optgroup></select></label></div>
+<label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><option data-g="n">공지</option><option data-g="n">채용</option>{''.join(f'<option data-g="d">{c}</option>' for c in DISC_CATS)}</select></label></div>
 <label><span>제목 <b class="req">*</b></span><input id="wtitle" required placeholder="예: 2026. 11. 2.(월) 가을 산책"></label>
 <label><span>내용</span><textarea id="wbody" rows="6" placeholder="간단히 적어 주세요. 줄바꿈도 그대로 보여요."></textarea></label>
 <div><span style="font-weight:600">사진</span>
