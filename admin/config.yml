@@ -13,8 +13,8 @@ backend:
     deleteMedia: 파일 삭제 “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
     openAuthoring: '{{message}} - {{author-name}} <{{author-login}}> via DecapBridge'
 locale: ko
-site_url: https://sejongvill.github.io
-display_url: https://sejongvill.github.io
+site_url: https://www.xn--ix3bl7ch6i.com
+display_url: https://www.xn--ix3bl7ch6i.com
 logo_url: /assets/img/logo.png
 media_folder: static/files/uploads
 public_folder: /files/uploads
