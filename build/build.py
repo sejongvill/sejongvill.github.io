@@ -97,6 +97,8 @@ BOARD_META = {
     'neighbors': ('아름다운 이웃', 3), 'rights': ('인권존중', 4), 'newsletter': ('소식지', 4),
 }
 
+import hashlib as _h
+VER = _h.md5(open(os.path.join(ROOT,'static/assets/style.css'),'rb').read()+open(os.path.join(ROOT,'static/assets/site.js'),'rb').read()).hexdigest()[:8]
 def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 — 서로를 존중하고 품어주고 사랑하는 행복한 보금자리'):
     menu = ''
     for i, (name, href, subs) in enumerate(NAV):
@@ -111,7 +113,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <link rel="icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v={VER}">
 <script>try{{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark';var f={{xs:.9,s:1,m:1.12,l:1.25,xl:1.4}}[localStorage.getItem('fs')];if(f)document.documentElement.style.setProperty('--fs',f)}}catch(e){{}}</script></head><body>
 {ICON}<a class="skip" href="#main">본문 바로가기</a>
 <div class="util"><div class="wrap"><span>사회복지법인 예일 · 지적장애인 거주시설 세종빌</span>
@@ -122,11 +124,11 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <a class="btn-call" href="tel:{TEL}"><svg class="ico"><use href="#i-phone"/></svg>{TEL}</a><button class="allmenu-btn" type="button" aria-expanded="false" aria-controls="allmenu"><span class="bars"></span>전체메뉴</button></div>
 <div class="allmenu" id="allmenu" hidden><div class="wrap">{allmenu}<button class="allmenu-close" type="button">닫기 ✕</button></div></div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap relwrap"><div class="relsites"><span>관련 기관</span><a href="https://www.sejong.go.kr" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시청 (감독기관) ↗</a><a href="https://www.sjaapd.or.kr/default/" target="_blank" rel="noopener" title="새 창 열림">세종시장애인복지시설협회 ↗</a></div></div><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
+<footer><div class="wrap relwrap"><div class="relsites"><span>관련 기관</span><a href="https://www.sejong.go.kr" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시청 (감독기관) ↗</a><a href="https://www.sjaapd.or.kr/default/" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시장애인권익옹호기관 ↗</a></div></div><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
 <a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/write/">직원 글쓰기</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
-<script src="/assets/site.js"></script></body></html>'''
+<script src="/assets/site.js?v={VER}"></script></body></html>'''
 
 WRITTEN = []
 BASE = 'https://sejongvill.github.io'  # 세종빌.com 연결 후 'https://www.xn--ix3bl7ch6i.com' 으로 바꾸기
@@ -218,7 +220,7 @@ news_tabs = tabset('소식 분류', NEWS_TABS, news_panes)
 PHOTO_TABS = [('전체', None, '/board/stories/'), ('일상 이야기', 'stories', '/board/stories/'), ('아름다운 이웃', 'neighbors', '/board/neighbors/')]
 allphoto = sorted([(k, p) for k in ('stories', 'neighbors') for p in P[k]], key=lambda x: x[1]['sort'], reverse=True)
 def pcard(k, p):
-    return (f'<a class="card" href="/board/{k}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">'
+    return (f'<a class="card pc-{k}" href="/board/{k}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">'
             f'<div class="cap"><small>{BOARD_META[k][0]} · {fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>')
 photo_panes = ['<div class="carousel"><div class="cards row3">' + ''.join([pcard(k, p) for k, p in allphoto if b is None or k == b][:30]) + '</div></div>' for _, b, _ in PHOTO_TABS]
 photo_tabs = tabset('사진 분류', PHOTO_TABS, photo_panes)

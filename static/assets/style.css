@@ -475,3 +475,12 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .ngrid.nscroll>*{scroll-snap-align:start}
 .relsites{flex-wrap:wrap}
 @media (max-width:900px){.ngrid.nscroll{grid-auto-columns:88%;gap:10px}.ngrid.nscroll .ncard:nth-child(n+5){display:flex}}
+/* 사진 카드 게시판별 파스텔 */
+.pc-stories .cap{background:#eaf5ec}
+.pc-stories .cap small{color:#3d7a50}
+.pc-neighbors .cap{background:#fcebef}
+.pc-neighbors .cap small{color:#b64563}
+.pc-stories,.pc-neighbors{border:1px solid var(--line)}
+.pc-stories .cap,.pc-neighbors .cap{flex:1}
+[data-theme=dark] .pc-stories .cap{background:#1f3326}[data-theme=dark] .pc-stories .cap small{color:#9fd8ad}
+[data-theme=dark] .pc-neighbors .cap{background:#3a2229}[data-theme=dark] .pc-neighbors .cap small{color:#f2a7ba}
