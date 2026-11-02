@@ -107,7 +107,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
     return f'''<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(t)}</title><meta name="description" content="{E(desc)}">
-<meta property="og:title" content="{E(t)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="/assets/img/group.jpg">
+<meta property="og:title" content="{E(t)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="{BASE}/assets/img/group.jpg"><meta property="og:type" content="website"><meta property="og:site_name" content="세종빌">
 <link rel="icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
@@ -122,13 +122,16 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <a class="btn-call" href="tel:{TEL}"><svg class="ico"><use href="#i-phone"/></svg>{TEL}</a><button class="allmenu-btn" type="button" aria-expanded="false" aria-controls="allmenu"><span class="bars"></span>전체메뉴</button></div>
 <div class="allmenu" id="allmenu" hidden><div class="wrap">{allmenu}<button class="allmenu-close" type="button">닫기 ✕</button></div></div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap relwrap"><div class="relsites"><span>관련 기관</span><a href="https://www.sejong.go.kr" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시청 (감독기관) ↗</a></div></div><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
+<footer><div class="wrap relwrap"><div class="relsites"><span>관련 기관</span><a href="https://www.sejong.go.kr" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시청 (감독기관) ↗</a><a href="https://www.sjaapd.or.kr/default/" target="_blank" rel="noopener" title="새 창 열림">세종시장애인복지시설협회 ↗</a></div></div><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
 <a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/write/">직원 글쓰기</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
 <script src="/assets/site.js"></script></body></html>'''
 
+WRITTEN = []
+BASE = 'https://sejongvill.github.io'  # 세종빌.com 연결 후 'https://www.xn--ix3bl7ch6i.com' 으로 바꾸기
 def write(path, s):
+    WRITTEN.append(path)
     full = f'{SITE}{path}'
     if full.endswith('/'): full += 'index.html'
     os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -209,15 +212,15 @@ def tabset(name, tabs, panes):
     return bar + ''.join(f'<div class="tp" role="tabpanel"{" hidden" if n else ""}>{pane}</div>' for n, pane in enumerate(panes))
 news_panes = []
 for label, kind, more in NEWS_TABS:
-    items = [x for x in allnews if kind is None or x[0] == kind][:6]
-    news_panes.append('<div class="ngrid">' + (''.join(ncard(*x) for x in items) or '<p class="note">아직 글이 없어요.</p>') + '</div>')
+    items = [x for x in allnews if kind is None or x[0] == kind][:18]
+    news_panes.append('<div class="carousel"><div class="cards ngrid nscroll">' + ''.join(ncard(*x) for x in items) + '</div></div>' if items else '<p class="note">아직 글이 없어요.</p>')
 news_tabs = tabset('소식 분류', NEWS_TABS, news_panes)
 PHOTO_TABS = [('전체', None, '/board/stories/'), ('일상 이야기', 'stories', '/board/stories/'), ('아름다운 이웃', 'neighbors', '/board/neighbors/')]
 allphoto = sorted([(k, p) for k in ('stories', 'neighbors') for p in P[k]], key=lambda x: x[1]['sort'], reverse=True)
 def pcard(k, p):
     return (f'<a class="card" href="/board/{k}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/group.jpg"}" alt="" loading="lazy">'
             f'<div class="cap"><small>{BOARD_META[k][0]} · {fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>')
-photo_panes = ['<div class="carousel"><div class="cards row3">' + ''.join([pcard(k, p) for k, p in allphoto if b is None or k == b][:9]) + '</div></div>' for _, b, _ in PHOTO_TABS]
+photo_panes = ['<div class="carousel"><div class="cards row3">' + ''.join([pcard(k, p) for k, p in allphoto if b is None or k == b][:30]) + '</div></div>' for _, b, _ in PHOTO_TABS]
 photo_tabs = tabset('사진 분류', PHOTO_TABS, photo_panes)
 
 home = f'''
@@ -236,10 +239,10 @@ home = f'''
 <section class="blk"><div class="wrap about">
 <div><div class="eyebrow">ABOUT</div><h2 class="t">한 사회라는 숲속에서<br>저마다의 빛깔로 자라는 사람들</h2>
 <p>같은 숲, 같은 햇볕 아래에서도 나무마다 자라는 모습은 다릅니다. 세종빌은 이용자 한 분 한 분의 욕구와 속도를 존중하며, 사랑과 봉사·섬김과 나눔으로 사람 중심의 가치를 실현합니다.</p>
-<div class="stats"><div><b>2003</b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026</b><span>새 단장 완료</span></div></div></div>
+<div class="stats"><div><b>2003<small>년</small></b><span>연기사랑마을로 시작</span></div><div><b>30<small>명</small></b><span>함께 사는 이용자</span></div><div><b>22<small>명</small></b><span>함께 일하는 직원</span></div><div><b>2026<small>년</small></b><span>새 단장 완료</span></div></div></div>
 <div class="aslides" aria-roledescription="carousel" aria-label="세종빌 일상 사진"><img class="as on" src="/assets/img/museum.jpg" alt="박물관 나들이 단체사진" style="object-position:center 45%" loading="lazy"><img class="as" src="/assets/img/cook.jpg" alt="함께 만든 음식 앞에서" style="object-position:center 40%" loading="lazy"><img class="as" src="/assets/img/sea.jpg" alt="바닷가 나들이" style="object-position:center 60%" loading="lazy"><img class="as" src="/assets/img/pine.jpg" alt="소나무 아래에서" style="object-position:center 50%" loading="lazy"><img class="as" src="/assets/img/lake.jpg" alt="호숫가 산책" style="object-position:center 70%" loading="lazy"><div class="adots" role="tablist"></div></div></div></section>
 <section class="blk"><div class="wrap">
-<div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div>
+<div class="sec-head"><div><div class="eyebrow">NEWS</div><h2 class="t">소식</h2></div><div class="headr"><div class="cnav" data-page="2"><button class="cprev" type="button" aria-label="이전 소식">‹</button><button class="cnext" type="button" aria-label="다음 소식">›</button></div><a class="more tabmore" href="/board/notice/">더 보기 <svg class="ico"><use href="#i-arrow"/></svg></a></div></div>
 <div class="newsrow"><div class="newsmain">{news_tabs}</div>{board_panel}</div></div></section>
 <section class="blk bg-cream photonews"><div class="wrap">
 <div class="sec-head"><div><div class="eyebrow">PHOTO</div><h2 class="t">사진으로 보는 세종빌</h2></div>
@@ -498,5 +501,7 @@ write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="w
 # 404, 기타
 write('/404.html', page('페이지를 찾을 수 없어요', '<div class="content"><div class="wrap" style="text-align:center;padding:80px 0"><p class="quote">페이지를 찾을 수 없어요</p><p class="lead">주소가 바뀌었거나 삭제된 페이지입니다.</p><div class="cta" style="justify-content:center"><a class="btn red" href="/">처음으로</a></div></div></div>'))
 open(f'{SITE}/.nojekyll', 'w').write('')
-open(f'{SITE}/robots.txt', 'w').write('User-agent: *\nAllow: /\n')
+open(f'{SITE}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /write/\nSitemap: {BASE}/sitemap.xml\n')
+_urls = [u for u in WRITTEN if not u.startswith(('/write', '/404', '/admin'))]
+open(f'{SITE}/sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{BASE}{u.replace("/index.html", "/")}</loc></url>\n' for u in _urls) + '</urlset>\n')
 print('done', sum(len(v) for v in P.values()), 'posts')

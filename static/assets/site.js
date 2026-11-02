@@ -73,9 +73,9 @@
   document.querySelectorAll('.cnav').forEach(function(nav){
     var sec=nav.closest('section'),pv=nav.querySelector('.cprev'),nx=nav.querySelector('.cnext');
     function row(){var c=[].filter.call(sec.querySelectorAll('.carousel'),function(x){return !x.closest('[hidden]')})[0];return c&&c.querySelector('.cards')}
-    function step(){var r=row(),a=r&&r.children[0];return a?a.getBoundingClientRect().width+22:300}
+    var pg=+nav.dataset.page||3;function step(){var r=row(),a=r&&r.children[0];return a?a.getBoundingClientRect().width+(pg===2?18:22):300}
     function upd(){var r=row();if(!r)return;pv.disabled=r.scrollLeft<5;nx.disabled=r.scrollLeft+r.clientWidth>=r.scrollWidth-5}
-    pv.onclick=function(){row().scrollBy({left:-step()*3,behavior:'smooth'})};nx.onclick=function(){row().scrollBy({left:step()*3,behavior:'smooth'})};
+    pv.onclick=function(){row().scrollBy({left:-step()*pg,behavior:'smooth'})};nx.onclick=function(){row().scrollBy({left:step()*pg,behavior:'smooth'})};
     sec.querySelectorAll('.carousel .cards').forEach(function(r){r.addEventListener('scroll',function(){clearTimeout(r._t);r._t=setTimeout(upd,80)})});
     window.addEventListener('resize',upd);sec.addEventListener('tabchange',upd);upd();
   });

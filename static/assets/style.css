@@ -469,3 +469,9 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .support{margin-top:80px}
 .about p{margin:18px 0 28px}
 @media (max-width:900px){section.blk{padding:52px 0}section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:4px}.sec-head{margin-bottom:20px}.support{margin-top:52px}}
+/* 소식 좌우 넘기기 */
+.ngrid.nscroll{display:grid;grid-template-columns:none;grid-template-rows:repeat(3,auto);grid-auto-flow:column;grid-auto-columns:calc((100% - 18px) / 2);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:4px 2px 10px}
+.ngrid.nscroll::-webkit-scrollbar{display:none}
+.ngrid.nscroll>*{scroll-snap-align:start}
+.relsites{flex-wrap:wrap}
+@media (max-width:900px){.ngrid.nscroll{grid-auto-columns:88%;gap:10px}.ngrid.nscroll .ncard:nth-child(n+5){display:flex}}
