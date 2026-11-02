@@ -390,3 +390,10 @@ table.tb{width:100%;border-collapse:collapse;background:var(--card);border-radiu
 .gnb .allmenu .wrap{display:grid;height:auto;align-items:start}
 @media (max-width:1240px){.btn-call{display:none}}
 @media (max-width:1040px) and (min-width:901px){.menu>li>a{padding:28px 7px;font-size:.93rem}}
+.nowbar.after{padding:0 0 72px;margin-top:-40px}
+footer .relwrap{display:block;padding-bottom:22px;margin-bottom:26px;border-bottom:1px solid #2e2a26}
+.relsites{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.relsites span{color:#7f776e;font-size:.85rem;font-weight:700;margin-right:6px}
+footer .relsites a{display:inline-flex;align-items:center;border:1px solid #4a443e;border-radius:30px;padding:8px 16px;color:#e8e2da;text-decoration:none;font-weight:600}
+footer .relsites a:hover{border-color:#fff;color:#fff}
+@media (max-width:900px){.nowbar.after{margin-top:-20px;padding-bottom:40px}}

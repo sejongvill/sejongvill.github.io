@@ -122,7 +122,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <a class="btn-call" href="tel:{TEL}"><svg class="ico"><use href="#i-phone"/></svg>{TEL}</a><button class="allmenu-btn" type="button" aria-expanded="false" aria-controls="allmenu"><span class="bars"></span>전체메뉴</button></div>
 <div class="allmenu" id="allmenu" hidden><div class="wrap">{allmenu}<button class="allmenu-close" type="button">닫기 ✕</button></div></div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
+<footer><div class="wrap relwrap"><div class="relsites"><span>관련 기관</span><a href="https://www.sejong.go.kr" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시청 (감독기관) ↗</a></div></div><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
 <a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/write/">직원 글쓰기</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
@@ -198,7 +198,6 @@ home = f'''
 <a href="/together/volunteer.html"><div class="qi"><svg class="ico"><use href="#i-hand"/></svg></div><div><b>자원봉사</b><small>신청 · 활동 안내</small></div></a>
 <a href="/about/location.html"><div class="qi"><svg class="ico"><use href="#i-pin"/></svg></div><div><b>오시는 길</b><small>전의면 양지편길 13-6</small></div></a>
 </div></nav>
-<section class="nowbar"><div class="wrap"><div class="nowgrid">{nowcards}</div></div></section>
 <section class="blk"><div class="wrap about">
 <div><div class="eyebrow">ABOUT</div><h2 class="t">한 사회라는 숲속에서<br>저마다의 빛깔로 자라는 사람들</h2>
 <p>같은 숲, 같은 햇볕 아래에서도 나무마다 자라는 모습은 다릅니다. 세종빌은 이용자 한 분 한 분의 욕구와 속도를 존중하며, 사랑과 봉사·섬김과 나눔으로 사람 중심의 가치를 실현합니다.</p>
@@ -213,6 +212,7 @@ home = f'''
 <div class="panel"><h3>공지사항 <a class="more" href="/board/notice/">전체</a></h3><ul class="list">{notices}</ul></div>
 <div class="panel"><h3>정보공개 <a class="more" href="/disclosure.html">전체</a></h3><p class="note" style="margin-bottom:16px">예산·결산과 회의록을 한곳에서 투명하게 공개합니다.</p><div class="docs">{docs}</div></div>
 </div></section>
+<section class="nowbar after"><div class="wrap"><div class="nowgrid">{nowcards}</div></div></section>
 <section class="band"><img src="/assets/img/campgroup.jpg" alt="" loading="lazy" style="object-position:center 45%">
 <div class="wrap"><div class="eyebrow" style="color:#ffd9d9">TOGETHER</div><p class="big">같은 숲, 같은 햇볕 아래<br>저마다의 빛깔로</p>
 <p style="margin-top:14px;opacity:.9">세종빌 가족들의 꿈과 희망이 가득한 이야기를 만나보세요.</p></div></section>
