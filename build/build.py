@@ -121,7 +121,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <main id="main">{body}</main>
 <footer><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
-<a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/admin/">직원 로그인</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
+<a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/write/">직원 글쓰기</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
 <script src="/assets/site.js"></script></body></html>'''
 
@@ -357,7 +357,7 @@ for key, posts in P.items():
             if not top and lp['images']:
                 src = lp['images'][0]
                 top = f'<h2 class="t" style="font-size:1.5rem;margin:0 0 14px">{"이번 주 식단" if key == "menu" else "이번 달 일정"} · {E(lp["title"])}</h2><a href="{src}" target="_blank" rel="noopener"><img class="att-img" src="{src}" alt="{E(lp["title"])}"></a><p class="note" style="margin:-4px 0 40px">그림을 누르면 크게 볼 수 있어요.</p>'
-        inner = top + f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px"><p class="note">전체 {len(posts)}건</p><a class="btn line writebtn" href="/admin/#/collections/{key}/new">✏️ 글쓰기</a></div>' + inner
+        inner = top + f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px"><p class="note">전체 {len(posts)}건</p><a class="btn line writebtn" href="/write/?b={key}">✏️ 글쓰기</a></div>' + inner
         write(f'/board/{key}/' + ('' if pg == 1 else f'page{pg}.html'), page(name, subpage(sec, name, name, inner), sec))
     for i, p in enumerate(posts):
         imgs = ''
@@ -411,6 +411,35 @@ join_body = f'''<div class="split"><div><p class="quote">세종빌 직원이신�
 <p class="note" id="joinmsg" role="status">{"" if FORM_ID else "신청 기능을 준비 중입니다. 급하신 분은 사무국(044-864-3015)으로 연락해 주세요."}</p>
 </form></div>'''
 write('/join.html', page('직원 회원가입 신청', subpage(4, '직원 회원가입 신청', '직원 회원가입 신청', join_body, '없음'), 4))
+
+
+# ---------- 간편 글쓰기 ----------
+board_opts = ''.join(f'<option value="{k}">{v[0]}</option>' for k, v in BOARD_META.items())
+write_body = f'''<div style="max-width:760px">
+<div id="loginBox" class="box joinform" hidden>
+<p class="quote" style="font-size:1.3rem;margin:0">직원 로그인</p>
+<p class="note">회원가입 승인 메일을 받고 정한 이메일·비밀번호로 로그인하세요. 한 번 로그인하면 이 기기에서 기억해요.</p>
+<form id="loginForm" class="joinform"><label><span>이메일</span><input id="lemail" type="email" required autocomplete="username"></label>
+<label><span>비밀번호</span><input id="lpw" type="password" required autocomplete="current-password"></label>
+<button class="btn red" type="submit">로그인</button><p class="note" id="lmsg" role="status"></p></form>
+<p class="note">아직 계정이 없으면 <a href="/join.html" style="text-decoration:underline">직원 회원가입 신청</a></p></div>
+<form id="writeForm" class="box joinform" hidden>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><p class="note"><b id="who"></b> · <button type="button" id="logout" style="text-decoration:underline">로그아웃</button></p>
+<label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label></div>
+<label><span>제목 <b class="req">*</b></span><input id="wtitle" required placeholder="예: 2026. 11. 2.(월) 가을 산책"></label>
+<label><span>내용</span><textarea id="wbody" rows="6" placeholder="간단히 적어 주세요. 줄바꿈도 그대로 보여요."></textarea></label>
+<div><span style="font-weight:600">사진</span>
+<label class="pick"><input id="photos" type="file" accept="image/*" multiple hidden>📷 사진 고르기 (여러 장 한 번에)</label>
+<p class="note" id="pcount"></p><div id="thumbs" class="thumbs"></div></div>
+<label><span>첨부파일 <small class="note">(한글·PDF·엑셀 등, 필요할 때만)</small></span><input id="attach" type="file" multiple></label>
+<button class="btn red" id="wsubmit" type="submit" style="justify-content:center">올리기</button>
+<p class="note" id="wmsg" role="status"></p>
+<p class="note">올린 글 고치기·지우기는 <a href="/admin/" style="text-decoration:underline">관리 화면</a>에서 할 수 있어요.</p></form>
+<div id="done" class="box" hidden style="text-align:center;padding:48px 24px"><p class="quote" style="font-size:1.5rem">올렸어요! 🎉</p>
+<p class="lead">2~3분 뒤 게시판에 보여요.</p><div class="cta" style="justify-content:center"><a class="btn red" id="doneLink" href="/">게시판으로 가기</a><button class="btn line" id="again" type="button">글 하나 더 쓰기</button></div></div>
+<p style="margin-top:20px"><a class="more" id="backLink" href="/">← 게시판으로 돌아가기</a></p></div>
+<script src="/assets/write.js"></script>'''
+write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="wrap"><div class="crumb">직원 글쓰기</div><h1><span id="boardName">게시판</span> 글쓰기</h1></div></div><div class="content"><div class="wrap">{write_body}</div></div>'))
 
 # 404, 기타
 write('/404.html', page('페이지를 찾을 수 없어요', '<div class="content"><div class="wrap" style="text-align:center;padding:80px 0"><p class="quote">페이지를 찾을 수 없어요</p><p class="lead">주소가 바뀌었거나 삭제된 페이지입니다.</p><div class="cta" style="justify-content:center"><a class="btn red" href="/">처음으로</a></div></div></div>'))

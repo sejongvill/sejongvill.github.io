@@ -270,3 +270,13 @@ table.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;
 .req{color:var(--red)}
 .joinform button[disabled]{opacity:.45;cursor:not-allowed}
 .writebtn{padding:9px 18px;font-size:.92rem}
+.pick{display:flex;align-items:center;justify-content:center;gap:8px;border:2px dashed var(--line);border-radius:14px;padding:22px;margin-top:8px;cursor:pointer;font-weight:700;background:var(--paper)}
+.pick:hover{border-color:var(--red);color:var(--red)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:8px}
+.th{position:relative}.th img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}
+.th button{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:16px;line-height:26px}
+.th span{position:absolute;left:4px;bottom:4px;background:var(--red);color:#fff;font-size:.72rem;font-weight:700;border-radius:8px;padding:1px 6px}
+[hidden]{display:none!important}
+.joinform>*,.joinform label{min-width:0}
+.joinform input,.joinform textarea,.joinform select{max-width:100%;width:100%}
+.joinform .ck input,.joinform input[type=checkbox]{width:auto}
