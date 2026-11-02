@@ -109,7 +109,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
     return f'''<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(t)}</title><meta name="description" content="{E(desc)}">
-<meta property="og:title" content="{E(t)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="{BASE}/assets/img/group.jpg"><meta property="og:type" content="website"><meta property="og:site_name" content="세종빌">
+<meta name="naver-site-verification" content="af1d2ee3863a6806c3de9d65cfd66fb2c2d8301a"><meta property="og:title" content="{E(t)}"><meta property="og:description" content="{E(desc)}"><meta property="og:image" content="{BASE}/assets/img/group.jpg"><meta property="og:type" content="website"><meta property="og:site_name" content="세종빌">
 <link rel="icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
