@@ -1,0 +1,457 @@
+# 세종빌 글쓰기 화면 설정
+# backend 부분은 로그인 서비스(DecapBridge) 연결 후 그쪽에서 준 설정으로 바꿉니다.
+backend:
+  name: github
+  repo: sejongvill/sejongvill.github.io
+  branch: main
+  commit_messages:
+    create: '{{collection}} 새 글: {{slug}}'
+    update: '{{collection}} 글 수정: {{slug}}'
+    delete: '{{collection}} 글 삭제: {{slug}}'
+    uploadMedia: '파일 올리기: {{path}}'
+    deleteMedia: '파일 삭제: {{path}}'
+locale: ko
+site_url: https://sejongvill.github.io
+display_url: https://sejongvill.github.io
+logo_url: /assets/img/logo.png
+media_folder: static/files/uploads
+public_folder: /files/uploads
+media_library:
+  name: default
+  config:
+    max_file_size: 15000000
+collections:
+- name: stories
+  label: 일상 이야기
+  label_singular: 일상 이야기
+  folder: content/stories
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 사진
+    name: images
+    widget: list
+    required: false
+    hint: 사진을 여러 장 올릴 수 있어요. 첫 번째 사진이 목록에 대표로 보여요.
+    field:
+      label: 사진
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
+- name: notice
+  label: 공지사항
+  label_singular: 공지사항
+  folder: content/notice
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 본문 그림
+    name: images
+    widget: list
+    required: false
+    hint: 공고문을 그림으로 넣을 때 사용해요. 보통은 첨부파일만 올리면 돼요.
+    field:
+      label: 본문 그림
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
+- name: menu
+  label: 금주의 식단
+  label_singular: 금주의 식단
+  folder: content/menu
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 식단표 사진
+    name: images
+    widget: list
+    required: false
+    hint: 식단표를 사진(그림) 파일로 올려 주세요. 글을 열면 바로 보여요. 엑셀 파일은 첨부파일에 함께 올려도 돼요.
+    field:
+      label: 식단표 사진
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
+- name: schedule
+  label: 주요 일정
+  label_singular: 주요 일정
+  folder: content/schedule
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 일정표 사진
+    name: images
+    widget: list
+    required: false
+    hint: 월간 일정표를 사진(그림) 파일로 올려 주세요.
+    field:
+      label: 일정표 사진
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
+- name: neighbors
+  label: 아름다운 이웃
+  label_singular: 아름다운 이웃
+  folder: content/neighbors
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 사진
+    name: images
+    widget: list
+    required: false
+    hint: 사진을 여러 장 올릴 수 있어요. 첫 번째 사진이 목록에 대표로 보여요.
+    field:
+      label: 사진
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
+- name: rights
+  label: 인권존중
+  label_singular: 인권존중
+  folder: content/rights
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 사진
+    name: images
+    widget: list
+    required: false
+    hint: 사진을 여러 장 올릴 수 있어요. 첫 번째 사진이 목록에 대표로 보여요.
+    field:
+      label: 사진
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
+- name: newsletter
+  label: 소식지
+  label_singular: 소식지
+  folder: content/newsletter
+  create: true
+  delete: true
+  slug: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}'
+  extension: md
+  format: frontmatter
+  summary: '{{date | date(''YYYY-MM-DD'')}}  {{title}}'
+  sortable_fields:
+    default:
+      field: date
+      direction: descending
+    fields:
+    - date
+    - title
+  fields:
+  - label: 제목
+    name: title
+    widget: string
+  - label: 날짜
+    name: date
+    widget: datetime
+    format: YYYY-MM-DD HH:mm
+    date_format: YYYY-MM-DD
+    time_format: HH:mm
+  - label: 소식지 그림
+    name: images
+    widget: list
+    required: false
+    hint: 사진을 여러 장 올릴 수 있어요. 첫 번째 사진이 목록에 대표로 보여요.
+    field:
+      label: 소식지 그림
+      name: image
+      widget: image
+      choose_url: false
+  - label: 내용
+    name: body
+    widget: markdown
+    required: false
+    buttons:
+    - bold
+    - link
+    - bulleted-list
+    - numbered-list
+    editor_components:
+    - image
+  - label: 첨부파일
+    name: files
+    widget: list
+    required: false
+    hint: 한글·PDF·엑셀 파일 등을 올리면 글 아래에서 내려받을 수 있어요.
+    fields:
+    - label: 파일
+      name: file
+      widget: file
+      choose_url: false
+    - label: 표시 이름 (비워두면 파일 이름)
+      name: name
+      widget: string
+      required: false
