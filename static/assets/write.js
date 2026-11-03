@@ -153,6 +153,7 @@
       if (board === 'notice') { var c0 = p.data.category || guessCat(p.data.title || ''); setBoard(DISC_CATS.indexOf(c0) >= 0 ? 'disclosure' : 'notice'); $('#catSel').value = c0; }
       (p.data.images || []).forEach(function (src) { if (src) picked.push({ old: src, url: src }); });
       (p.data.files || []).forEach(function (x) { if (typeof x === 'string') x = { file: x }; if (x && x.file) oldFiles.push({ name: x.name || x.file.split('/').pop(), file: x.file }); });
+      keep.fileCount = oldFiles.length;
       render(); renderFiles(); msg('');
       return who().then(function (id) {
         if (ADMINS.indexOf(id) >= 0 || (keep.author && keep.author === id)) return;
@@ -284,7 +285,8 @@
       if (board === 'notice') fm += 'category: ' + yq($('#catSel').value) + '\n';
       if (imgPaths.length) fm += 'images:\n' + imgPaths.map(function (x) { return '- ' + x; }).join('\n') + '\n';
       if (attPaths.length) fm += 'files:\n' + attPaths.map(function (x) { return '- name: ' + yq(x.name) + '\n  file: ' + x.file; }).join('\n') + '\n';
-      if (keep.previews && keep.previews.length) fm += 'previews:\n' + keep.previews.map(function (x) { return '- ' + x; }).join('\n') + '\n';
+      var filesChanged = newFiles.length > 0 || attPaths.length !== (keep.fileCount || 0);   // 첨부를 바꾸면 미리보기 그림을 새로 만들도록 비움
+      if (!filesChanged && keep.previews && keep.previews.length) fm += 'previews:\n' + keep.previews.map(function (x) { return '- ' + x; }).join('\n') + '\n';
       fm += '---\n' + body + '\n';
       entries.push({ path: mdPath(id), content: b64text(fm) });
       msg('올리는 중… 잠시만 기다려 주세요.');

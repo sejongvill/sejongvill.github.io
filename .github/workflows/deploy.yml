@@ -19,14 +19,18 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pillow pyyaml markdown
-      - name: 큰 사진 자동으로 줄이기
+      - name: 큰 사진 줄이기 · 식단표·일정표 엑셀을 그림으로
         run: |
           python build/shrink_uploads.py
-          if [ -n "$(git status --porcelain static/files/uploads)" ]; then
+          if [ "$(python build/make_previews.py --need)" != "0" ]; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libreoffice-calc libreoffice-writer poppler-utils fonts-noto-cjk > /dev/null
+            python build/make_previews.py
+          fi
+          if [ -n "$(git status --porcelain static/files content)" ]; then
             git config user.name "sejongvill-bot"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add static/files/uploads
-            git commit -m "사진 용량 자동 줄이기"
+            git add static/files content
+            git commit -m "사진 줄이기·미리보기 그림 자동 생성"
             git pull --rebase && git push || echo "다음 번에 다시 시도"
           fi
       - run: python build/build.py
