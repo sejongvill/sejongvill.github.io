@@ -342,9 +342,17 @@ hist = [("2024", [("12", "정태춘 이사장 취임")]), ("2021", [("11", "김�
         ("2010", [("01", "2층 종합프로그램실 및 강당 증축 (120평)")]), ("2006", [("10", "정원 49명으로 승인")]),
         ("2005", [("10", "시설 개보수 (심야전기)")]), ("2003", [("10", "신고시설 ‘연기사랑마을’ 설치")])]
 rows = ''.join(f'<div class="yr"><h3>{y}</h3><ul>' + ''.join(f'<li><span>{m}월</span><div>{t}</div></li>' for m, t in it) + '</ul></div>' for y, it in hist)
-write('/about/history.html', page('연혁', subpage(0, '연혁', '연혁', f'<div class="split"><div class="side"><p class="quote">2003년 연기사랑마을에서<br>오늘의 세종빌까지</p><img src="/assets/img/drawing.jpg" alt="" loading="lazy"></div><div>{rows}</div></div>'), 0))
+write('/about/history.html', page('연혁', subpage(0, '연혁', '연혁', f'<div class="split"><div class="side"><p class="quote">2003년 연기사랑마을에서<br>오늘의 세종빌까지</p><img src="/assets/img/drawing.jpg" alt="" loading="lazy"><div class="hist-pics">' + ''.join(f'<img src="/assets/img/hist/h{k}.jpg" alt="세종빌 활동 사진" loading="lazy">' for k in range(1, 7)) + f'</div></div><div>{rows}</div></div>'), 0))
 
-org = '''<img src="/assets/img/org.png" alt="조직도: 시설장 아래 사무국장, 서비스지원부장, 생활재활팀장, 행정지원팀장 등" style="width:100%;max-width:720px;margin:0 auto 48px;background:#fff;border-radius:18px;padding:20px">
+org = '''<div class="orgc" role="img" aria-label="조직도: 시설장 아래 사무국장, 서비스지원부장(권익옹호부장), 생활재활팀과 행정지원팀">
+<div class="oc-top"><div class="oc-com l"><span>인권지킴이단</span><span>서비스질보장위원회</span></div>
+<div class="oc-head"><small>Director</small>시설장</div>
+<div class="oc-com r"><span>시설운영위원회</span><span>인사위원회</span></div></div>
+<div class="oc-row"><div class="oc-l"><b class="oc-box staff">사무국장</b><i class="hl"></i></div><div></div></div>
+<div class="oc-row mid"><div></div><b class="oc-box dept">서비스지원부장</b><div class="oc-r"><i class="hl"></i><b class="oc-box dept2">권익옹호부장</b></div></div>
+<div class="oc-teams"><div class="oc-team"><b class="oc-box team">생활재활팀장</b><div class="oc-subs one"><div><span class="mem">생활재활교사</span></div></div></div>
+<div class="oc-team"><b class="oc-box team">행정지원팀장</b><div class="oc-subs"><div><em>영양급식지원</em><span class="mem">영양사</span><span class="mem">조리원</span></div><div><em>의료재활지원</em><span class="mem">간호사</span></div></div></div></div>
+</div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:16px">직원현황 <span class="note">(총 22명)</span></h3>
 <div class="tbl-scroll"><table class="tb"><tr><th>시설장</th><th>사무국장</th><th>사회재활교사</th><th>상담평가요원</th><th>행정팀장</th><th>생활팀장</th><th>생활재활교사</th><th>간호사</th><th>영양사</th><th>조리원</th></tr>
 <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>11</td><td>1</td><td>1</td><td>2</td></tr></table></div>
@@ -354,7 +362,7 @@ org = '''<img src="/assets/img/org.png" alt="조직도: 시설장 아래 사무�
 write('/about/org.html', page('조직·현황', subpage(0, '조직·현황', '조직·현황', org), 0))
 
 q = '세종특별자치시 전의면 양지편길 13-6'
-loc = f'''<div class="split"><div class="side"><img src="/assets/img/building.png" alt="세종빌 전경" style="aspect-ratio:4/3;object-fit:cover"></div><div>
+loc = f'''<div class="split"><div class="side"><img src="/assets/img/building.png" alt="세종빌 전경" style="aspect-ratio:4/3;object-fit:cover"><figure class="aerial"><img src="/assets/img/aerial.jpg" alt="세종빌 전경 (AI 보정 이미지)" loading="lazy"><figcaption>세종빌 전경</figcaption></figure></div><div>
 <p class="quote">세종빌 (구, 세종복지원)</p><p class="lead">{ADDR}</p>
 <p style="margin-top:12px">TEL <a href="tel:{TEL}"><b>{TEL}</b></a> · FAX 044-864-3016 · <a href="mailto:yengi363@naver.com">yengi363@naver.com</a></p>
 <div class="cta"><a class="btn red" href="https://map.naver.com/p/search/{q}" target="_blank" rel="noopener">네이버 지도에서 보기</a><a class="btn line" href="https://map.kakao.com/?q={q}" target="_blank" rel="noopener">카카오맵에서 보기</a></div>
