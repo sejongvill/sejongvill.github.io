@@ -384,7 +384,7 @@ SVCS = [
 ]
 def svc_row(n, t):
     name, tag, desc, pts, sl, cnt = t
-    imgs = ''.join(f'<img src="/assets/img/svc/s{sl}_{k}.jpg" alt="{name} 활동 사진" loading="lazy">' for k in range(1, cnt + 1))
+    imgs = ''.join(f'<img src="/assets/img/svc/s{sl}_{k}.jpg?v=3" alt="{name} 활동 사진" loading="lazy">' for k in range(1, cnt + 1))
     return (f'<article class="svc-row{" rev" if n % 2 else ""}"><div class="svc-txt"><span class="num">{n+1:02d}</span><div class="eyebrow">{tag}</div><h3>{name}</h3><p>{desc}</p>'
             f'<ul class="svc-pts">' + ''.join(f'<li>{x}</li>' for x in pts) + f'</ul></div><div class="svc-pics n{cnt}">{imgs}</div></article>')
 svc = ('<p class="lead" style="max-width:760px">세종빌은 사례회의를 통해 이용자 한 분 한 분에게 맞는 서비스를 계획하고, 일상부터 건강·자립·권리까지 삶 전체를 함께 지원합니다.</p>'
