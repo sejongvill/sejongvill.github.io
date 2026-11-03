@@ -404,21 +404,25 @@ write('/admission.html', page('입주 안내', subpage(2, '입주 안내', '입�
 
 # ---------- 함께하기 ----------
 sup = f'''<div class="split"><div><p class="quote">여러분의 작은 정성이<br>세종빌에 큰 힘이 됩니다</p><p class="lead">세종빌과 함께하는 사랑나누기에 동참해 주세요.</p>
-<div class="light" style="margin-top:28px">{accts()}</div></div>
+<div class="light" style="margin-top:28px">{accts()}</div>
+<figure class="side-pic"><img src="/assets/img/tog/p1.jpg" alt="후원받은 생활용품" loading="lazy"><figcaption>보내주신 생활용품은 이용자들의 일상에 소중히 쓰입니다</figcaption></figure></div>
 <div><div class="grid-cards" style="margin-top:0;grid-template-columns:1fr">
 <div class="box"><h4>재정후원</h4><p>지적장애인들에게 필요한 재활서비스와 기관 운영에 필요한 사업비를 정기적으로 후원하실 수 있습니다.</p></div>
 <div class="box"><h4>저금통후원</h4><p>나눔 저금통에 동전을 모아 전해 주실 수 있습니다. 동전이 할 수 있는 가장 아름다운 일입니다.</p></div>
 <div class="box"><h4>물품후원</h4><p>생활용품, 식품 등 지적장애인들에게 필요한 각종 물품을 후원하실 수 있습니다.</p></div>
 <div class="box"><h4>결연후원</h4><p>세종빌의 지적장애인과 1:1 결연을 맺어 매월 일정 금액을 후원하실 수 있습니다.</p></div>
-<div class="box"><h4>문의 및 상담</h4><p>행정지원팀 TEL <a href="tel:{TEL}"><b>{TEL}</b></a> / FAX 044-864-3016</p></div></div></div></div>'''
+<div class="box"><h4>문의 및 상담</h4><p>행정지원팀 TEL <a href="tel:{TEL}"><b>{TEL}</b></a> / FAX 044-864-3016</p></div></div></div></div>
+<div class="tog-head"><h3>나눔이 전해진 순간들</h3><a href="/board/neighbors/">아름다운 이웃 소식 더보기 →</a></div>
+<div class="pic-strip"><figure><img src="/assets/img/tog/p2.jpg" alt="후원금 전달 (2025. 9.)" loading="lazy"><figcaption>후원금 전달 (2025. 9.)</figcaption></figure><figure><img src="/assets/img/tog/p3.jpg" alt="후원금 전달 (2026. 9.)" loading="lazy"><figcaption>후원금 전달 (2026. 9.)</figcaption></figure><figure><img src="/assets/img/tog/v4.jpg" alt="봉사자 치킨 나눔 (2026. 7.)" loading="lazy"><figcaption>봉사자 치킨 나눔 (2026. 7.)</figcaption></figure></div>'''
 write('/together/support.html', page('후원 안내', subpage(3, '후원 안내', '후원 안내', sup), 3))
 
 vol = f'''<p class="quote">작은 손길이 모여 큰 힘이 됩니다</p><p class="lead">세종빌과 함께할 자원봉사자를 모집합니다. 신청은 전화(<a href="tel:{TEL}">{TEL}</a>), 방문, 자원봉사센터를 통해 하실 수 있습니다.</p>
+<div class="pic-strip"><figure><img src="/assets/img/tog/v1.jpg" alt="여명교회 이미용 봉사" loading="lazy"><figcaption>여명교회 이미용 봉사</figcaption></figure><figure><img src="/assets/img/tog/v2.jpg" alt="재능나눔 공연" loading="lazy"><figcaption>재능나눔 공연</figcaption></figure><figure><img src="/assets/img/tog/v5.jpg" alt="봉사자 치킨 나눔" loading="lazy"><figcaption>봉사자 치킨 나눔</figcaption></figure></div>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:40px 0 16px">활동 절차</h3>
 <ol class="steps"><li><b>신청 접수</b><span>전화·방문·봉사센터</span></li><li><b>교육</b><span>오리엔테이션</span></li><li><b>활동처 배치</b></li><li><b>봉사활동</b></li><li><b>평가</b></li></ol>
 <h3 style="font-family:var(--serif);font-size:1.4rem;margin:48px 0 16px">활동 내용</h3>
-<div class="grid-cards" style="margin-top:0"><div class="box"><h4>일상생활 보조</h4><p>청소, 식사보조, 목욕, 세탁, 산책보조 등</p></div><div class="box"><h4>생활 지원</h4><p>음식 지원, 김장, 설비 보수, 환경 관리 등</p></div>
-<div class="box"><h4>행사 보조</h4><p>나들이, 장애인의 날, 하계캠프, 소풍 등</p></div><div class="box"><h4>프로그램</h4><p>학습지도, 놀이, 보행훈련, 기초 생활지도, 문화체험, 공연 등</p></div></div>
+<div class="grid-cards" style="margin-top:0"><div class="box has-img"><img src="/assets/img/tog/v3.jpg" alt="" loading="lazy"><h4>일상생활 보조</h4><p>청소, 식사보조, 목욕, 세탁, 산책보조 등</p></div><div class="box has-img"><img src="/assets/img/tog/v4.jpg" alt="" loading="lazy"><h4>생활 지원</h4><p>음식 지원, 김장, 설비 보수, 환경 관리 등</p></div>
+<div class="box has-img"><img src="/assets/img/campgroup.jpg" alt="" loading="lazy"><h4>행사 보조</h4><p>나들이, 장애인의 날, 하계캠프, 소풍 등</p></div><div class="box has-img"><img src="/assets/img/tog/v2.jpg" alt="" loading="lazy"><h4>프로그램</h4><p>학습지도, 놀이, 보행훈련, 기초 생활지도, 문화체험, 공연 등</p></div></div>
 <div class="grid-cards"><div class="box"><h4>활동 원칙</h4><p>활동 가능 시간은 매일 09시~18시입니다. 간편하고 활동적인 복장을 착용하고, 약속한 시간을 지켜 주세요(변경 시 사전 연락). 초등학생은 보호자와 함께 오셔야 하며, 정기 봉사는 주 또는 월 1회 이상 가능해야 합니다. 활동을 마치면 활동일지를 기록합니다.</p></div>
 <div class="box"><h4>에티켓</h4><p>이용장애인의 인권과 자기선택권·자기결정권을 존중해 주세요. 무분별한 약속을 하지 않고, 안전을 우선으로 생각합니다. 놀라거나 비판하거나 지시하지 않으며, 항상 일관되게 행동합니다. 해결하기 어려운 문제는 담당교사와 의논하고, 서로 예의를 지키며 존칭어를 사용합니다.</p></div></div>'''
 write('/together/volunteer.html', page('자원봉사 안내', subpage(3, '자원봉사 안내', '자원봉사 안내', vol), 3))
@@ -427,7 +431,8 @@ contact = f'''<div class="grid-cards" style="margin-top:0">
 <div class="box"><h4>전화</h4><p><a href="tel:{TEL}"><b style="font-size:1.3rem;color:var(--red)">{TEL}</b></a><br>평일 09:00~18:00</p></div>
 <div class="box"><h4>팩스</h4><p><b style="font-size:1.3rem">044-864-3016</b></p></div>
 <div class="box"><h4>이메일</h4><p><a href="mailto:yengi363@naver.com"><b style="font-size:1.15rem">yengi363@naver.com</b></a></p></div></div>
-<p class="note" style="margin-top:24px">입주·후원·자원봉사 등 궁금한 점은 전화나 이메일로 편하게 문의해 주세요.</p>'''
+<p class="note" style="margin-top:24px">입주·후원·자원봉사 등 궁금한 점은 전화나 이메일로 편하게 문의해 주세요.</p>
+<div class="contact-visit"><img src="/assets/img/aerial.jpg" alt="세종빌 전경" loading="lazy"><div><h3 class="cv-title">언제든 편하게<br>찾아와 주세요</h3><p class="lead">{ADDR}</p><div class="cta"><a class="btn red" href="/about/location.html">오시는 길 보기</a><a class="btn line" href="/together/volunteer.html">자원봉사 안내</a></div></div></div>'''
 write('/together/contact.html', page('문의하기', subpage(3, '문의하기', '문의하기', contact), 3))
 
 write('/privacy.html', page('개인정보처리방침', subpage(4, '개인정보처리방침', '개인정보처리방침', '''<div class="prose"><p>세종빌 홈페이지는 회원가입이나 별도의 개인정보 입력 기능을 운영하지 않으며, 방문자의 개인정보를 수집하지 않습니다.</p>

@@ -641,3 +641,22 @@ a.card{position:relative}
  .oc-subs .mem{min-width:0;width:100%;font-size:.84rem}
  .oc-subs em{font-size:.82rem}
 }
+
+/* 함께하기 사진 */
+.pic-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:32px 0 8px}
+.pic-strip figure,.side-pic{margin:0}
+.pic-strip img,.side-pic img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px}
+.pic-strip figcaption,.side-pic figcaption{font-size:.84rem;color:var(--mute);margin-top:8px;text-align:center}
+.side-pic{margin-top:24px}
+.tog-head{display:flex;justify-content:space-between;align-items:flex-end;margin:64px 0 0;gap:12px;flex-wrap:wrap}
+.tog-head h3{font-family:var(--serif);font-size:1.4rem}
+.tog-head a{font-size:.92rem;color:var(--red);font-weight:600}
+.tog-head+.pic-strip{margin-top:18px}
+.box.has-img{padding-top:0;overflow:hidden}
+.box.has-img img{width:calc(100% + 56px);max-width:none;margin:0 -28px 20px;aspect-ratio:16/10;object-fit:cover}
+.contact-visit{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;margin-top:48px;background:var(--card);border-radius:22px;overflow:hidden}
+.contact-visit img{width:100%;height:100%;min-height:280px;object-fit:cover}
+.contact-visit>div{padding:32px 32px 32px 0}
+@media(max-width:760px){.pic-strip{grid-template-columns:1fr 1fr}.pic-strip figure:first-child{grid-column:1/-1}
+ .contact-visit{grid-template-columns:1fr;gap:0}.contact-visit>div{padding:24px}.contact-visit img{min-height:200px;aspect-ratio:16/10}}
+.cv-title{font-family:var(--serif);font-size:1.6rem;line-height:1.45;margin-bottom:14px}
