@@ -138,3 +138,42 @@
   function run(){clearInterval(t);if(!still)t=setInterval(function(){go(i+1)},5000)}
   run();
 })();
+(function(){ /* 새 글 알림: 메뉴의 N 표시(3일) · NEW 라벨(3일) · 상단 알림 띠(7일) */
+  if(!window.fetch)return;
+  var NEW_DAYS=3, BAR_DAYS=7, DAY=864e5;
+  fetch('/assets/new.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(list){
+    var now=Date.now();
+    function age(x){var d=x.d.length===10?x.d+'T00:00:00':(x.d.length===16?x.d+':00':x.d);var t=Date.parse(d+'+09:00');return isNaN(t)?1e15:now-t}
+    var fresh=list.filter(function(x){return age(x)<NEW_DAYS*DAY});
+    // 1) 메뉴·탭·전체메뉴에 N 표시
+    var boards={};fresh.forEach(function(x){x.b.forEach(function(b){boards[b]=1})});
+    function badge(a){if(!a.querySelector('.nb'))a.insertAdjacentHTML('beforeend','<span class="nb" aria-label="새 글">N</span>')}
+    document.querySelectorAll('.menu a, .tabs a, #allmenu a').forEach(function(a){
+      if(boards[a.getAttribute('href')]){badge(a);var li=a.closest('.menu > li');if(li){var top=li.querySelector(':scope > a');if(top)badge(top)}
+        var col=a.closest('.am-col');if(col){var h=col.querySelector('.am-h');if(h)badge(h)}}
+    });
+    // 2) 새 글 카드·목록에 NEW
+    var urls={};fresh.forEach(function(x){urls[x.u]=1});
+    document.querySelectorAll('a.card, a.ncard, .board-list a, .bs').forEach(function(a){
+      if(!urls[a.getAttribute('href')]||a.querySelector('.newtag'))return;
+      if(a.classList.contains('card'))a.insertAdjacentHTML('afterbegin','<span class="newtag">NEW</span>');
+      else{var tt=a.querySelector('.tt, b');if(tt)tt.insertAdjacentHTML('beforeend',' <span class="newdot">NEW</span>')}
+    });
+    // 3) 상단 알림 띠
+    var bar=list.filter(function(x){return age(x)<BAR_DAYS*DAY}).slice(0,5);
+    var gnb=document.querySelector('header.gnb');if(!bar.length||!gnb)return;
+    function ago(x){var n=Math.floor(age(x)/DAY);return n<1?'오늘':n+'일 전'}
+    var el=document.createElement('div');el.className='ticker';el.setAttribute('role','region');el.setAttribute('aria-label','새 글 알림');
+    el.innerHTML='<div class="wrap"><span class="lb">📢 새 글</span><a class="tx" href="#"></a><div class="tnav">'+(bar.length>1?'<span class="tc"></span><button type="button" class="tp" aria-label="이전 새 글">‹</button><button type="button" class="tn" aria-label="다음 새 글">›</button>':'')+'</div></div>';
+    gnb.parentNode.insertBefore(el,gnb.nextSibling);
+    var i=0,tx=el.querySelector('.tx'),tc=el.querySelector('.tc'),t;
+    function show(k){i=(k+bar.length)%bar.length;var x=bar[i];tx.href=x.u;tx.innerHTML='';
+      var b=document.createElement('b');b.textContent='['+x.l+']';var s=document.createElement('span');s.textContent=' '+x.t;var sm=document.createElement('small');sm.textContent=ago(x);
+      tx.appendChild(b);tx.appendChild(s);tx.appendChild(sm);if(tc)tc.textContent=(i+1)+' / '+bar.length}
+    var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function run(){clearInterval(t);if(!still&&bar.length>1)t=setInterval(function(){show(i+1)},5000)}
+    if(bar.length>1){el.querySelector('.tp').onclick=function(){show(i-1);run()};el.querySelector('.tn').onclick=function(){show(i+1);run()}}
+    el.addEventListener('mouseenter',function(){clearInterval(t)});el.addEventListener('mouseleave',run);
+    show(0);run();
+  }).catch(function(){});
+})();

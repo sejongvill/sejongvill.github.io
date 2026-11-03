@@ -557,3 +557,18 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .post-head .meta .wr{font-weight:600;color:var(--ink2)}
 .board-list .wr{flex:none;width:92px;text-align:center;color:var(--mute);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:600px){.board-list .wr{width:auto;font-size:.8rem}}
+/* 새 글 알림 */
+.nb{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#e8323c;color:#fff;font-size:10px;font-weight:800;margin-left:4px;vertical-align:top;line-height:1;font-family:Arial,sans-serif}
+.newtag{position:absolute;top:12px;left:12px;background:#e8323c;color:#fff;font-weight:800;font-size:12px;padding:3px 9px;border-radius:6px;letter-spacing:.5px;z-index:2}
+a.card{position:relative}
+.newdot{display:inline-block;color:#e8323c;font-weight:800;font-size:.72rem;margin-left:4px;vertical-align:middle}
+.ticker{background:#fff4f4;border-bottom:1px solid #f3d0d3}
+.ticker .wrap{display:flex;align-items:center;gap:14px;min-height:50px}
+.ticker .lb{background:var(--red);color:#fff;font-weight:800;padding:4px 12px;border-radius:20px;font-size:.85rem;flex:none}
+.ticker .tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.98rem}
+.ticker .tx b{color:var(--red);margin-right:2px}.ticker .tx:hover span{text-decoration:underline}
+.ticker .tx small{color:var(--mute);margin-left:10px;font-size:.82rem}
+.ticker .tnav{display:flex;gap:6px;align-items:center;color:var(--mute);font-size:.85rem;flex:none}
+.ticker .tnav button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);line-height:1}
+[data-theme=dark] .ticker{background:#2b2224;border-color:#4a2f33}
+@media (max-width:900px){.ticker .wrap{gap:8px;min-height:46px}.ticker .lb{font-size:.78rem;padding:3px 9px}.ticker .tx{font-size:.9rem}.ticker .tx small{display:none}.ticker .tc{display:none}}

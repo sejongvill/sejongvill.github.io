@@ -1,6 +1,6 @@
 """세종빌 홈페이지 생성기 — content/ 의 글 파일과 static/ 을 읽어 _site/ 를 만든다.
 깃허브 Actions가 글이 올라올 때마다 자동으로 실행한다."""
-import os, shutil, html, re, math, glob, hashlib
+import os, shutil, html, re, math, glob, hashlib, json
 import yaml, markdown
 from PIL import Image, ImageOps
 
@@ -544,6 +544,14 @@ write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="w
 
 # 404, 기타
 write('/404.html', page('페이지를 찾을 수 없어요', '<div class="content"><div class="wrap" style="text-align:center;padding:80px 0"><p class="quote">페이지를 찾을 수 없어요</p><p class="lead">주소가 바뀌었거나 삭제된 페이지입니다.</p><div class="cta" style="justify-content:center"><a class="btn red" href="/">처음으로</a></div></div></div>'))
+# 새 글 알림용 목록 (최근 글 20개) — 홈페이지가 열릴 때 site.js가 읽어 N 표시·알림 띠를 만듦
+_recent = sorted([(k, p) for k in P for p in P[k] if p['date']], key=lambda x: x[1]['date'], reverse=True)[:20]
+_items = []
+for k, p in _recent:
+    dc = disc_cat(p) if k == 'notice' else None
+    _items.append({'u': f'/board/{k}/{p["id"]}.html', 'b': ['/board/' + k + '/'] + (['/disclosure.html'] if dc else []),
+                   'l': '정보공개' if dc else BOARD_META[k][0], 't': p['title'], 'd': p['date'].replace(' ', 'T')})
+open(f'{SITE}/assets/new.json', 'w', encoding='utf-8').write(json.dumps(_items, ensure_ascii=False))
 open(f'{SITE}/.nojekyll', 'w').write('')
 open(f'{SITE}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /write/\nSitemap: {BASE}/sitemap.xml\n')
 _urls = [u for u in WRITTEN if not u.startswith(('/write', '/404', '/admin'))]
