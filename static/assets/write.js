@@ -211,8 +211,10 @@
   }
   function myName() {   // 디캡브릿지에 등록된 이름 (게시판에 작성자로 표시)
     var s = session() || {};
-    if (s.name) return Promise.resolve(s.name);
-    return token().then(function (t) { return fetch(IDENTITY + '/user', { headers: { Authorization: 'Bearer ' + t } }); })
+    return who().then(function (id) {
+      if (ADMINS.indexOf(id) >= 0) return '관리자';   // 관리자는 이름 대신 '관리자'로 표시
+      if (s.name) return s.name;
+      return token().then(function (t) { return fetch(IDENTITY + '/user', { headers: { Authorization: 'Bearer ' + t } }); })
       .then(function (r) { return r.ok ? r.json() : {}; })
       .then(function (u) {
         var m = u.user_metadata || {};
@@ -220,6 +222,7 @@
         var cur = store('sv-auth'); if (cur) { cur.name = n; store('sv-auth', cur); }
         return n;
       }).catch(function () { return '세종빌 직원'; });
+    });
   }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function yq(s) { return JSON.stringify(s); }
