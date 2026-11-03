@@ -572,3 +572,8 @@ a.card{position:relative}
 .ticker .tnav button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);line-height:1}
 [data-theme=dark] .ticker{background:#2b2224;border-color:#4a2f33}
 @media (max-width:900px){.ticker .wrap{gap:8px;min-height:46px}.ticker .lb{font-size:.78rem;padding:3px 9px}.ticker .tx{font-size:.9rem}.ticker .tx small{display:none}.ticker .tc{display:none}}
+/* 메인 손글씨 슬로건 */
+.hero2 h1.slogan{margin:10px 0 14px;line-height:0}
+.hero2 h1.slogan img{position:static;opacity:1;width:100%;max-width:440px;height:auto;display:block;object-fit:contain;inset:auto}
+[data-theme=dark] .hero2 h1.slogan img{filter:invert(1) hue-rotate(180deg) brightness(1.15)}
+@media (max-width:900px){.hero2 h1.slogan img{max-width:320px}}
