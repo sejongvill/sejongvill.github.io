@@ -178,7 +178,7 @@
       d.querySelector('button').onclick = function () { if (p.file) URL.revokeObjectURL(p.url); picked.splice(i, 1); render(); };
       box.appendChild(d);
     });
-    $('#pcount').textContent = picked.length ? picked.length + '장 (첫 번째 사진이 대표 사진)' : '';
+    $('#pcount').textContent = picked.length ? picked.length + ' / ' + MAX_PHOTOS + '장 (첫 번째 사진이 대표 사진)' : '최대 ' + MAX_PHOTOS + '장';
   }
   function renderFiles() {
     var box = $('#oldFiles'); box.innerHTML = '';
@@ -190,17 +190,37 @@
       box.appendChild(li);
     });
   }
+  var MAX_PHOTOS = 10;   // 글 하나에 올릴 수 있는 사진 수 (홈페이지 용량 관리)
   $('#photos').addEventListener('change', function () {
-    [].forEach.call(this.files, function (f) { if (/^image\//.test(f.type) || /\.(heic|heif)$/i.test(f.name)) picked.push({ file: f, url: URL.createObjectURL(f) }); });
-    this.value = ''; render();
+    var files = [].slice.call(this.files), over = 0, heicBad = 0;
+    this.value = '';
+    var chain = Promise.resolve();
+    files.forEach(function (f) {
+      var heic = /image\/hei[cf]/i.test(f.type) || /\.(heic|heif)$/i.test(f.name);
+      if (!heic && !/^image\//.test(f.type)) return;
+      chain = chain.then(function () {
+        if (picked.length >= MAX_PHOTOS) { over++; return; }
+        if (!heic) { picked.push({ file: f, url: URL.createObjectURL(f) }); return; }
+        // 아이폰 사진(HEIC): 이 브라우저가 읽을 수 있으면 줄여서 올리고, 못 읽으면 안내
+        return createImageBitmap(f).then(function () { picked.push({ file: f, url: URL.createObjectURL(f), heic: true }); })
+          .catch(function () { heicBad++; });
+      });
+    });
+    chain.then(function () {
+      render();
+      var t = [];
+      if (over) t.push('사진은 한 글에 최대 ' + MAX_PHOTOS + '장까지 올릴 수 있어요. 잘 나온 사진 위주로 골라 주세요. (' + over + '장 제외)');
+      if (heicBad) t.push('아이폰 사진(HEIC) ' + heicBad + '장은 이 컴퓨터에서 열 수 없어 뺐어요. 휴대폰에서 바로 올리거나 JPG로 바꿔 올려 주세요.');
+      if (t.length) msg(t.join(' '), true);
+    });
   });
   function shrink(file) {
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return file.arrayBuffer().then(function (b) { return { buf: b, ext: (file.name.split('.').pop() || 'jpg').toLowerCase() }; });
+    if (!/^image\/(jpeg|png|webp|hei[cf])$/i.test(file.type) && !/\.(heic|heif)$/i.test(file.name)) return file.arrayBuffer().then(function (b) { return { buf: b, ext: (file.name.split('.').pop() || 'jpg').toLowerCase() }; });
     return createImageBitmap(file, { imageOrientation: 'from-image' }).then(function (bmp) {
-      var max = 1600, w = bmp.width, h = bmp.height, k = Math.min(1, max / Math.max(w, h));
+      var max = 1280, w = bmp.width, h = bmp.height, k = Math.min(1, max / Math.max(w, h));
       var c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
       c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-      return new Promise(function (res) { c.toBlob(function (b) { b.arrayBuffer().then(function (buf) { res({ buf: buf, ext: 'jpg' }); }); }, 'image/jpeg', 0.84); });
+      return new Promise(function (res) { c.toBlob(function (b) { b.arrayBuffer().then(function (buf) { res({ buf: buf, ext: 'jpg' }); }); }, 'image/jpeg', 0.8); });
     }).catch(function () { return file.arrayBuffer().then(function (b) { return { buf: b, ext: 'jpg' }; }); });
   }
   function who() {   // 로그인한 사람의 이메일을 알아볼 수 없게 바꾼 값 (글쓴이 확인용)

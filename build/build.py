@@ -32,8 +32,8 @@ for f in glob.glob(f'{SITE}/files/uploads/**/*', recursive=True):
     if f.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):
         try:
             im = ImageOps.exif_transpose(Image.open(f))
-            if max(im.size) > 1600 or os.path.getsize(f) > 900_000:
-                im.thumbnail((1600, 1600), Image.LANCZOS)
+            if max(im.size) > 1280 or os.path.getsize(f) > 450_000:
+                im.thumbnail((1280, 1280), Image.LANCZOS)
                 if f.lower().endswith('.png') and im.mode in ('RGBA', 'P'):
                     im.save(f, optimize=True)
                 else:
@@ -530,7 +530,7 @@ write_body = f'''<div style="max-width:760px">
 <label><span>제목 <b class="req">*</b></span><input id="wtitle" required placeholder="예: 2026. 11. 2.(월) 가을 산책"></label>
 <label><span>내용</span><textarea id="wbody" rows="6" placeholder="간단히 적어 주세요. 줄바꿈도 그대로 보여요."></textarea></label>
 <div><span style="font-weight:600">사진</span>
-<label class="pick"><input id="photos" type="file" accept="image/*" multiple hidden>📷 사진 고르기 (여러 장 한 번에)</label>
+<label class="pick"><input id="photos" type="file" accept="image/*" multiple hidden>📷 사진 고르기 (최대 10장, 여러 장 한 번에)</label>
 <p class="note" id="pcount"></p><div id="thumbs" class="thumbs"></div></div>
 <div><span style="font-weight:600">첨부파일 <small class="note">(한글·PDF·엑셀 등, 필요할 때만)</small></span><ul id="oldFiles" style="list-style:none;margin:6px 0"></ul><input id="attach" type="file" multiple style="font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px;width:100%;background:var(--paper)"></div>
 <button class="btn red" id="wsubmit" type="submit" style="justify-content:center">올리기</button><button class="btn line" id="delBtn" type="button" hidden style="justify-content:center;color:var(--red);border-color:var(--red)">이 글 삭제</button>
