@@ -64,7 +64,7 @@ for key in BOARDS:
         text = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', body))).strip()
         posts.append({'id': os.path.splitext(os.path.basename(f))[0], 'title': str(fm.get('title', '제목 없음')),
                       'date': d[:10], 'sort': d, 'body': body, 'text': text[:160], 'images': imgs, 'files': files,
-                      'previews': fm.get('previews') or [], 'author': str(fm.get('author') or ''), 'cat': str(fm.get('category') or '')})
+                      'previews': fm.get('previews') or [], 'author': str(fm.get('author') or ''), 'cat': str(fm.get('category') or ''), 'writer': str(fm.get('writer') or '관리자')})
     P[key] = sorted(posts, key=lambda p: p['sort'], reverse=True)
     for n, p in enumerate(reversed(P[key]), 1): p['no'] = n
 
@@ -437,9 +437,9 @@ for key, posts in P.items():
     for pg in range(1, pages + 1):
         chunk = posts[(pg - 1) * PER: pg * PER]
         if gallery:
-            inner = '<div class="cards">' + ''.join(f'''<a class="card" href="/board/{key}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/logo.png"}" alt="" loading="lazy"><div class="cap"><small>{fmt(p["date"])}</small><b>{E(p["title"])}</b></div></a>''' for p in chunk) + '</div>'
+            inner = '<div class="cards">' + ''.join(f'''<a class="card" href="/board/{key}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/logo.png"}" alt="" loading="lazy"><div class="cap"><small>{fmt(p["date"])} · {E(p["writer"])}</small><b>{E(p["title"])}</b></div></a>''' for p in chunk) + '</div>'
         else:
-            inner = '<ul class="board-list">' + ''.join(f'''<li><a href="/board/{key}/{p["id"]}.html"><span class="no">{p["no"]}</span>{f'<span class="chip{" r" if notice_head(p) == "채용" else ""}">{notice_head(p)}</span>' if key == "notice" else ""}<span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<time>{p["date"]}</time></a></li>''' for p in chunk) + '</ul>'
+            inner = '<ul class="board-list">' + ''.join(f'''<li><a href="/board/{key}/{p["id"]}.html"><span class="no">{p["no"]}</span>{f'<span class="chip{" r" if notice_head(p) == "채용" else ""}">{notice_head(p)}</span>' if key == "notice" else ""}<span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<span class="wr">{E(p["writer"])}</span><time>{p["date"]}</time></a></li>''' for p in chunk) + '</ul>'
         if pages > 1:
             inner += '<nav class="pager" aria-label="페이지">' + ''.join(
                 f'<span aria-current="page">{i}</span>' if i == pg else f'<a href="/board/{key}/{"" if i == 1 else f"page{i}.html"}">{i}</a>' for i in range(1, pages + 1)) + '</nav>'
@@ -478,7 +478,7 @@ for key, posts in P.items():
         nav = '<nav class="post-nav">' + (f'<a href="/board/{key}/{prev_["id"]}.html">← {E(prev_["title"][:24])}</a>' if prev_ else '<span></span>') + \
               f'<a class="more" href="/board/{key}/">목록</a>' + (f'<a href="/board/{key}/{next_["id"]}.html">{E(next_["title"][:24])} →</a>' if next_ else '<span></span>') + '</nav>'
         admin_bar = f'<div class="post-admin" data-author="{p["author"]}" hidden><a class="btn line writebtn" href="/write/?b={key}&amp;edit={p["id"]}">✏️ 수정·삭제</a></div>'
-        body = admin_bar + f'<article><header class="post-head"><h2>{E(p["title"])}</h2><time datetime="{p["date"]}">{fmt(p["date"])}</time></header>{show}{imgs}<div class="prose" style="max-width:none">{p["body"]}</div>{files}{nav}</article>'
+        body = admin_bar + f'<article><header class="post-head"><h2>{E(p["title"])}</h2><p class="meta"><span class="wr">작성자 {E(p["writer"])}</span><time datetime="{p["date"]}">{fmt(p["date"])}</time></p></header>{show}{imgs}<div class="prose" style="max-width:none">{p["body"]}</div>{files}{nav}</article>'
         write(f'/board/{key}/{p["id"]}.html', page(p['title'], subpage(sec, name, name, body), sec, desc=p['text'][:120] or name))
 
 # 정보공개

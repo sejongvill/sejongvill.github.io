@@ -65,7 +65,7 @@
     var s = session();
     $('#loginBox').hidden = !!s;
     $('#writeForm').hidden = !s;
-    if (s) { $('#who').textContent = (s.email || '직원') + ' 님'; if (editId && !editSha) loadPost(); }
+    if (s) { $('#who').textContent = (s.email || '직원') + ' 님'; myName().then(function (n) { $('#who').textContent = n + ' (' + (s.email || '') + ') 님'; }); if (editId && !editSha) loadPost(); }
   }
   $('#loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -149,7 +149,7 @@
       var p = parseFM(unb64(f.content || ''));
       $('#wtitle').value = p.data.title || '';
       $('#wbody').value = htmlToText(p.body || '');
-      keep = { date: p.data.date, previews: p.data.previews || [], author: p.data.author || '' };
+      keep = { date: p.data.date, previews: p.data.previews || [], author: p.data.author || '', writer: p.data.writer || '' };
       if (board === 'notice') { var c0 = p.data.category || guessCat(p.data.title || ''); setBoard(DISC_CATS.indexOf(c0) >= 0 ? 'disclosure' : 'notice'); $('#catSel').value = c0; }
       (p.data.images || []).forEach(function (src) { if (src) picked.push({ old: src, url: src }); });
       (p.data.files || []).forEach(function (x) { if (typeof x === 'string') x = { file: x }; if (x && x.file) oldFiles.push({ name: x.name || x.file.split('/').pop(), file: x.file }); });
@@ -209,6 +209,18 @@
       return [].map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join('').slice(0, 16);
     });
   }
+  function myName() {   // 디캡브릿지에 등록된 이름 (게시판에 작성자로 표시)
+    var s = session() || {};
+    if (s.name) return Promise.resolve(s.name);
+    return token().then(function (t) { return fetch(IDENTITY + '/user', { headers: { Authorization: 'Bearer ' + t } }); })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (u) {
+        var m = u.user_metadata || {};
+        var n = (m.full_name || m.name || [m.first_name, m.last_name].filter(Boolean).join(' ') || '').trim() || '세종빌 직원';
+        var cur = store('sv-auth'); if (cur) { cur.name = n; store('sv-auth', cur); }
+        return n;
+      }).catch(function () { return '세종빌 직원'; });
+  }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function yq(s) { return JSON.stringify(s); }
 
@@ -240,9 +252,12 @@
         attPaths.push({ name: f.name, file: '/' + path }); entries.push({ path: 'static/' + path, content: b64(buf) });
       });
     });
-    chain.then(function () { return editId ? keep.author : who(); }).then(function (author) {
+    var author, writer;
+    chain.then(function () { return editId ? keep.author : who(); }).then(function (a) { author = a; return editId ? keep.writer : myName(); }).then(function (w) {
+      writer = w;
       var fm = '---\ntitle: ' + yq(title) + '\ndate: ' + date + '\n';
       if (author) fm += 'author: ' + author + '\n';
+      if (writer) fm += 'writer: ' + yq(writer) + '\n';
       if (board === 'notice') fm += 'category: ' + yq($('#catSel').value) + '\n';
       if (imgPaths.length) fm += 'images:\n' + imgPaths.map(function (x) { return '- ' + x; }).join('\n') + '\n';
       if (attPaths.length) fm += 'files:\n' + attPaths.map(function (x) { return '- name: ' + yq(x.name) + '\n  file: ' + x.file; }).join('\n') + '\n';

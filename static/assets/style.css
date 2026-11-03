@@ -551,3 +551,9 @@ section.blk:not(.bg-cream)+section.blk:not(.bg-cream){padding-top:8px}
 .rm.main{background:var(--red-soft);color:var(--red);font-weight:700}
 @media (max-width:600px){.floor{grid-template-columns:minmax(0,1fr);gap:12px;padding:18px}.fl{width:56px;height:56px;font-size:1.3rem}}
 .box.purpose{border-left:4px solid var(--red)}.box.purpose p{font-size:1.05rem;line-height:1.9;color:var(--ink2);margin:0}.box.purpose b{color:var(--ink)}
+/* 작성자 표시 */
+.post-head .meta{display:flex;gap:14px;align-items:center;margin-top:10px;color:var(--mute);flex-wrap:wrap}
+.post-head .meta time{display:inline;margin:0}
+.post-head .meta .wr{font-weight:600;color:var(--ink2)}
+.board-list .wr{flex:none;width:92px;text-align:center;color:var(--mute);font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:600px){.board-list .wr{width:auto;font-size:.8rem}}
