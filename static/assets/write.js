@@ -190,7 +190,7 @@
       box.appendChild(li);
     });
   }
-  var MAX_PHOTOS = 10;   // 글 하나에 올릴 수 있는 사진 수 (홈페이지 용량 관리)
+  var MAX_PHOTOS = 9;   // 글 하나에 올릴 수 있는 사진 수 (한 줄에 3장씩 보이도록 3의 배수 기준)
   $('#photos').addEventListener('change', function () {
     var files = [].slice.call(this.files), over = 0, heicBad = 0;
     this.value = '';
