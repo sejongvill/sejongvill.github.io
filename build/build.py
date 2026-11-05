@@ -117,7 +117,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <script>try{{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark';var f={{xs:.9,s:1,m:1.12,l:1.25,xl:1.4}}[localStorage.getItem('fs')];if(f)document.documentElement.style.setProperty('--fs',f)}}catch(e){{}}</script></head><body>
 {ICON}<a class="skip" href="#main">본문 바로가기</a>
 <div class="util"><div class="wrap"><span>사회복지법인 예일 · 지적장애인 거주시설 세종빌</span>
-<div class="tools"><div class="fsz" role="group" aria-label="글자 크기">글자 <button data-fs="xs" aria-label="작게" style="font-size:.7rem">가</button><button data-fs="s" aria-label="보통">가</button><button data-fs="m" aria-label="크게" style="font-size:.88rem">가</button><button data-fs="l" aria-label="더 크게" style="font-size:.98rem">가</button><button data-fs="xl" aria-label="가장 크게" style="font-size:1.08rem">가</button></div><button class="theme" type="button" aria-pressed="false">🌙 어둡게</button></div></div></div></div>
+<div class="tools"><a class="auth-btn" href="/login/" data-auth>직원 로그인</a><div class="fsz" role="group" aria-label="글자 크기"><span class="fsz-l">글자</span> <button data-fs="xs" aria-label="작게" style="font-size:.7rem">가</button><button data-fs="s" aria-label="보통">가</button><button data-fs="m" aria-label="크게" style="font-size:.88rem">가</button><button data-fs="l" aria-label="더 크게" style="font-size:.98rem">가</button><button data-fs="xl" aria-label="가장 크게" style="font-size:1.08rem">가</button></div><button class="theme" type="button" aria-pressed="false">🌙 어둡게</button></div></div></div></div>
 <header class="gnb"><div class="wrap"><a class="brand" href="/"><img src="/assets/img/logo.png" alt="사회복지법인 예일 세종빌" width="145" height="45"></a>
 <button class="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
 <nav aria-label="주 메뉴"><ul class="menu">{menu}</ul></nav>
@@ -553,6 +553,36 @@ write_body = f'''<div style="max-width:760px">
 <p class="lead">2~3분 뒤 게시판에 보여요.</p><div class="cta" style="justify-content:center"><a class="btn red" id="doneLink" href="/">게시판으로 가기</a><button class="btn line" id="again" type="button">글 하나 더 쓰기</button></div></div>
 <p style="margin-top:20px"><a class="more" id="backLink" href="/">← 게시판으로 돌아가기</a></p></div>
 <script src="/assets/write.js?v={WVER}"></script>'''
+login_body = """<div class="login-wrap"><div class="box login-box">
+<div id="lgIn"><h2>직원 로그인</h2><p class="note">부서별 계정 이메일과 비밀번호를 입력해 주세요.</p>
+<form id="lgForm"><label>이메일<input id="lgEmail" type="email" autocomplete="username" required placeholder="yeil.○○○@gmail.com"></label>
+<label>비밀번호<input id="lgPw" type="password" autocomplete="current-password" required></label>
+<button class="btn red" type="submit">로그인</button><p id="lgMsg" class="note" role="status"></p></form>
+<p class="note" style="margin-top:14px">여럿이 함께 쓰는 컴퓨터에서는 다 쓴 뒤 꼭 <b>로그아웃</b>해 주세요.</p></div>
+<div id="lgOut" hidden><h2><span id="lgName"></span> 님, 로그인되어 있어요</h2><p class="note" id="lgMail"></p>
+<div class="cta" style="justify-content:center"><a class="btn red" href="/board/stories/">게시판으로 가기</a><button class="btn line" type="button" id="lgLogout">로그아웃</button></div></div>
+</div></div>
+<script>
+(function(){
+var ID='https://auth.decapbridge.com/sites/4f7f1434-deb1-4975-8034-86cc185eb0b8',ADM=["58ef3e465ce4fd46","cfabcb3c03dd02e3"];
+function $(q){return document.querySelector(q)}
+function get(){try{var a=JSON.parse(localStorage.getItem('sv-auth'));if(a&&a.access_token)return a;var g=JSON.parse(localStorage.getItem('gotrue.user'));if(g&&g.token)return{email:g.email}}catch(e){}return null}
+function show(){var a=get();$('#lgIn').hidden=!!a;$('#lgOut').hidden=!a;if(a){$('#lgName').textContent=a.name||'직원';$('#lgMail').textContent=a.email||''}}
+function next(){var n=new URLSearchParams(location.search).get('next');return n&&n.charAt(0)==='/'?n:null}
+function hid(em){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(em.trim().toLowerCase())).then(function(b){return[].map.call(new Uint8Array(b),function(x){return('0'+x.toString(16)).slice(-2)}).join('').slice(0,16)})}
+$('#lgForm').addEventListener('submit',function(e){e.preventDefault();var em=$('#lgEmail').value.trim(),pw=$('#lgPw').value,m=$('#lgMsg');m.textContent='로그인 중…';
+ fetch(ID+'/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'password',username:em,password:pw}).toString()})
+ .then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  var s={access_token:d.access_token,refresh_token:d.refresh_token,expires_at:Date.now()+(d.expires_in||3600)*1000,email:em};
+  return Promise.all([hid(em),fetch(ID+'/user',{headers:{Authorization:'Bearer '+d.access_token}}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}})]).then(function(x){
+   var u=x[1].user_metadata||{};s.name=ADM.indexOf(x[0])>=0?'관리자':((u.full_name||u.name||'').trim()||'세종빌 직원');
+   localStorage.setItem('sv-auth',JSON.stringify(s));var n=next();if(n){location.href=n;return}show();});
+ }).catch(function(){m.textContent='로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.'})});
+$('#lgLogout').addEventListener('click',function(){try{localStorage.removeItem('sv-auth');localStorage.removeItem('gotrue.user')}catch(e){}show();$('#lgMsg').textContent='로그아웃했어요.'});
+show();
+})();
+</script>"""
+write('/login/index.html', page('직원 로그인', f'<div class="subvis"><div class="wrap"><div class="crumb">홈 · 직원 로그인</div><h1>직원 로그인</h1></div></div><div class="content"><div class="wrap">{login_body}</div></div>'))
 write('/write/index.html', page('글쓰기', f'<div class="subvis"><div class="wrap"><div class="crumb">직원 글쓰기</div><h1><span id="boardName">게시판</span> <span id="modeWord">글쓰기</span></h1></div></div><div class="content"><div class="wrap">{write_body}</div></div>'))
 
 # 404, 기타
@@ -567,6 +597,6 @@ for k, p in _recent:
 open(f'{SITE}/assets/new.json', 'w', encoding='utf-8').write(json.dumps(_items, ensure_ascii=False))
 open(f'{SITE}/.nojekyll', 'w').write('')
 open(f'{SITE}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /write/\nSitemap: {BASE}/sitemap.xml\n')
-_urls = [u for u in WRITTEN if not u.startswith(('/write', '/404', '/admin'))]
+_urls = [u for u in WRITTEN if not u.startswith(('/write', '/404', '/admin', '/login'))]
 open(f'{SITE}/sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{BASE}{u.replace("/index.html", "/")}</loc></url>\n' for u in _urls) + '</urlset>\n')
 print('done', sum(len(v) for v in P.values()), 'posts')

@@ -684,3 +684,21 @@ a.card{position:relative}
 .hero2 .h-lead .seal{writing-mode:vertical-rl;text-orientation:upright}
 @media (max-width:900px){.h-since{font-size:1.4rem}.hero2 .h-lead{font-size:1.32rem}.hero2 .h-lead b{font-size:2.1rem}}
 @media (min-width:901px){.hero2 .h-lead{font-size:1.32rem;line-height:1.4;margin:0}.hero2 .h-lead b{font-size:2rem;margin-top:4px}.hero2 .glass.calli .cta{margin-top:14px}.hero2 .glass.calli h1.slogan{margin:6px 0 10px}}
+
+/* 직원 로그인 */
+.util .tools{display:flex;align-items:center;gap:12px}
+.auth-btn,.auth-out{border:1px solid #5a5550;border-radius:20px;padding:0 12px;height:24px;line-height:22px;color:#fff;font-size:.78rem;white-space:nowrap}
+.auth-btn:hover,.auth-out:hover{background:#3a3532}
+.auth-btn.on{border-color:transparent;padding:0 2px;color:#f3d9db;font-weight:600}
+.auth-out{background:var(--red);border-color:var(--red)}
+.login-wrap{display:flex;justify-content:center;padding:20px 0 40px}
+.login-box{width:100%;max-width:440px;text-align:center}
+.login-box h2{font-family:var(--serif);font-size:1.4rem;margin-bottom:8px}
+.login-box form{display:grid;gap:14px;margin-top:20px;text-align:left}
+.login-box label{display:grid;gap:6px;font-weight:600;font-size:.92rem}
+.login-box input{height:46px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:inherit;background:var(--paper);color:var(--ink)}
+.login-box .btn{justify-content:center;width:100%}
+@media(max-width:900px){.util .tools{gap:8px}.auth-btn,.auth-out{font-size:.72rem;padding:0 9px}}
+.theme{white-space:nowrap}
+@media(max-width:600px){.fsz-l{display:none}.auth-btn.on{max-width:72px;overflow:hidden;text-overflow:ellipsis}.util .tools{gap:6px}.fsz{gap:3px}}
+@media(max-width:600px){.auth-btn.on{display:none}}

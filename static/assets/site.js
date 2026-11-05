@@ -177,3 +177,13 @@
     show(0);run();
   }).catch(function(){});
 })();
+(function(){ /* 위쪽 직원 로그인 / 로그아웃 */
+  var b=document.querySelector('[data-auth]');if(!b)return;var a=null;
+  try{a=JSON.parse(localStorage.getItem('sv-auth'));if(!(a&&a.access_token)){var g=JSON.parse(localStorage.getItem('gotrue.user'));a=g&&g.token?{email:g.email}:null}}catch(e){}
+  if(!a){b.href='/login/?next='+encodeURIComponent(location.pathname);return}
+  var nm=a.name||(a.email||'').split('@')[0]||'직원';
+  b.textContent=nm+' 님';b.href='/login/';b.classList.add('on');
+  var o=document.createElement('button');o.type='button';o.className='auth-out';o.textContent='로그아웃';
+  o.addEventListener('click',function(){try{localStorage.removeItem('sv-auth');localStorage.removeItem('gotrue.user')}catch(e){}location.reload()});
+  b.insertAdjacentElement('afterend',o);
+})();
