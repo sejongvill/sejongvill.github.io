@@ -136,7 +136,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <main id="main">{body}</main>
 <footer><div class="wrap relwrap"><div class="relsites"><span>관련 기관</span><a href="https://www.sejong.go.kr" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시청 (감독기관) ↗</a><a href="https://www.sjaapd.or.kr/default/" target="_blank" rel="noopener" title="새 창 열림">세종특별자치시장애인권익옹호기관 ↗</a></div></div><div class="wrap"><img src="/assets/img/flogo.png" alt="세종빌" width="135" height="45" style="opacity:.85">
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
-<a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/write/">직원 글쓰기</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
+<a href="/privacy.html">개인정보처리방침</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
 <script>window.SV_NAMES={SV_NAMES_JS}</script><script src="/assets/site.js?v={VER}"></script></body></html>'''
 
@@ -546,7 +546,7 @@ write_body = f'''<div style="max-width:760px">
 <form id="loginForm" class="joinform"><label><span>이메일</span><input id="lemail" type="email" required autocomplete="username"></label>
 <label><span>비밀번호</span><input id="lpw" type="password" required autocomplete="current-password"></label>
 <button class="btn red" type="submit">로그인</button><p class="note" id="lmsg" role="status"></p></form>
-<p class="note">아직 계정이 없으면 <a href="/join.html" style="text-decoration:underline">직원 회원가입 신청</a></p></div>
+<p class="note">계정은 사무국(044-864-3015)에 문의해 주세요.</p></div>
 <form id="writeForm" class="box joinform" hidden>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><p class="note"><b id="who"></b> · <button type="button" id="logout" style="text-decoration:underline">로그아웃</button></p>
 <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-left:auto"><label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><option data-g="n">공지</option><option data-g="n">채용</option>{''.join(f'<option data-g="d">{c}</option>' for c in DISC_CATS)}</select></label></div></div>
