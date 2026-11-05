@@ -99,6 +99,16 @@ BOARD_META = {
 
 import hashlib as _h
 VER = _h.md5(open(os.path.join(ROOT,'static/assets/style.css'),'rb').read()+open(os.path.join(ROOT,'static/assets/site.js'),'rb').read()).hexdigest()[:8]
+# 부서별 계정 표시 이름 (이메일을 알아볼 수 없게 바꾼 값 → 홈페이지에 보일 이름). 디캡브릿지 이름보다 우선.
+SV_NAMES = {
+    "839723384fc7f632": "사회재활교사",   # yeil.social3015
+    "cf8cf91da87193d2": "권익옹호부장",   # yeil.rights3015
+    "08d4a38e64df2da9": "행정지원팀",     # yeil.admin3015
+    "02239b0d32a6c7fd": "영양사",         # yeil.nutri3015
+    "f278b0fac686dbbb": "생활재활팀",     # yeil.life3015
+}
+SV_NAMES_JS = json.dumps(SV_NAMES, ensure_ascii=False)
+
 def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 — 서로를 존중하고 품어주고 사랑하는 행복한 보금자리'):
     menu = ''
     for i, (name, href, subs) in enumerate(NAV):
@@ -128,7 +138,7 @@ def page(title, body, sec=None, desc='지적장애인 거주시설 세종빌 —
 <div><b>세종빌</b> · 시설장 정원용 · 고유번호 307-82-09984<br>{ADDR}<br>TEL {TEL} · FAX 044-864-3016 · yengi363@naver.com<br>
 <a href="/privacy.html">개인정보처리방침</a> · <a href="/join.html">직원 회원가입 신청</a> · <a href="/write/">직원 글쓰기</a> · Copyright 세종빌. All rights reserved.</div></div></footer>
 <div class="callbar"><a href="tel:{TEL}">📞 전화 문의</a><a href="/about/location.html">오시는 길</a></div>
-<script src="/assets/site.js?v={VER}"></script></body></html>'''
+<script>window.SV_NAMES={SV_NAMES_JS}</script><script src="/assets/site.js?v={VER}"></script></body></html>'''
 
 WRITTEN = []
 BASE = 'https://www.xn--ix3bl7ch6i.com'  # 세종빌.com
@@ -575,7 +585,7 @@ $('#lgForm').addEventListener('submit',function(e){e.preventDefault();var em=$('
  .then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
   var s={access_token:d.access_token,refresh_token:d.refresh_token,expires_at:Date.now()+(d.expires_in||3600)*1000,email:em};
   return Promise.all([hid(em),fetch(ID+'/user',{headers:{Authorization:'Bearer '+d.access_token}}).then(function(r){return r.ok?r.json():{}}).catch(function(){return{}})]).then(function(x){
-   var u=x[1].user_metadata||{};s.name=ADM.indexOf(x[0])>=0?'관리자':((u.full_name||u.name||'').trim()||'세종빌 직원');
+   var u=x[1].user_metadata||{};s.name=ADM.indexOf(x[0])>=0?'관리자':((window.SV_NAMES||{})[x[0]]||(u.full_name||u.name||'').trim()||'세종빌 직원');
    localStorage.setItem('sv-auth',JSON.stringify(s));var n=next();if(n){location.href=n;return}show();});
  }).catch(function(){m.textContent='로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.'})});
 $('#lgLogout').addEventListener('click',function(){try{localStorage.removeItem('sv-auth');localStorage.removeItem('gotrue.user')}catch(e){}show();$('#lgMsg').textContent='로그아웃했어요.'});

@@ -234,6 +234,7 @@
     var s = session() || {};
     return who().then(function (id) {
       if (ADMINS.indexOf(id) >= 0) return '관리자';   // 관리자는 이름 대신 '관리자'로 표시
+      if (window.SV_NAMES && window.SV_NAMES[id]) return window.SV_NAMES[id];   // 부서별 계정은 정해 둔 이름으로
       if (s.name) return s.name;
       return token().then(function (t) { return fetch(IDENTITY + '/user', { headers: { Authorization: 'Bearer ' + t } }); })
       .then(function (r) { return r.ok ? r.json() : {}; })
