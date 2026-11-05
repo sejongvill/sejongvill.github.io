@@ -101,7 +101,7 @@ import hashlib as _h
 VER = _h.md5(open(os.path.join(ROOT,'static/assets/style.css'),'rb').read()+open(os.path.join(ROOT,'static/assets/site.js'),'rb').read()).hexdigest()[:8]
 # 부서별 계정 표시 이름 (이메일을 알아볼 수 없게 바꾼 값 → 홈페이지에 보일 이름). 디캡브릿지 이름보다 우선.
 SV_NAMES = {
-    "839723384fc7f632": "사회재활교사",   # yeil.social3015
+    "839723384fc7f632": "서비스지원부장", # yeil.social3015
     "cf8cf91da87193d2": "권익옹호부장",   # yeil.rights3015
     "08d4a38e64df2da9": "행정지원팀",     # yeil.admin3015
     "02239b0d32a6c7fd": "영양사",         # yeil.nutri3015
