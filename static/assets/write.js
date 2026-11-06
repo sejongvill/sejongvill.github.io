@@ -10,7 +10,7 @@
   var board = (BOARDS[Q.get('b')] || Q.get('b') === 'disclosure') ? Q.get('b') : 'stories';
   var editId = (Q.get('edit') || '').replace(/[^\w.-]/g, '');
   var ADMINS = ["58ef3e465ce4fd46", "cfabcb3c03dd02e3"];   // 관리자 이메일(암호화한 값)
-  var editSha = null, keep = {};   // 수정할 때 그대로 둘 항목(날짜, 미리보기 그림)
+  var editSha = null, keep = {}, origBoard = null;   // origBoard: 수정하는 글이 원래 있던 게시판   // 수정할 때 그대로 둘 항목(날짜, 미리보기 그림)
 
   var DISC = false;   // 정보공개 글쓰기인지 (정보공개 글은 공지사항 게시판에 말머리를 달아 저장)
   var DISC_CATS = ['예산·결산', '회의록', '후원금', '계약', '기타 공개'];
@@ -89,7 +89,7 @@
   function b64(buf) { var s = '', a = new Uint8Array(buf), n = 0x8000; for (var i = 0; i < a.length; i += n) s += String.fromCharCode.apply(null, a.subarray(i, i + n)); return btoa(s); }
   function b64text(t) { return b64(new TextEncoder().encode(t).buffer); }
   function unb64(s) { var bin = atob(s.replace(/\s/g, '')), a = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return new TextDecoder().decode(a); }
-  function mdPath(id) { return 'content/' + board + '/' + id + '.md'; }
+  function mdPath(id, b) { return 'content/' + (b || board) + '/' + id + '.md'; }
 
   /* 여러 파일 변경을 한 번에 저장 (sha:null 이면 삭제) */
   function commit(entries, message) {
@@ -145,7 +145,7 @@
   function loadPost() {
     msg('글을 불러오는 중…');
     api('/contents/' + mdPath(editId) + '?ref=main').then(function (f) {
-      editSha = f.sha;
+      editSha = f.sha; origBoard = board;
       var p = parseFM(unb64(f.content || ''));
       $('#wtitle').value = p.data.title || '';
       $('#wbody').value = htmlToText(p.body || '');
@@ -156,7 +156,11 @@
       keep.fileCount = oldFiles.length;
       render(); renderFiles(); msg('');
       return who().then(function (id) {
-        if (ADMINS.indexOf(id) >= 0 || (keep.author && keep.author === id)) return;
+        if (ADMINS.indexOf(id) >= 0) {   // 관리자는 수정 화면에서 게시판을 바꿔 글을 옮길 수 있음
+          $('#boardSel').disabled = false; $('#boardSel').title = '다른 게시판을 고르고 저장하면 글이 그 게시판으로 옮겨져요';
+          return;
+        }
+        if (keep.author && keep.author === id) return;
         editSha = null;
         $('#wsubmit').disabled = true; $('#delBtn').hidden = true;
         [].forEach.call($('#writeForm').querySelectorAll('input,textarea,select'), function (x) { if (x.id !== 'logout') x.disabled = true; });
@@ -290,9 +294,11 @@
       if (!filesChanged && keep.previews && keep.previews.length) fm += 'previews:\n' + keep.previews.map(function (x) { return '- ' + x; }).join('\n') + '\n';
       fm += '---\n' + body + '\n';
       entries.push({ path: mdPath(id), content: b64text(fm) });
+      var moved = editId && origBoard && origBoard !== board;
+      if (moved) entries.push({ path: mdPath(id, origBoard), remove: true });   // 게시판을 옮기면 원래 자리의 글은 지움
       msg('올리는 중… 잠시만 기다려 주세요.');
-      return commit(entries, BOARDS[board] + (editId ? ' 글 수정: ' : ' 새 글: ') + title);
-    }).then(function () { finish(editId ? '수정했어요! ✏️' : '올렸어요! 🎉'); })
+      return commit(entries, moved ? ('글 옮김(' + BOARDS[origBoard] + ' → ' + BOARDS[board] + '): ' + title) : (BOARDS[board] + (editId ? ' 글 수정: ' : ' 새 글: ') + title)).then(function () { return moved; });
+    }).then(function (moved) { finish(moved ? BOARDS[board] + ' 게시판으로 옮겼어요! 📂' : (editId ? '수정했어요! ✏️' : '올렸어요! 🎉')); })
       .catch(fail);
   });
 
@@ -302,7 +308,7 @@
     if (!confirm('이 글을 삭제할까요? 삭제하면 홈페이지에서 사라져요.')) return;
     $('#delBtn').disabled = true; $('#wsubmit').disabled = true;
     msg('삭제하는 중…');
-    commit([{ path: mdPath(editId), remove: true }], BOARDS[board] + ' 글 삭제: ' + $('#wtitle').value.trim())
+    commit([{ path: mdPath(editId, origBoard), remove: true }], BOARDS[board] + ' 글 삭제: ' + $('#wtitle').value.trim())
       .then(function () { finish('삭제했어요.'); }).catch(fail);
   });
 
