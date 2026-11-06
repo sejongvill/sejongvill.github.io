@@ -1,0 +1,382 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>세종빌 소개 영상</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;700;900&display=swap">
+<style>
+/* 레이아웃: 홈페이지(세종빌.com) 톤 — 크림 바탕, 세종빌 빨강, 명조 제목, 둥근 사진 프레임. 1920×1080 무대, 시간 t 하나로 모든 장면을 계산 */
+@font-face{font-family:"HeroBrush";src:url(fonts/dokdo-hero.woff) format("woff")}
+:root{
+  --red:#C8232C; --red2:#E0505A; --ink:#1F1D1B; --ink2:#4A4642; --mute:#857F78; --line:#E6E0D8;
+  --paper:#FBF8F3; --cream:#F3EDE4; --sand:#E9DFD1; --brush:#B4532F; --ochre:#D99A2B; --white:#fff;
+  --page:#FBF8F3; --ui:#1F1D1B; --uimute:#857F78;
+  --serif:"Noto Serif KR","Noto Serif CJK KR",serif;
+  --sans:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{margin:0;background:var(--page);color:var(--ui);font-family:var(--sans);box-sizing:border-box;
+  padding:0 0 8px;
+  display:flex;flex-direction:column;align-items:center;gap:12px}
+#viewport:fullscreen{background:#000;border-radius:0;width:100vw;height:100vh;aspect-ratio:auto}
+body.render{padding:0;background:#000;display:block}
+#viewport{flex:none;width:100%;max-width:none;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:10px;background:var(--cream)}
+body.render #viewport{width:1920px;height:1080px;max-width:none;aspect-ratio:auto;border-radius:0}
+#stage{word-break:keep-all;position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;font-family:var(--sans);color:var(--ink);background:var(--cream)}
+.scene{position:absolute;inset:0;visibility:hidden;overflow:hidden;background:var(--cream)}
+.abs{position:absolute}
+.ch{display:inline-block}
+.mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em}
+.ph{position:absolute;overflow:hidden;background:#d8cfc4;border-radius:28px;box-shadow:0 24px 60px rgba(60,40,20,.18)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.eyebrow{font-size:26px;font-weight:700;letter-spacing:.2em;color:var(--red)}
+.h1{font-family:var(--serif);font-weight:900;color:var(--ink);letter-spacing:-.02em;line-height:1.22}
+.lead{font-size:30px;line-height:1.65;color:var(--ink2)}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 22px;font-size:24px;font-weight:500;color:var(--ink2)}
+.card{background:#fff;border-radius:24px;box-shadow:0 14px 40px rgba(60,40,20,.10);padding:30px 34px;box-sizing:border-box}
+.tag{position:absolute;left:18px;bottom:18px;background:rgba(255,255,255,.95);color:var(--ink);font-weight:700;font-size:22px;padding:8px 16px;border-radius:999px}
+#cap{position:absolute;z-index:50;left:960px;bottom:40px;transform:translateX(-50%);width:max-content;max-width:1500px;text-align:center;font-size:36px;font-weight:500;line-height:1.42;color:#fff;
+  background:rgba(31,29,27,.78);padding:12px 30px;border-radius:14px;opacity:0;word-break:keep-all}
+#wipe{position:absolute;inset:0;pointer-events:none;z-index:40}
+#wipe div{position:absolute;top:-10%;height:120%;width:150%;left:0;transform:skewX(-12deg) translateX(-160%)}
+/* 오프닝 */
+.sl{position:absolute;inset:0;margin:0}
+.sl .bg{position:absolute;inset:-60px;width:calc(100% + 120px);height:calc(100% + 120px);object-fit:cover;filter:blur(30px) saturate(1.1) brightness(.92)}
+.sl .fgw{position:absolute;top:0;bottom:0;right:0;left:35%;overflow:hidden}
+.sl .fg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#glass{z-index:10;left:56px;top:56px;bottom:56px;width:720px;border-radius:36px;background:rgba(255,253,249,.8);border:1px solid rgba(255,255,255,.75);
+  box-shadow:0 30px 70px rgba(30,20,10,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;padding:60px 56px}
+/* 컨트롤 */
+#controls{width:100%;max-width:none;box-sizing:border-box;padding:0 4px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#controls button{font:inherit;font-size:15px;font-weight:700;background:var(--red);color:#fff;border:0;border-radius:999px;padding:10px 20px;cursor:pointer;min-width:96px}
+#controls button.ghost{background:#fff;color:var(--ui);border:1px solid #E6E0D8}
+#controls button:focus-visible,#seek:focus-visible{outline:3px solid #F3B634;outline-offset:2px}
+#seek{flex:1;min-width:160px;accent-color:var(--red)}
+#time{font-variant-numeric:tabular-nums;color:var(--uimute);font-size:14px;min-width:96px;text-align:right}
+#note{max-width:1280px;width:100%;color:var(--uimute);font-size:13px;line-height:1.6;margin:0}
+body.render #controls,body.render #note{display:none}
+</style>
+
+</head><body>
+<div id="viewport"><div id="stage">
+
+<!-- 0 오프닝 -->
+<section class="scene" id="s00" style="background:#2a2622">
+  <figure class="sl"><img class="bg" src="img/group_2511.jpg" alt=""><div class="fgw"><img class="fg" src="img/group_2511.jpg" alt="2025년 가을나들이 세종빌 가족 단체사진" style="object-position:58% 60%"></div></figure>
+  <div class="abs" id="glass">
+    <img id="o_slogan" src="img/slogan.png" alt="서로를 존중하고 품어주고 사랑하는 행복한 보금자리" style="width:600px;display:block;margin-top:-60px">
+    <div id="o_rule" class="abs" style="left:50%;bottom:196px;margin-left:-150px;width:300px;height:2px;background:linear-gradient(90deg,transparent,#D9A48D,transparent)"></div>
+    <img id="o_logo" src="img/logo_t.png" alt="사회복지법인 예일 세종빌" class="abs" style="left:50%;bottom:70px;width:230px;margin-left:-115px">
+  </div>
+</section>
+
+<!-- 1 이사장 -->
+<section class="scene" id="s01">
+  <div class="abs" style="left:-200px;top:-260px;width:900px;height:900px;border-radius:50%;background:var(--sand);opacity:.6"></div>
+  <div class="ph" id="c_ph" style="left:200px;top:210px;width:560px;height:660px;border-radius:280px 280px 28px 28px"><img src="img/chairman.png" alt="사회복지법인 예일 정태춘 이사장" style="object-position:50% 30%;transform-origin:50% 35%"></div>
+  <div class="abs" id="c_tx" style="left:900px;top:200px;width:880px">
+    <div class="eyebrow">법인 대표 인사</div>
+    <div class="h1" style="font-size:108px;margin-top:22px"><div class="mask"><span class="split">정태춘</span></div> <span style="font-size:44px;font-weight:700;color:var(--mute)">이사장</span></div>
+    <div class="lead" style="margin-top:8px">사회복지법인 예일 · 사회복지학박사</div>
+    <div class="card" id="c_q" style="margin-top:44px;border-left:8px solid var(--red)">
+      <div style="font-family:var(--serif);font-size:44px;font-weight:700;color:var(--ink);letter-spacing:.06em">施惠與人 恩返于己</div>
+      <div style="font-size:30px;color:var(--ink2);margin-top:10px">남을 잘되게 하면 나도 잘 된다</div>
+    </div>
+    <div class="h1" id="c_q2" style="font-size:44px;font-weight:700;margin-top:40px;color:var(--brush)">“중증장애인을 위한 사랑의 공동체”</div>
+  </div>
+</section>
+
+<!-- 2 원장 -->
+<section class="scene" id="s02" style="background:var(--paper)">
+  <div class="abs" style="right:-240px;bottom:-300px;width:900px;height:900px;border-radius:50%;background:var(--sand);opacity:.55"></div>
+  <div class="ph" id="d_ph" style="left:1200px;top:210px;width:500px;height:660px;border-radius:250px 250px 28px 28px"><img src="img/director_new.jpg" alt="세종빌 정원용 원장" style="object-position:50% 35%"></div>
+  <div class="abs" id="d_tx" style="left:180px;top:200px;width:900px">
+    <div class="eyebrow">시설장 인사</div>
+    <div class="h1" style="font-size:108px;margin-top:22px"><div class="mask"><span class="split">정원용</span></div> <span style="font-size:44px;font-weight:700;color:var(--mute)">원장</span></div>
+    <div class="lead" style="margin-top:8px">세종빌 원장 · 사회복지학 석사 · 2020년 7월 취임</div>
+    <div class="card" id="d_q" style="margin-top:44px;border-left:8px solid var(--ochre)">
+      <div style="font-family:var(--serif);font-size:40px;font-weight:700;color:var(--ink);line-height:1.5">“같은 숲, 같은 햇볕 아래<br>저마다의 빛과 향기로 자라는 나무들”</div>
+      <div style="font-size:28px;color:var(--ink2);margin-top:14px">서로를 응원하며 함께 이루는 행복한 숲</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 연혁 -->
+<section class="scene" id="s03" style="background:var(--paper)">
+  <div class="abs eyebrow" id="h_eye" style="left:140px;top:110px">세종빌이 걸어온 길</div>
+  <div class="abs h1" id="h_title" style="left:136px;top:150px;font-size:72px"><div class="mask"><span class="split">2003년 연기사랑마을에서 오늘의 세종빌까지</span></div></div>
+  <div class="abs" id="h_year" style="right:120px;top:40px;font-family:var(--serif);font-size:240px;font-weight:900;color:transparent;-webkit-text-stroke:3px rgba(200,35,44,.16);font-variant-numeric:tabular-nums">2003</div>
+  <div class="abs" id="h_track" style="left:0;top:330px;height:620px;width:4000px">
+    <div class="abs" id="h_line" style="left:140px;top:300px;width:3500px;height:6px;background:var(--red);border-radius:3px;transform-origin:0 50%"></div>
+  </div>
+</section>
+
+<!-- 4 시설 개요 -->
+<section class="scene" id="s04">
+  <div class="ph" id="f_ph" style="left:100px;top:110px;width:1040px;height:860px"><img src="img/aerial_ai.jpg" alt="세종빌 전경" style="object-position:60% 50%"><div class="tag" id="f_tag1">세종빌 정문</div></div>
+  <div class="ph" id="f_ph2" style="left:100px;top:110px;width:1040px;height:860px"><img src="img/front.jpg" alt="길가에서 본 세종빌 전경" style="object-position:45% 60%"><div class="tag">길가에서 본 세종빌의 봄</div></div>
+  <div class="abs" id="f_tx" style="left:1220px;top:110px;width:600px">
+    <div class="eyebrow">시설 소개</div>
+    <div class="h1" style="font-size:64px;margin-top:16px">지적장애인 거주시설<br><span style="color:var(--red)">세종빌</span></div>
+    <div id="f_stats" style="margin-top:26px"></div>
+  </div>
+  <div class="abs" id="f_floors" style="left:1220px;top:110px;width:600px"></div>
+</section>
+
+<!-- 5 함께 사는 사람들 -->
+<section class="scene" id="s05" style="background:var(--ink)">
+  <img src="img/poolgroup.jpg" alt="" class="abs" id="p_bg" style="inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;opacity:.32">
+  <div class="abs" style="inset:0;background:linear-gradient(90deg,rgba(31,29,27,.92),rgba(31,29,27,.55))"></div>
+  <div class="abs eyebrow" style="left:140px;top:120px;color:#F0A3A7">함께 생활하는 사람들</div>
+  <div class="abs" id="p_c1" style="left:140px;top:190px;color:#fff">
+    <div style="font-size:40px;font-weight:700;color:#D8CFC4">이용자</div>
+    <div style="font-family:var(--serif);font-size:320px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums"><span id="n30">30</span><span style="font-size:90px;margin-left:10px">명</span></div>
+  </div>
+  <div class="abs" id="p_c2" style="left:1000px;top:190px;color:#fff">
+    <div style="font-size:40px;font-weight:700;color:#D8CFC4">직원</div>
+    <div style="font-family:var(--serif);font-size:320px;font-weight:900;line-height:1;color:#F2B8A0;font-variant-numeric:tabular-nums"><span id="n22">22</span><span style="font-size:90px;margin-left:10px">명</span></div>
+    <div id="p_staff" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;width:800px"></div>
+  </div>
+</section>
+
+<!-- 6 미션·비전 -->
+<section class="scene" id="s06" style="background:var(--paper)">
+  <div class="abs" id="m_a" style="left:140px;top:120px;width:1640px">
+    <div class="eyebrow">MISSION · 미션</div>
+    <div class="h1" style="font-size:44px;font-weight:700;color:var(--mute);margin-top:22px"><div class="mask"><span class="split">사랑과 봉사, 섬김과 나눔으로</span></div></div>
+    <div class="h1" style="font-size:112px;margin-top:6px"><div class="mask"><span class="split">사람 중심의 <em style="font-style:normal;color:var(--red)">가치 실현</em></span></div></div>
+  </div>
+  <div class="abs" id="m_b" style="left:140px;top:500px;width:1640px;display:flex;gap:56px;align-items:flex-start">
+    <div id="m_v" style="width:620px">
+      <div class="eyebrow" style="color:var(--brush)">VISION · 2030</div>
+      <div style="display:flex;align-items:flex-end;gap:20px;margin-top:6px"><div id="m_5" style="font-family:var(--serif);font-size:250px;font-weight:900;line-height:.9;color:var(--red);transform-origin:0 100%">5%</div>
+      <div style="font-family:var(--serif);font-size:44px;font-weight:700;line-height:1.3;padding-bottom:20px;white-space:nowrap">전국 장애인<br>거주시설<br>선도시설</div></div>
+    </div>
+    <div id="m_cards" style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px"></div>
+  </div>
+</section>
+
+<!-- 7 핵심가치 -->
+<section class="scene" id="s07" style="background:var(--paper)">
+  <div class="abs eyebrow" id="v_eye" style="left:0;width:1920px;text-align:center;top:120px">핵심가치</div>
+  <div id="v_c"></div>
+  <div class="abs" id="v_act" style="left:0;width:1920px;top:880px;display:flex;justify-content:center;gap:16px"></div>
+</section>
+
+<!-- 8 서비스 -->
+<section class="scene" id="s08">
+  <div class="abs" id="sv_intro" style="inset:0;background:var(--red);color:#fff">
+    <div class="abs" style="right:-200px;top:-200px;width:800px;height:800px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+    <div class="abs eyebrow" style="left:150px;top:230px;color:#FFD9D2">주요 서비스</div>
+    <div class="abs" style="left:146px;top:290px;font-size:44px;font-weight:500;color:#FFE9E4" id="sv_i1">사례회의를 통한 개별 맞춤 서비스</div>
+    <div class="abs h1" style="left:140px;top:370px;font-size:120px;color:#fff" id="sv_i2"><div class="mask"><span class="split">일상부터 건강, 자립, 권리까지</span></div><br><div class="mask"><span class="split">삶 전체를 함께 지원합니다</span></div></div>
+    <div class="abs" id="sv_dots" style="left:150px;top:820px;display:flex;gap:14px;flex-wrap:wrap;width:1500px"></div>
+  </div>
+  <div id="sv_beats"></div>
+  <div class="abs" id="sv_prog" style="left:140px;top:110px;display:flex;gap:10px"></div>
+</section>
+
+<!-- 9 함께하기 -->
+<section class="scene" id="s09">
+  <div id="t_pics"></div>
+  <div class="abs" id="t_tx" style="left:1080px;top:110px;width:720px">
+    <div class="eyebrow">함께하기</div>
+    <div class="h1" style="font-size:80px;margin-top:16px"><div class="mask"><span class="split">작은 손길이 모여</span></div><br><div class="mask"><span class="split" style="color:var(--red)">큰 힘이 됩니다</span></div></div>
+    <div id="t_cards" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px"></div>
+    <div class="card" id="t_acc" style="margin-top:18px;padding:22px 30px;font-size:24px;line-height:1.75;color:var(--ink2)">
+      <b style="color:var(--ink);font-size:26px">후원 계좌</b> · 예금주 사회복지법인 예일<br>농협 351-0717-2609-53 · 국민 455801-04-351341<br><span style="font-size:22px">결연후원(예금주 세종빌) 농협 419-01-152858</span>
+    </div>
+    <div id="t_tel" style="margin-top:22px;display:flex;align-items:center;gap:20px"><span class="chip" style="background:var(--red);color:#fff;border:0;font-weight:700">문의</span><span style="font-family:var(--serif);font-size:58px;font-weight:900;font-variant-numeric:tabular-nums">044-864-3015</span></div>
+  </div>
+</section>
+
+<!-- 10 엔딩 -->
+<section class="scene" id="s10" style="background:var(--cream)">
+  <div class="ph" id="e_ph" style="left:1060px;top:140px;width:760px;height:800px;border-radius:380px 380px 32px 32px"><img src="img/h6.jpg" alt="세종빌 가족 바닷가 나들이" style="object-position:50% 55%"></div>
+  <div class="abs h1" id="e_t" style="left:140px;top:250px;font-size:88px;line-height:1.35">
+    <div class="mask"><span class="split">마음과 마음이 더해지면</span></div><br>
+    <div class="mask"><span class="split"><span style="color:var(--red)">사랑</span>과 <span style="color:var(--brush)">행복</span>이 됩니다</span></div>
+  </div>
+  <div class="abs lead" id="e_thx" style="left:146px;top:540px;font-size:40px">세종빌이 늘 함께하겠습니다. 감사합니다.</div>
+  <div class="abs" id="e_foot" style="left:140px;top:760px;display:flex;align-items:center;gap:36px">
+    <img src="img/logo_t.png" alt="사회복지법인 예일 세종빌" style="width:250px;display:block">
+    <div style="font-size:24px;color:var(--ink2);line-height:1.75;border-left:2px solid var(--line);padding-left:30px">세종특별자치시 전의면 양지편길 13-6<br>TEL 044-864-3015 · FAX 044-864-3016<br>www.세종빌.com</div>
+  </div>
+  <div class="abs" id="e_ai" style="left:146px;top:908px;font-size:19px;color:var(--mute);letter-spacing:.01em">※ 내레이션·배경음악은 생성형 AI(Google Gemini)로 제작했으며, 일부 사진은 AI로 보정했습니다.</div>
+  <div class="abs" id="e_fade" style="inset:0;background:var(--cream);opacity:0"></div>
+</section>
+
+<div id="wipe"><div style="background:var(--sand)"></div><div style="background:var(--red)"></div><div style="background:var(--cream)"></div></div>
+<div id="cap"></div>
+</div></div>
+
+<div id="controls">
+  <button id="play" type="button">▶ 재생</button>
+  <input id="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="재생 위치">
+  <span id="time">0:00 / 0:00</span>
+  <button id="capbtn" class="ghost" type="button">자막 끄기</button>
+  <button id="fsbtn" class="ghost" type="button">⛶ 전체화면</button>
+</div>
+
+
+<audio id="narr" src="audio/narration.mp3" preload="auto"></audio>
+<audio id="bgm" src="audio/bgm.mp3" preload="auto"></audio>
+
+<script src="timing.js"></script>
+<script>
+const TM=window.TIMING||{scenes:{s00:12,s01:12,s02:12,s03:18,s04:16,s05:9,s06:16,s07:9,s08:66,s09:12,s10:11},caps:[],beats:[9,17,25,33,41,49,57]};
+const $=s=>document.querySelector(s);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const P=(t,a,d)=>clamp((t-a)/d);const lerp=(a,b,k)=>a+(b-a)*k;
+const E={out:x=>1-Math.pow(1-x,3),out5:x=>1-Math.pow(1-x,5),io:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,sine:x=>-(Math.cos(Math.PI*x)-1)/2,
+  back:x=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)}};
+function T(el,{x=0,y=0,s=1,r=0,o}={}){el.style.transform=`translate(${x}px,${y}px) scale(${s}) rotate(${r}deg)`;if(o!==undefined)el.style.opacity=o;}
+function fade(el,t,a,d=.9,dy=36){const k=E.out(P(t,a,d));T(el,{y:(1-k)*dy,o:k});return k}
+function kb(img,t,D,s0=1.10,s1=1.0){img.style.transform=`scale(${lerp(s0,s1,E.sine(clamp(t/D)))})`}
+function splitAll(root){root.querySelectorAll('.split').forEach(sp=>{const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const f=document.createDocumentFragment();[...c.textContent].forEach(ch=>{const s=document.createElement('span');s.className='ch';s.textContent=ch===' '?' ':ch;f.appendChild(s)});c.replaceWith(f)}else walk(c)})};walk(sp)})}
+const chars=el=>[...el.querySelectorAll('.ch')];
+function rise(list,t,a,st=.04,d=.8,dist=110){list.forEach((c,i)=>{const k=E.out(P(t,a+i*st,d));T(c,{y:(1-k)*dist,o:k})})}
+const fmt=s=>{s=Math.max(0,s);return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
+const mk=(tag,css,html)=>{const e=document.createElement(tag);if(css)e.style.cssText=css;if(html!==undefined)e.innerHTML=html;return e};
+
+/* ---------- 빌드 ---------- */
+splitAll($('#stage'));
+// 연혁
+const HIST=[['2003','10','신고시설 연기사랑마을 설치',1],['2006','10','정원 49명으로 승인',0],['2010','01','2층 종합프로그램실·강당 증축',0],['2014','03','사회복지법인 예일 설립',1],
+ ['2014','09','세종복지원으로 명칭 변경 (정원 30명)',0],['2016','10','세종빌로 명칭 변경',1],['2017','','실내외 개보수 · 식당 환경개선 · 차량 지원',0],['2018','06','지붕·울타리 교체 (기능보강)',0],
+ ['2020','07','정원용 원장 취임',1],['2021','10','화재안전성능 보강 (기능보강)',0],['2024','12','정태춘 이사장 취임',1]];
+const HX0=220,HDX=320;
+HIST.forEach((h,i)=>{const x=HX0+i*HDX,up=i%2===0;
+  const dot=mk('div',`position:absolute;left:${x-18}px;top:285px;width:36px;height:36px;border-radius:50%;background:${h[3]?'var(--red)':'#fff'};border:6px solid var(--red);box-sizing:border-box`);
+  const card=mk('div',`position:absolute;left:${x-140}px;width:280px;${up?'bottom:'+(620-262)+'px':'top:350px'};text-align:left`,
+   `<div style="font-family:var(--serif);font-size:${h[3]?60:50}px;font-weight:900;color:${h[3]?'var(--red)':'var(--ink)'};line-height:1">${h[0]}<span style="font-size:24px;color:var(--mute);font-family:var(--sans);font-weight:500;margin-left:8px">${h[1]?h[1]+'월':''}</span></div><div style="font-size:26px;line-height:1.4;margin-top:10px;color:var(--ink2);font-weight:${h[3]?700:500}">${h[2]}</div>`);
+  $('#h_track').append(dot,card);h.dot=dot;h.card=card;h.x=x;});
+// 시설
+const FST=[['시설 구분','지적장애인 거주시설'],['설치일자','2006. 10. 18.'],['정원','30명'],['대지 · 연면적','990㎡ · 780㎡'],['구조','철근콘크리트 2층']];
+FST.forEach(s=>{const r=mk('div','display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--line);padding:16px 0',`<span style="font-size:26px;color:var(--mute)">${s[0]}</span><span style="font-family:var(--serif);font-size:38px;font-weight:700">${s[1]}</span>`);$('#f_stats').append(r);s.el=r;});
+const FL=[['1F','생활 공간','390㎡',['생활실 6실','요한 · 요나 · 모세','요셉 · 야곱 · 이삭','거실','식당','휴게실','세탁실','샤워장']],['2F','지원 · 운영 공간','390㎡',['사무실','원장실','이사장실','소회의실','의무지원실','영양지원실','서고']]];
+FL.forEach((f,i)=>{const c=mk('div','margin-top:'+(i?22:0)+'px','');c.className='card';
+  c.innerHTML=`<div style="display:flex;align-items:center;gap:18px"><span style="font-family:var(--serif);font-size:54px;font-weight:900;color:var(--red)">${f[0]}</span><span style="font-size:32px;font-weight:700">${f[1]}</span><span style="font-size:24px;color:var(--mute)">${f[2]}</span></div><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">${f[3].map((r,j)=>`<span class="chip" style="font-size:22px;padding:8px 18px;${j<3&&i===0?'background:#FBE9E9;border-color:#F3C9CB;color:var(--red);font-weight:700':''}">${r}</span>`).join('')}</div>`;
+  $('#f_floors').append(c);f.el=c;});
+// 사람들
+
+const STAFF=[['시설장',1],['사무국장',1],['사회재활교사',1],['상담평가요원',1],['행정팀장',1],['생활팀장',2],['생활재활교사',11],['간호사',1],['영양사',1],['조리원',2]];
+STAFF.forEach(s=>{const c=mk('span','display:inline-flex;gap:8px;align-items:baseline;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 18px;font-size:24px;color:#EDE6DC',`${s[0]} <b style="color:#fff;font-size:26px">${s[1]}</b>`);$('#p_staff').append(c);s.el=c;});
+// 비전 카드
+const VC=[['01','네트워크 활성화','지역사회 네트워크 허브기관'],['02','시설 브랜드 강화','전문성에 기반한 특화사업 개발'],['03','운영 시스템 구축','과학적 시설경영 · 윤리경영'],['04','사회공헌','지역사회 기여 실현']];
+VC.forEach(v=>{const c=mk('div','');c.className='card';c.innerHTML=`<div style="font-family:var(--serif);font-size:30px;font-weight:900;color:var(--red)">${v[0]}</div><div style="font-size:34px;font-weight:700;margin-top:6px">${v[1]}</div><div style="font-size:24px;color:var(--mute);margin-top:6px">${v[2]}</div>`;$('#m_cards').append(c);v.el=c;});
+// 핵심가치
+const CV=[['사랑','아가페적 사랑에\n기반한 실천','#C8232C'],['나눔','지역사회 주민들과\n나눔의 기회 제공','#D99A2B'],['섬김','직원들의 서비스\n제공 자세와 역할','#3A3430']];
+CV.forEach((c,i)=>{const x=960-640+i*420-20;const el=mk('div',`position:absolute;left:${x}px;top:270px;width:540px;height:540px;border-radius:50%;background:${c[2]};mix-blend-mode:multiply;opacity:.92`);
+  const tx=mk('div',`position:absolute;left:${x}px;top:270px;width:540px;height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center`,
+   `<div style="font-family:var(--serif);font-size:120px;font-weight:900;line-height:1">${c[0]}</div><div style="font-size:30px;line-height:1.5;margin-top:22px;white-space:pre-line">${c[1]}</div>`);
+  $('#v_c').append(el,tx);c.el=el;c.tx=tx;});
+['긍정적 생활실천','책임감 있는 업무수행','명확한 의사소통','상호간 존중하기'].forEach(a=>{const c=mk('span','',a);c.className='chip';$('#v_act').append(c);});
+// 서비스
+const SV=[
+ {n:'생활재활서비스',tag:'스스로 해내는 하루',c:'#C8232C',pts:['기초생활 지원','신변처리 능력 향상','식사·청소 생활훈련'],ph:[['s14_1','옷 고르기'],['s14_2','생활훈련'],['s14_3','식사 지원']]},
+ {n:'사회재활서비스',tag:'이웃과 함께하는 경험',c:'#B4532F',pts:['나들이·문화체험','지역사회 행사 참여','사회적응 프로그램'],ph:[['s15_1','레일바이크 나들이'],['s15_2','놀이공원 나들이'],['s15_3','박물관 체험']]},
+ {n:'교육재활서비스',tag:'배우고 키우는 재능',c:'#D99A2B',pts:['요리·제과 생활기술','미술·음악 특기활동','개인별 적성 개발'],ph:[['s16_1','요리 교실'],['s16_2','미술 활동'],['s16_3','학습 활동']]},
+ {n:'자립지원서비스',tag:'나다운 삶을 향해',c:'#3A3430',pts:['가사·금전관리 연습','키오스크 등 생활기기','자립생활 체험'],ph:[['s17_1','키오스크 이용'],['s17_2','자립생활 연습'],['s17_3','계절 준비']]},
+ {n:'지역사회연계서비스',tag:'마을 속의 세종빌',c:'#1E7A70',pts:['지역 봉사·환경정화','기관·단체 협력 행사','장애인식 개선 활동'],ph:[['s18_1','환경정화 활동'],['s18_2','지역 행사 참여'],['s18_3','이미용 봉사']]},
+ {n:'건강지원서비스',tag:'건강한 몸과 마음',c:'#C8232C',pts:['간호사 상주 건강관리','정기 진료·투약 관리','영양사의 맞춤 식단'],ph:[['s19_1','건강 관리'],['s19_2','운동 프로그램']]},
+ {n:'이용자 권리보장',tag:'내 목소리가 존중받는 집',c:'#B4532F',pts:['인권지킴이단 운영','고충·진정함 상시 운영','자기결정권 존중'],ph:[['s20_1','권리 교육'],['s20_2','국가인권위원회 진정함']]}];
+const SL3=[{x:780,y:140,w:700,h:500,r:-1.5},{x:1290,y:400,w:540,h:400,r:2},{x:860,y:620,w:440,h:330,r:-1}];
+const SL2=[{x:800,y:150,w:600,h:740,r:-1.5},{x:1340,y:230,w:480,h:600,r:2}];
+SV.forEach((s,i)=>{const b=mk('div','position:absolute;inset:0');const sl=s.ph.length===3?SL3:SL2;
+  s.photos=s.ph.map((p,j)=>{const f=mk('div',`left:${sl[j].x}px;top:${sl[j].y}px;width:${sl[j].w}px;height:${sl[j].h}px;border:10px solid #fff;border-radius:20px`,`<img src="img/${p[0]}.jpg" alt="${p[1]}"><div class="tag">${p[1]}</div>`);f.className='ph';b.append(f);return{el:f,img:f.querySelector('img'),sl:sl[j]}});
+  const tx=mk('div','position:absolute;left:140px;top:220px;width:600px',
+   `<div class="num" style="font-family:var(--serif);font-size:130px;font-weight:900;color:${s.c};line-height:1">0${i+1}<span style="font-size:40px;color:#C9BFB3"> / 07</span></div>
+    <div class="tg" style="font-size:30px;font-weight:700;color:${s.c};margin-top:26px;letter-spacing:.04em">${s.tag}</div>
+    <div class="mask"><div class="nm h1" style="font-size:${s.n.length>7?64:78}px;margin-top:6px">${s.n}</div></div>
+    <div class="pts" style="display:flex;flex-direction:column;gap:12px;margin-top:30px">${s.pts.map(x=>`<span class="chip" style="align-self:flex-start;font-size:26px"><i style="width:10px;height:10px;border-radius:50%;background:${s.c};display:inline-block"></i>${x}</span>`).join('')}</div>`);
+  b.append(tx);s.b=b;s.tx=tx;$('#sv_beats').append(b);
+  const d=mk('span',`display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);border-radius:999px;padding:10px 22px;font-size:26px;font-weight:700;color:#fff`,`<b style="font-family:var(--serif)">0${i+1}</b>${s.n.replace('서비스','')}`);$('#sv_dots').append(d);s.dot=d;
+  const pg=mk('div','width:70px;height:8px;border-radius:4px;background:#E6E0D8;overflow:hidden',`<div style="height:100%;width:100%;background:${s.c};transform-origin:0 50%"></div>`);$('#sv_prog').append(pg);s.pg=pg.firstChild;});
+// 함께하기
+const TP=[['v1','이미용 봉사',80,110,440,330],['v2','재능나눔 공연',540,150,440,330],['v4','봉사자 치킨 나눔',80,470,440,330],['p2','후원금 전달',540,510,440,330],['v6','함께하는 그림 활동',300,820,440,200]];
+TP.slice(0,4).forEach(p=>{const f=mk('div',`left:${p[2]}px;top:${p[3]}px;width:${p[4]}px;height:${p[5]}px;border-radius:22px`,`<img src="img/${p[0]}.jpg" alt="${p[1]}"><div class="tag">${p[1]}</div>`);f.className='ph';$('#t_pics').append(f);p.el=f;});
+[['자원봉사','일상생활 보조 · 생활 지원<br>행사 보조 · 프로그램'],['후원','정기 · 결연 · 물품<br>저금통 후원']].forEach(c=>{const e=mk('div','');e.className='card';e.style.padding='24px 28px';e.innerHTML=`<div style="font-size:34px;font-weight:900;color:var(--red)">${c[0]}</div><div style="font-size:24px;color:var(--ink2);line-height:1.6;margin-top:8px">${c[1]}</div>`;$('#t_cards').append(e);c.el=e;});
+
+
+const VEO={n:(window.VEO_N||0),fps:(window.VEO_FPS||24),imgs:[],ok:false};
+if(VEO.n){let c=0;for(let i=0;i<VEO.n;i++){const im=new Image();im.onload=()=>{if(++c===VEO.n)VEO.ok=true};im.src=`veo/f_${String(i+1).padStart(3,'0')}.jpg`;VEO.imgs.push(im);}}
+function drawVeo(lt){const cv=$('#veo');if(!VEO.n||!cv)return;const i=Math.min(VEO.n-1,Math.max(0,Math.floor(lt*VEO.fps)));const im=VEO.imgs[i];if(!im||!im.complete||!im.naturalWidth)return;
+ const ctx=cv.getContext('2d');const W=cv.width,H=cv.height,iw=im.naturalWidth,ih=im.naturalHeight;const sc=Math.max(W/iw,H/ih);const sw=W/sc,sh=H/sc;const sx=(iw-sw)*.45,sy=(ih-sh)*.6;ctx.drawImage(im,sx,sy,sw,sh,0,0,W,H);}
+window.__ready=()=>!VEO.n||VEO.ok;
+/* ---------- 장면 업데이트 ---------- */
+const U={
+ s00(t,D){const s=$('#s00 .sl');s.style.opacity=E.io(P(t,0,1.0));s.querySelector('.fg').style.transform=`scale(${lerp(1.10,1.0,E.sine(clamp(t/(D+1.5))))})`;
+  s.querySelector('.fgw').style.clipPath=`inset(0 0 0 ${(1-E.out5(P(t,.3,1.4)))*100}%)`;
+  const gk=E.out5(P(t,.6,1.2));T($('#glass'),{x:(1-gk)*-140,o:gk});
+  $('#o_slogan').style.clipPath=`inset(0 ${(1-E.io(P(t,1.3,2.4)))*100}% 0 0)`;
+  $('#o_rule').style.transform=`scaleX(${E.out(P(t,3.4,.9))})`;const lk=E.out(P(t,3.8,.9));$('#o_logo').style.opacity=lk;$('#o_logo').style.transform=`translateY(${(1-lk)*20}px)`;},
+ s01(t,D){const k=E.out5(P(t,.2,1.3));T($('#c_ph'),{y:(1-k)*60,o:k});kb($('#c_ph img'),t,D,1.12,1.0);
+  fade($('#c_tx .eyebrow'),t,.6);rise(chars($('#c_tx')),t,.8,.08,.9,120);fade($('#c_tx .lead'),t,1.3);fade($('#c_q'),t,2.2,1);fade($('#c_q2'),t,Math.min(D-4,5.5),1);},
+ s02(t,D){const k=E.out5(P(t,.2,1.3));T($('#d_ph'),{y:(1-k)*60,o:k});kb($('#d_ph img'),t,D,1.10,1.0);
+  fade($('#d_tx .eyebrow'),t,.6);rise(chars($('#d_tx')),t,.8,.08,.9,120);fade($('#d_tx .lead'),t,1.3);fade($('#d_q'),t,2.4,1);},
+ s03(t,D){fade($('#h_eye'),t,.2);rise(chars($('#h_title')),t,.3,.025,.7,90);
+  const L0=1.2,L1=D-1.8;const lk=E.sine(P(t,L0,L1-L0));const lastX=HX0+(HIST.length-1)*HDX;
+  $('#h_line').style.transform=`scaleX(${clamp((HX0-140+lk*(lastX-HX0)+120)/3500)})`;
+  const pan=Math.max(0,(HX0+lk*(lastX-HX0))-1300);$('#h_track').style.transform=`translateX(${-pan}px)`;
+  let yr='2003';HIST.forEach(h=>{const px=HX0+lk*(lastX-HX0);const pk=clamp((px-h.x+60)/120);
+   T(h.dot,{s:E.back(pk),o:pk>0?1:0});T(h.card,{y:(1-E.out(pk))*30,o:E.out(pk)});if(pk>.5)yr=h[0];});
+  $('#h_year').textContent=yr;$('#h_year').style.opacity=P(t,1,.6);},
+ s04(t,D){const k=E.out5(P(t,0,1.4));$('#f_ph').style.clipPath=`inset(0 ${(1-k)*100}% 0 0 round 28px)`;kb($('#f_ph img'),t,D,1.14,1.0);const sw2=D*.5;const k2=E.out5(P(t,sw2-.3,1.4));$('#f_ph2').style.clipPath=`inset(0 0 0 ${(1-k2)*100}% round 28px)`;$('#f_ph2').style.visibility=k2>0?'visible':'hidden';if(VEO.n){drawVeo(Math.max(0,t-(sw2-.3)));}else{$('#f_ph2 img').style.transform=`scale(${lerp(1.12,1.0,E.sine(clamp((t-sw2)/(D-sw2))))})`;}
+  const sw=D*.5;const out=E.io(P(t,sw-.4,.7));
+  const tx=$('#f_tx');fade(tx,t,.6,1);tx.style.opacity=E.out(P(t,.6,1))*(1-out);
+  FST.forEach((s,i)=>fade(s.el,t,1.4+i*.3,.8,24));
+  FL.forEach((f,i)=>{const kk=fade(f.el,t,sw+.2+i*.5,.9,50);});},
+ s05(t,D){kb($('#p_bg'),t,D,1.12,1.0);fade($('#p_c1'),t,.3,1);fade($('#p_c2'),t,.7,1);
+  $('#n30').textContent=Math.round(30*E.out(P(t,.4,2)));$('#n22').textContent=Math.round(22*E.out(P(t,.8,2)));
+  STAFF.forEach((s,i)=>fade(s.el,t,2.4+i*.12,.6,20));},
+ s06(t,D){fade($('#m_a .eyebrow'),t,.2);rise(chars($('#m_a')),t,.4,.04,.8,110);
+  const vb=D*.42;fade($('#m_v .eyebrow'),t,vb);const bk=E.back(P(t,vb+.2,1));T($('#m_5'),{s:lerp(.4,1,bk),o:P(t,vb+.2,.3)});
+  fade($('#m_v > div:last-child > div:last-child'),t,vb+.6,.8,20);VC.forEach((v,i)=>fade(v.el,t,vb+1.4+i*.5,.8,30));},
+ s07(t,D){fade($('#v_eye'),t,.1);CV.forEach((c,i)=>{const a=.4+i*.5;const k=E.back(P(t,a,1.1));const fl=Math.sin((t+i)*1.1)*6;
+  T(c.el,{s:lerp(.3,1,k),y:fl,o:clamp(P(t,a,.4))*.92});T(c.tx,{s:lerp(.6,1,clamp(k)),y:fl,o:clamp(P(t,a+.3,.5))});});
+  [...$('#v_act').children].forEach((c,i)=>fade(c,t,2.6+i*.2,.7,20));},
+ s08(t,D){const BT=TM.beats,I=BT[0];
+  const it=$('#sv_intro');it.style.transform=`translateY(${-E.io(P(t,I-.8,1.0))*1080}px)`;
+  fade($('#sv_i1'),t,.2);rise(chars($('#sv_i2')),t,.4,.035,.8,120);SV.forEach((s,i)=>fade(s.dot,t,1.8+i*.15,.6,20));
+  $('#sv_prog').style.opacity=P(t,I-.2,.5);
+  SV.forEach((s,i)=>{const a=BT[i],e=(i<6?BT[i+1]:D),beat=e-a,lt=t-a;const vis=t>=a-.05&&t<e+.05;s.b.style.visibility=vis?'visible':'hidden';
+   s.pg.style.transform=`scaleX(${clamp(lt/beat)})`;if(!vis)return;
+   const ex=E.io(P(lt,beat-.7,.7));
+   s.photos.forEach((p,j)=>{const pk=E.out5(P(lt,.1+j*.25,1.1));T(p.el,{x:(1-pk)*700-ex*1300,y:(1-pk)*30,r:p.sl.r+(1-pk)*6,o:1});kb(p.img,lt,beat,1.12,1.0);});
+   const q=s.tx;const k1=E.out(P(lt,0,.7)),k2=E.out(P(lt,.2,.8));
+   T(q.querySelector('.num'),{y:(1-k1)*50,o:k1*(1-ex)});T(q.querySelector('.tg'),{y:(1-k2)*30,o:k2*(1-ex)});T(q.querySelector('.nm'),{y:(1-E.out(P(lt,.3,.8)))*110,o:1-ex});
+   [...q.querySelectorAll('.pts .chip')].forEach((c,j)=>{const kk=E.out(P(lt,1.0+j*.3,.7));T(c,{x:(1-kk)*-30,o:kk*(1-ex)})});});},
+ s09(t,D){TP.slice(0,4).forEach((p,i)=>{const k=E.out5(P(t,.1+i*.3,1.1));T(p.el,{y:(1-k)*80,o:k});kb(p.el.querySelector('img'),t,D,1.12,1.0)});
+  fade($('#t_tx .eyebrow'),t,.6);rise(chars($('#t_tx')),t,.8,.04,.8,100);
+  [...$('#t_cards').children].forEach((c,i)=>fade(c,t,2.2+i*.3,.8,30));fade($('#t_acc'),t,3.2,.8,30);fade($('#t_tel'),t,3.8,.8,30);},
+ s10(t,D){const k=E.out5(P(t,.2,1.4));T($('#e_ph'),{y:(1-k)*60,o:k});kb($('#e_ph img'),t,D,1.14,1.0);
+  rise(chars($('#e_t')),t,.6,.05,.9,120);fade($('#e_thx'),t,3.2,1);fade($('#e_foot'),t,4.0,1);fade($('#e_ai'),t,4.6,1,10);
+  $('#e_fade').style.opacity=E.io(P(t,D-1.4,1.4));}
+};
+const IDS=Object.keys(TM.scenes);let ST=[],TOTAL=0;{let a=0;IDS.forEach(id=>{ST.push(a);a+=TM.scenes[id]});TOTAL=a;}
+const WD=1.4;let showCaps=true;
+function render(t){
+  let idx=IDS.length-1;for(let i=0;i<IDS.length;i++){if(t<ST[i]+TM.scenes[IDS[i]]){idx=i;break;}}
+  let shown=idx,wk=-1;for(let i=1;i<IDS.length;i++){const b=ST[i];if(t>=b-WD/2&&t<b+WD/2){wk=(t-(b-WD/2))/WD;shown=t<b?i-1:i;}}
+  IDS.forEach((id,i)=>{const el=document.getElementById(id);const v=i===shown;el.style.visibility=v?'visible':'hidden';if(v)U[id](t-ST[i],TM.scenes[id]);});
+  [...$('#wipe').children].forEach((b,j)=>{if(wk<0){b.style.transform='skewX(-12deg) translateX(-160%)';return;}const k=clamp((wk-j*.06)/(1-.12));b.style.transform=`skewX(-12deg) translateX(${lerp(-160,110,E.io(k))}%)`;});
+  const cap=$('#cap');let c=null;if(showCaps)for(const q of TM.caps){if(t>=q.s&&t<q.e){c=q;break;}}
+  if(c){if(cap.textContent!==c.t)cap.textContent=c.t;cap.style.opacity=Math.min(1,(t-c.s)/.2,(c.e-t)/.2);cap.style.left=(c.x||960)+'px';cap.style.maxWidth=(c.w||1500)+'px';}else cap.style.opacity=0;
+}
+window.__render=render;window.__total=()=>TOTAL;
+function fit(){const v=$('#viewport');const fs=!!document.fullscreenElement;const sc=fs?Math.min(v.clientWidth/1920,v.clientHeight/1080):v.clientWidth/1920;const ox=fs?(v.clientWidth-1920*sc)/2:0,oy=fs?(v.clientHeight-1080*sc)/2:0;$('#stage').style.transform=`translate(${ox}px,${oy}px) scale(${sc})`;try{parent.postMessage({sjvH:document.documentElement.scrollHeight},'*')}catch(e){}}
+if(window.ResizeObserver)new ResizeObserver(()=>fit()).observe(document.body);addEventListener('load',fit);addEventListener('resize',fit);fit();
+const narr=$('#narr'),bgm=$('#bgm');bgm.volume=.25;
+let playing=false,clock=0,last=0;const now=()=>playing?clock+(performance.now()-last)/1000:clock;
+function tick(){if(!playing)return;let t=now();if(t>=TOTAL){t=TOTAL;pause();}render(t);$('#seek').value=Math.round(t/TOTAL*1000);$('#time').textContent=fmt(t)+' / '+fmt(TOTAL);requestAnimationFrame(tick);}
+function sync(t){try{narr.currentTime=t;bgm.currentTime=t}catch(e){}}
+function play(){if(clock>=TOTAL-.05)clock=0;sync(clock);last=performance.now();playing=true;narr.play().catch(()=>{});bgm.play().catch(()=>{});$('#play').textContent='❚❚ 일시정지';tick();}
+function pause(){clock=now();playing=false;narr.pause();bgm.pause();$('#play').textContent='▶ 재생';}
+$('#play').onclick=()=>playing?pause():play();
+$('#seek').oninput=e=>{const t=e.target.value/1000*TOTAL;clock=t;last=performance.now();if(playing)sync(t);render(t);$('#time').textContent=fmt(t)+' / '+fmt(TOTAL);};
+$('#fsbtn').onclick=()=>{const v=$('#viewport');(document.fullscreenElement?document.exitFullscreen():(v.requestFullscreen||v.webkitRequestFullscreen).call(v))?.catch?.(()=>{});};
+document.addEventListener('fullscreenchange',()=>setTimeout(fit,50));
+$('#capbtn').onclick=()=>{showCaps=!showCaps;$('#capbtn').textContent=showCaps?'자막 끄기':'자막 켜기';render(now());};
+if(/render/.test(location.search)){document.body.classList.add('render');fit();}
+clock=/render/.test(location.search)?0:7;render(clock);$('#seek').value=Math.round(clock/TOTAL*1000);$('#time').textContent=fmt(clock)+' / '+fmt(TOTAL);
+</script>
+
+</body></html>

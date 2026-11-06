@@ -250,7 +250,7 @@ home = f'''
 <div class="glass calli"><div class="h-since"><span>2003년부터 함께해 온</span></div>
 <h1 class="slogan"><img src="/assets/img/slogan.png" alt="서로를 존중하고 품어주고 사랑하는 행복한 보금자리" width="1000" height="554" fetchpriority="high"></h1>
 <p class="lead h-lead">이용자 한 분 한 분이 저마다의 속도로<br>배우고, 쉬고, 웃으며 함께 살아가는 곳<b>세종빌<i class="seal" aria-hidden="true">세종빌</i></b></p>
-<div class="cta"><a class="btn red" href="/about/corp.html">세종빌 둘러보기 <svg class="ico"><use href="#i-arrow"/></svg></a><a class="btn line" href="/together/support.html">후원으로 함께하기</a></div></div>
+<div class="cta"><a class="btn red" href="/about/video.html">▶ 소개 영상 보기</a><a class="btn line" href="/together/support.html">후원으로 함께하기</a></div></div>
 </div></div></section>
 <nav class="quick" aria-label="바로가기"><div class="wrap">
 <a href="/admission.html"><div class="qi"><svg class="ico"><use href="#i-home"/></svg></div><div><b>입주 상담</b><small>조건 · 절차 · 서류</small></div></a>
@@ -381,6 +381,11 @@ loc = f'''<div class="split"><div class="side"><img src="/assets/img/building.pn
 <div class="box"><h4>전라 방면</h4><p>익산IC → 천안논산고속도로 정안IC → 세종시 방향 → 덕학교차로 → 세종빌</p></div>
 <div class="box"><h4>경상 방면</h4><p>남세종IC → 세종시 방향 → 미리내로 좌회전 → 덕학교차로 우회전 → 세종빌</p></div></div></div></div>'''
 write('/about/location.html', page('오시는 길', subpage(0, '오시는 길', '오시는 길', loc), 0))
+video_html = '''<p class="lead">세종빌을 처음 만나시는 분들을 위한 약 4분 길이의 소개 영상입니다. 재생 버튼을 누르면 내레이션과 함께 시작되며, 자막과 전체화면을 지원합니다.</p>
+<div style="margin-top:24px;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(60,40,20,.10)"><iframe src="/intro/player.html" title="세종빌 소개 영상" id="sjv-video" style="display:block;width:100%;aspect-ratio:16/10;border:0;background:#FBF8F3" allow="fullscreen; autoplay" allowfullscreen></iframe></div>
+<script>(function(){const f=document.getElementById("sjv-video");const set=h=>{if(h){f.style.aspectRatio="auto";f.style.height=h+"px";}};addEventListener("message",e=>{if(e.origin===location.origin&&e.data&&e.data.sjvH)set(e.data.sjvH)});f.addEventListener("load",()=>{try{const d=f.contentDocument;const r=()=>set(d.documentElement.scrollHeight);r();if(window.ResizeObserver)new ResizeObserver(r).observe(d.body)}catch(e){}});})();</script>
+<p class="note" style="margin-top:14px">※ 내레이션·배경음악은 생성형 AI(Google Gemini)로 제작했으며, 일부 사진은 AI로 보정했습니다.</p>'''
+write('/about/video.html', page('소개 영상', subpage(0, '소개 영상', '소개 영상', video_html), 0))
 
 # ---------- 일상 ----------
 SVCS = [
