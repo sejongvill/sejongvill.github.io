@@ -376,7 +376,7 @@ $('#fsbtn').onclick=()=>{const v=$('#viewport');(document.fullscreenElement?docu
 document.addEventListener('fullscreenchange',()=>setTimeout(fit,50));
 $('#capbtn').onclick=()=>{showCaps=!showCaps;$('#capbtn').textContent=showCaps?'자막 끄기':'자막 켜기';render(now());};
 if(/render/.test(location.search)){document.body.classList.add('render');fit();}
-clock=/render/.test(location.search)?0:7;render(clock);$('#seek').value=Math.round(clock/TOTAL*1000);$('#time').textContent=fmt(clock)+' / '+fmt(TOTAL);
+clock=0;render(/render/.test(location.search)?0:7);$('#seek').value=0;$('#time').textContent=fmt(0)+' / '+fmt(TOTAL);
 </script>
 
 </body></html>
