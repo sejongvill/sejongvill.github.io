@@ -707,3 +707,7 @@ a.card{position:relative}
 .scrollcard .scrollimg{height:440px;overflow-y:auto;background:var(--cream);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .scrollcard .scrollimg img{width:100%;height:auto;aspect-ratio:auto;object-fit:initial;display:block}
 @media (max-width:900px){.scrollcard .scrollimg{height:300px}}
+
+/* 소식지 상세: 사진을 잘라내지 않고 전체 폭으로 */
+.post-imgs.full{display:block}
+.post-imgs.full img{width:100%;height:auto;aspect-ratio:auto;object-fit:initial;margin:0 0 12px}
