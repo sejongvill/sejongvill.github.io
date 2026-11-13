@@ -703,10 +703,6 @@ a.card{position:relative}
 @media(max-width:600px){.fsz-l{display:none}.auth-btn.on{max-width:72px;overflow:hidden;text-overflow:ellipsis}.util .tools{gap:6px}.fsz{gap:3px}}
 @media(max-width:600px){.auth-btn.on{display:none}}
 
-/* 소식지 목록: 카드 안에서 스크롤해 전체 보기 */
-.scrollcard .scrollimg{height:440px;overflow-y:auto;background:var(--cream);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.scrollcard .scrollimg img{width:100%;height:auto;aspect-ratio:auto;object-fit:initial;display:block}
-@media (max-width:900px){.scrollcard .scrollimg{height:300px}}
 
 /* 소식지 상세: 사진을 잘라내지 않고 전체 폭으로 */
 .post-imgs.full{display:block}
