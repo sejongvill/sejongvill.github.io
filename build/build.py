@@ -492,7 +492,7 @@ for key, posts in P.items():
         inline = set(re.findall(r'src="([^"]+)"', p['body']))
         g = [x for x in p['images'] if x not in inline]
         if g:
-            imgs = '<div class="post-imgs">' + ''.join(f'<a href="{x}" target="_blank" rel="noopener"><img src="{x}" alt="" loading="lazy"></a>' for x in g) + '</div>'
+            imgs = f'<div class="post-imgs{" full" if key == "newsletter" else ""}">' + ''.join(f'<a href="{x}" target="_blank" rel="noopener"><img src="{x}" alt="" loading="lazy"></a>' for x in g) + '</div>'
         show = ''
         for f in p['files']:
             fe = os.path.splitext(f['file'])[1].lower()
