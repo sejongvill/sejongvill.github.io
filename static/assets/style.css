@@ -706,4 +706,7 @@ a.card{position:relative}
 
 /* 소식지 상세: 사진을 잘라내지 않고 전체 폭으로 */
 .post-imgs.full{display:block}
-.post-imgs.full img{width:100%;height:auto;aspect-ratio:auto;object-fit:initial;margin:0 0 12px}
+.post-imgs.full img{width:auto;max-width:100%;height:auto;aspect-ratio:auto;object-fit:initial;margin:0 auto 12px}
+
+/* 소식지·인권존중 본문 사진: 원본 크기 이상으로 늘리지 않음(화질 보호), 가운데 정렬 */
+.prose img{max-width:100%;height:auto}
