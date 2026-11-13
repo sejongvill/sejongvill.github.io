@@ -464,7 +464,9 @@ for key, posts in P.items():
     pages = max(1, math.ceil(len(posts) / PER))
     for pg in range(1, pages + 1):
         chunk = posts[(pg - 1) * PER: pg * PER]
-        if gallery:
+        if key == 'newsletter':
+            inner = '<div class="cards">' + ''.join(f'''<a class="card scrollcard" href="/board/{key}/{p["id"]}.html"><div class="scrollimg" tabindex="0" aria-label="소식지 미리보기 (스크롤해서 전체 보기)">{"".join(f'<img src="{x}" alt="" loading="lazy">' for x in (p["images"] or [thumb(p) or "/assets/img/logo.png"]))}</div><div class="cap"><small>{fmt(p["date"])} · {E(p["writer"])}</small><b>{E(p["title"])}</b></div></a>''' for p in chunk) + '</div><p class="note" style="margin-top:14px">그림 위에서 스크롤하면 소식지 전체를 볼 수 있고, 제목을 누르면 크게 볼 수 있어요.</p>'
+        elif gallery:
             inner = '<div class="cards">' + ''.join(f'''<a class="card" href="/board/{key}/{p["id"]}.html"><img src="{thumb(p) or "/assets/img/logo.png"}" alt="" loading="lazy"><div class="cap"><small>{fmt(p["date"])} · {E(p["writer"])}</small><b>{E(p["title"])}</b></div></a>''' for p in chunk) + '</div>'
         else:
             inner = '<ul class="board-list">' + ''.join(f'''<li><a href="/board/{key}/{p["id"]}.html"><span class="no">{p["no"]}</span>{f'<span class="chip{" r" if notice_head(p) == "채용" else ""}">{notice_head(p)}</span>' if key == "notice" else ""}<span class="tt">{E(p["title"])}</span>{'<span class="att">첨부</span>' if p["files"] else ''}<span class="wr">{E(p["writer"])}</span><time>{p["date"]}</time></a></li>''' for p in chunk) + '</ul>'
