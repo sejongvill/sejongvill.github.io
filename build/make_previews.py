@@ -4,21 +4,24 @@
 import glob, os, re, subprocess, sys, tempfile, shutil
 from PIL import Image, ImageChops
 
-BOARDS = ('menu', 'schedule')
 EXTS = ('.xlsx', '.xls', '.pdf', '.ods', '.docx')
+# 게시판별로 그림을 만들 파일 형식 (공지사항은 PDF만 — LibreOffice 없이 바로 변환)
+BOARDS = {'menu': EXTS, 'schedule': EXTS, 'notice': ('.pdf',)}
+# 게시판별 최대 쪽수 (식단·일정은 3쪽, 공지사항은 5쪽)
+MAXPAGES = {'notice': 5}
 
 def todo():
     out = []
-    for b in BOARDS:
+    for b, exts in BOARDS.items():
         for md in sorted(glob.glob(f'content/{b}/*.md')):
             t = open(md, encoding='utf-8').read()
             m = re.match(r'---\n(.*?)\n---', t, re.S)
             if not m or re.search(r'^previews:', m.group(1), re.M):
                 continue
             files = re.findall(r'^\s+file:\s*(\S+)', m.group(1), re.M)
-            files = [f for f in files if os.path.splitext(f)[1].lower() in EXTS]
+            files = [f for f in files if os.path.splitext(f)[1].lower() in exts]
             if files and not re.search(r'^images:\s*\n\s*-', m.group(1), re.M):
-                out.append((md, files))
+                out.append((md, files, MAXPAGES.get(b, 3)))
     return out
 
 def trim(im, pad=24):
@@ -29,7 +32,7 @@ def trim(im, pad=24):
     l, t, r, b = box
     return im.crop((max(0, l - pad), max(0, t - pad), min(im.width, r + pad), min(im.height, b + pad)))
 
-def convert(src, dst_base):
+def convert(src, dst_base, pages=3):
     tmp = tempfile.mkdtemp()
     try:
         pdf = src
@@ -37,7 +40,7 @@ def convert(src, dst_base):
             subprocess.run(['soffice', '--headless', '--convert-to', 'pdf', '--outdir', tmp, src], check=True,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=180)
             pdf = os.path.join(tmp, os.path.splitext(os.path.basename(src))[0] + '.pdf')
-        subprocess.run(['pdftoppm', '-png', '-r', '130', '-f', '1', '-l', '3', pdf, os.path.join(tmp, 'p')], check=True, timeout=120)
+        subprocess.run(['pdftoppm', '-png', '-r', '130', '-f', '1', '-l', str(pages), pdf, os.path.join(tmp, 'p')], check=True, timeout=120)
         outs = []
         for i, p in enumerate(sorted(glob.glob(os.path.join(tmp, 'p*.png'))), 1):
             im = trim(Image.open(p).convert('RGB'))
@@ -54,13 +57,13 @@ if __name__ == '__main__':
     if '--need' in sys.argv:
         print(len(jobs)); sys.exit(0)
     os.makedirs('static/files/preview', exist_ok=True)
-    for md, files in jobs:
+    for md, files, pages in jobs:
         prev = []
         for f in files:
             src = 'static' + f
             if os.path.exists(src):
                 try:
-                    prev += convert(src, os.path.splitext(os.path.basename(f))[0])
+                    prev += convert(src, os.path.splitext(os.path.basename(f))[0], pages)
                 except Exception as ex:
                     print('그림 만들기 실패', src, ex)
         if prev:
