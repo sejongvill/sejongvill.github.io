@@ -506,7 +506,7 @@ for key, posts in P.items():
         nav = '<nav class="post-nav">' + (f'<a href="/board/{key}/{prev_["id"]}.html">← {E(prev_["title"][:24])}</a>' if prev_ else '<span></span>') + \
               f'<a class="more" href="/board/{key}/">목록</a>' + (f'<a href="/board/{key}/{next_["id"]}.html">{E(next_["title"][:24])} →</a>' if next_ else '<span></span>') + '</nav>'
         admin_bar = f'<div class="post-admin" data-author="{p["author"]}" hidden><a class="btn line writebtn" href="/write/?b={key}&amp;edit={p["id"]}">✏️ 수정·삭제</a></div>'
-        body = admin_bar + f'<article><header class="post-head"><h2>{E(p["title"])}</h2><p class="meta"><span class="wr">작성자 {E(p["writer"])}</span><time datetime="{p["date"]}">{fmt(p["date"])}</time></p></header>{show}{imgs}<div class="prose" style="max-width:none">{p["body"]}</div>{files}{nav}</article>'
+        body = admin_bar + f'<article><header class="post-head"><h2>{E(p["title"])}</h2><p class="meta"><span class="wr">작성자 {E(p["writer"])}</span><time datetime="{p["date"]}">{fmt(p["date"])}</time></p></header>{"" if key == "notice" else show}{imgs}<div class="prose" style="max-width:none">{p["body"]}</div>{(f'<div style="margin-top:28px">{show}</div>' if show else "") if key == "notice" else ""}{files}{nav}</article>'
         write(f'/board/{key}/{p["id"]}.html', page(p['title'], subpage(sec, name, name, body), sec, desc=p['text'][:120] or name))
 
 # 정보공개
