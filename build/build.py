@@ -556,6 +556,7 @@ write_body = f'''<div style="max-width:760px">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><p class="note"><b id="who"></b> · <button type="button" id="logout" style="text-decoration:underline">로그아웃</button></p>
 <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-left:auto"><label style="display:flex;gap:8px;align-items:center;font-weight:600">게시판 <select id="boardSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)">{board_opts}</select></label><label id="catRow" hidden style="display:flex;gap:8px;align-items:center;font-weight:600">말머리 <select id="catSel" style="font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line)"><option data-g="n">공지</option><option data-g="n">채용</option>{''.join(f'<option data-g="d">{c}</option>' for c in DISC_CATS)}</select></label></div></div>
 <label><span>제목 <b class="req">*</b></span><input id="wtitle" required placeholder="예: 2026. 11. 2.(월) 가을 산책"></label>
+<label id="dateRow" hidden><span>게시 날짜·시간 <small class="note">(관리자만 보여요 · 비워 두면 지금 시각)</small></span><input id="wdate" type="datetime-local"></label>
 <label><span>내용</span><textarea id="wbody" rows="6" placeholder="간단히 적어 주세요. 줄바꿈도 그대로 보여요."></textarea></label>
 <div><span style="font-weight:600">사진</span>
 <label class="pick"><input id="photos" type="file" accept="image/*" multiple hidden>📷 사진 고르기 (최대 9장 · 3장, 6장, 9장이면 보기 좋아요)</label>

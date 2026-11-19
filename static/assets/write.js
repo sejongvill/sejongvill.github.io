@@ -65,7 +65,7 @@
     var s = session();
     $('#loginBox').hidden = !!s;
     $('#writeForm').hidden = !s;
-    if (s) { $('#who').textContent = (s.email || '직원') + ' 님'; myName().then(function (n) { $('#who').textContent = n + ' (' + (s.email || '') + ') 님'; }); if (editId && !editSha) loadPost(); }
+    if (s) { who().then(function (id) { $('#dateRow').hidden = ADMINS.indexOf(id) < 0; }).catch(function () {}); $('#who').textContent = (s.email || '직원') + ' 님'; myName().then(function (n) { $('#who').textContent = n + ' (' + (s.email || '') + ') 님'; }); if (editId && !editSha) loadPost(); }
   }
   $('#loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -153,6 +153,7 @@
       if (board === 'notice') { var c0 = p.data.category || guessCat(p.data.title || ''); setBoard(DISC_CATS.indexOf(c0) >= 0 ? 'disclosure' : 'notice'); $('#catSel').value = c0; }
       (p.data.images || []).forEach(function (src) { if (src) picked.push({ old: src, url: src }); });
       (p.data.files || []).forEach(function (x) { if (typeof x === 'string') x = { file: x }; if (x && x.file) oldFiles.push({ name: x.name || x.file.split('/').pop(), file: x.file }); });
+      $('#wdate').value = String(keep.date || '').slice(0, 16).replace(' ', 'T');
       keep.fileCount = oldFiles.length;
       render(); renderFiles(); msg('');
       return who().then(function (id) {
@@ -262,7 +263,8 @@
     var btn = $('#wsubmit'); btn.disabled = true;
     var now = new Date(), stamp = '' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate()) + pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds());
     var id = editId || stamp;
-    var date = keep.date || (now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()));
+    var picked_date = (!$('#dateRow').hidden && $('#wdate').value) ? $('#wdate').value.replace('T', ' ') : '';
+    var date = picked_date || keep.date || (now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()));
     var newFiles = [].slice.call($('#attach').files || []);
     var entries = [], imgPaths = [], attPaths = oldFiles.slice();
     msg('사진 준비 중…');
