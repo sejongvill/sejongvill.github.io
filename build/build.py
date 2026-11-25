@@ -496,7 +496,7 @@ for key, posts in P.items():
             fe = os.path.splitext(f['file'])[1].lower()
             if fe in ('.jpg', '.jpeg', '.png', '.gif'):
                 show += f'<a href="{f["file"]}" target="_blank" rel="noopener"><img class="att-img" src="{f["file"]}" alt="{E(p["title"])}" loading="lazy"></a>'
-        for pv in p['previews']:
+        for pv in (p['previews'][:2] if key == 'notice' and notice_head(p) == '채용' else p['previews']):
             show += f'<a href="{pv}" target="_blank" rel="noopener"><img class="att-img" src="{pv}" alt="{E(p["title"])}" loading="lazy"></a>'
         files = ''
         if p['files']:

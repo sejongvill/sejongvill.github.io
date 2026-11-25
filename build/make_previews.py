@@ -9,6 +9,8 @@ EXTS = ('.xlsx', '.xls', '.pdf', '.ods', '.docx')
 BOARDS = {'menu': EXTS, 'schedule': EXTS, 'notice': ('.pdf',)}
 # 게시판별 최대 쪽수 (식단·일정은 3쪽, 공지사항은 5쪽)
 MAXPAGES = {'notice': 5}
+# 공지사항 중 말머리가 '채용'인 글은 공고문 2쪽만 그림으로 (나머지 쪽은 지원서 양식 등이라 첨부파일로만 내려받게 함)
+CATEGORY_PAGES = {'채용': 2}
 
 def todo():
     out = []
@@ -21,7 +23,11 @@ def todo():
             files = re.findall(r'^\s+file:\s*(\S+)', m.group(1), re.M)
             files = [f for f in files if os.path.splitext(f)[1].lower() in exts]
             if files and not re.search(r'^images:\s*\n\s*-', m.group(1), re.M):
-                out.append((md, files, MAXPAGES.get(b, 3)))
+                pages = MAXPAGES.get(b, 3)
+                cm = re.search(r'^category:\s*["\']?([^"\'\n]+)', m.group(1), re.M)
+                if b == 'notice' and cm and cm.group(1).strip() in CATEGORY_PAGES:
+                    pages = CATEGORY_PAGES[cm.group(1).strip()]
+                out.append((md, files, pages))
     return out
 
 def trim(im, pad=24):
